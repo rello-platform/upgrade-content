@@ -1,0 +1,1 @@
+{"version":3,"file":"copy-rules.d.ts","sourceRoot":"","sources":["../src/copy-rules.ts"],"names":[],"mappings":"AAAA;;;;;;;;;;;;GAYG;AACH,MAAM,WAAW,QAAQ;IACvB,QAAQ,CAAC,IAAI,EAAE,MAAM,CAAC;IACtB,QAAQ,CAAC,OAAO,EAAE,MAAM,CAAC;CAC1B;AAED,eAAO,MAAM,UAAU,EAAE,SAAS,QAAQ,EAQzC,CAAC;AAEF,qEAAqE;AACrE,wBAAgB,WAAW,CAAC,IAAI,EAAE,MAAM,GAAG,MAAM,EAAE,CAElD"}
