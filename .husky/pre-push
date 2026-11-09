@@ -1,0 +1,66 @@
+#!/usr/bin/env sh
+# Pre-push: a v* tag may not carry a stale dist/.
+#
+# WHY THIS EXISTS
+# ---------------
+# This package is installed from GIT TAGS, so the artifact a consumer receives
+# is whatever dist/ was committed at that tag. Nothing verified that the
+# committed output came from the committed input: a tag can carry src/ from one
+# commit and dist/ from an older one, and every consumer installs the stale
+# output with no signal at install, build or runtime — the consumer's tsc
+# typechecks happily, because the stale .d.ts is that artifact's own honest
+# self-description. Measured instance: rate-types shipped a tag whose dist/
+# lacked LOAN_PURPOSES while its src/ defined it.
+#
+# The tag is the moment to catch it. Once a v* tag reaches the remote it is
+# consumable by every repo, so a check that runs later has already lost.
+#
+# ⚑ A GATE, NOT A GUARANTEE. --no-verify bypasses it, a clone whose
+# core.hooksPath was never wired has no hook, and a tag created through the
+# GitHub UI or API never touches a local hook at all. It closes the ordinary
+# path. Do not describe it as closing the others.
+#
+# ONE IMPLEMENTATION: the logic lives in @rello-platform/scripts
+# (`tag-dist-gate` → `check-dist-fresh`). This file is a shim on purpose — nine
+# copies of the real logic is the drift class the package exists to close.
+#
+# EXIT DISCIPLINE: requires exit 0. STALE blocks. UNVERIFIED blocks too — "could
+# not tell" is not "fine". No `|| true` anywhere in this file. A package that
+# legitimately has no build step or no committed dist/ declares itself, with a
+# written reason, in .dist-fresh-exempt (and that exemption can never cover a
+# stale or unreproducible build).
+
+set -e
+
+# Read git's ref list ONCE, immediately. Anything else in a pre-push hook that
+# reads stdin would otherwise drain it before the gate sees it.
+_refs=$(cat)
+# ── tag gate (shim, copied from @rello-platform/permissions@80d01e6) ─────────
+# Only tag pushes delegate; a branch push skips straight to the build checks.
+if printf '%s\n' "$_refs" | grep -q 'refs/tags/'; then
+  printf '%s\n' "$_refs" | npx --yes "github:rello-platform/scripts#v0.20.0" tag-dist-gate
+fi
+
+# ── lockfile git+ssh gate (every push) ───────────────────────────────────────
+# Railway build containers have no ssh key; a git+ssh resolved entry fails
+# `npm ci` on any cache miss. Exit 1 (offenders) and exit 2 (unparseable) both
+# block. No `|| true`.
+npx --yes "github:rello-platform/scripts#v0.20.0" check-lockfile-ssh
+
+# ── build checks (every push) ────────────────────────────────────────────────
+# Typecheck src AND tests (the satisfies locks and the ≤3-points tuple are
+# compile-time checks), rebuild dist/ and refuse a push whose committed dist/
+# differs from what src/ compiles to, then the unit tests and lint.
+npm run typecheck
+npm run compile
+if [ -n "$(git status --porcelain -- dist)" ]; then
+  echo "pre-push: committed dist/ is stale — run 'npm run compile' and commit dist/." >&2
+  git status --porcelain -- dist >&2
+  exit 1
+fi
+npm test
+# Consumer test (GD-46): pack this tree, install the tarball into a fresh project,
+# import it from plain Node by name and type-check a TS consumer under NodeNext
+# and Bundler. Source-level greens above cannot see a broken shipped module graph.
+npm run test:consumer
+npm run lint

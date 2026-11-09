@@ -1,0 +1,44 @@
+{
+  "name": "@rello-platform/upgrade-content",
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Shared upgrade and public-site content for the Rello ecosystem: the product map, app public hosts and sourced app copy, read by the in-app /upgrade pages, the public Rello site and Rello Growth. Never prices.",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "src",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "compile": "tsc",
+    "typecheck": "tsc -p tsconfig.test.json",
+    "lint": "eslint .",
+    "prepublishOnly": "npm run compile",
+    "hooks": "git config core.hooksPath .husky || true",
+    "test": "tsx --test src/*.test.ts",
+    "test:consumer": "node scripts/consumer-test.mjs"
+  },
+  "dependencies": {
+    "@rello-platform/slugs": "github:rello-platform/slugs#v0.8.0"
+  },
+  "devDependencies": {
+    "@rello-platform/eslint-config": "github:rello-platform/eslint-config#v0.4.0",
+    "@types/node": "^22.20.5",
+    "eslint": "^9",
+    "tsx": "^4.19.2",
+    "typescript": "^5.4.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rello-platform/upgrade-content.git"
+  },
+  "license": "UNLICENSED"
+}
