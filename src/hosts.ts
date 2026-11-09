@@ -1,4 +1,4 @@
-import { GROWTH_PRODUCTS, type GrowthProductSlug } from "./products";
+import { GROWTH_PRODUCTS, type GrowthProductSlug } from "./products.js";
 
 /** The eight apps sold on their own (`kind: "standalone"` in the product map). */
 export type StandaloneProductSlug = {

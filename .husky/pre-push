@@ -59,4 +59,8 @@ if [ -n "$(git status --porcelain -- dist)" ]; then
   exit 1
 fi
 npm test
+# Consumer test (GD-46): pack this tree, install the tarball into a fresh project,
+# import it from plain Node by name and type-check a TS consumer under NodeNext
+# and Bundler. Source-level greens above cannot see a broken shipped module graph.
+npm run test:consumer
 npm run lint

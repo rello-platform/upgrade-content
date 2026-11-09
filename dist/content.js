@@ -37,7 +37,10 @@ export const UPGRADE_CONTENT = {
         explainer: {
             title: null,
             points: [
-                { text: "Every lead gets a 0-100 score based on credit, savings, and engagement. Know exactly who's ready.", source: "HomeReady src/app/page.tsx:459 @ 08bf4051" },
+                // null (PLATFORM AUDIT 78 GD-47): HomeReady src/app/page.tsx:459 @ 08bf4051 is a
+                // JS string containing `who&apos;s`, rendered as {feature.desc} at :501, so the
+                // page shows the entity literally. Not quotable as it renders; not fixed here.
+                null,
                 { text: "Get notified the moment a lead hits a milestone or becomes mortgage-ready.", source: "HomeReady src/app/page.tsx:465 @ 08bf4051" },
                 { text: "Email and SMS sequences that educate and engage leads without manual work.", source: "HomeReady src/app/page.tsx:471 @ 08bf4051" },
             ],

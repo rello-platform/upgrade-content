@@ -1,22 +1,29 @@
-import type { StandaloneProductSlug } from "./hosts";
+import type { StandaloneProductSlug } from "./hosts.js";
 /**
  * One piece of shipped copy and where it already ships.
  *
  * ⛔ No new copy lives in this package. Every `text` is a string that already exists
- * in shipped product code, quoted as it renders (HTML entities such as `&apos;`
- * decoded, JS escapes such as `\'` unescaped). `source` names it:
- * `<Repo> <path>:<line> @ <short sha>`.
+ * in shipped product code, byte for byte as it RENDERS to the reader:
+ * - JSX text and JSX attribute strings: HTML entities decode (`&apos;` shows `'`);
+ * - a JS string (an object field, metadata, a constant rendered as `{expr}`): it
+ *   renders as written, so an entity inside it shows literally and cannot be
+ *   quoted here as decoded. Such a line is left null, never "fixed" here.
+ * `source` names it: `<Repo> <path>:<line> @ <short sha>`.
  */
 export interface SourcedText {
     readonly text: string;
     readonly source: string;
 }
-/** At most three short points. A fourth is a compile error. */
-export type ExplainerPoints = readonly [] | readonly [SourcedText] | readonly [SourcedText, SourcedText] | readonly [SourcedText, SourcedText, SourcedText];
+/**
+ * At most three short points. A fourth is a compile error. A `null` point is a
+ * shipped line that cannot be quoted as it renders (see SourcedText): the consumer
+ * omits it, like any other null.
+ */
+export type ExplainerPoints = readonly [] | readonly [SourcedText | null] | readonly [SourcedText | null, SourcedText | null] | readonly [SourcedText | null, SourcedText | null, SourcedText | null];
 /**
  * Upgrade and public-site content for one product.
  *
- * NULL MEANS OMIT. A `null` field (or an empty `points`) means no shipped copy
+ * NULL MEANS OMIT. A `null` field (or a `null` point, or an empty `points`) means no shipped copy
  * exists for it yet. A consumer renders nothing in its place: never a placeholder,
  * never a default sentence, never a typed stand-in.
  *
@@ -99,10 +106,7 @@ export declare const UPGRADE_CONTENT: {
         };
         readonly explainer: {
             readonly title: null;
-            readonly points: readonly [{
-                readonly text: "Every lead gets a 0-100 score based on credit, savings, and engagement. Know exactly who's ready.";
-                readonly source: "HomeReady src/app/page.tsx:459 @ 08bf4051";
-            }, {
+            readonly points: readonly [null, {
                 readonly text: "Get notified the moment a lead hits a milestone or becomes mortgage-ready.";
                 readonly source: "HomeReady src/app/page.tsx:465 @ 08bf4051";
             }, {

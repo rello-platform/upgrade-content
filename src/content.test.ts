@@ -14,7 +14,7 @@ import {
   type SourcedText,
   type StandaloneProductSlug,
   type UpgradeContentEntry,
-} from "./index";
+} from "./index.js";
 
 const STANDALONE = (Object.keys(GROWTH_PRODUCTS) as Array<keyof typeof GROWTH_PRODUCTS>).filter(
   (slug) => GROWTH_PRODUCTS[slug].kind === "standalone",
@@ -27,7 +27,9 @@ function sourcedTexts(): Array<{ where: string; value: SourcedText }> {
     if (entry.displayName) out.push({ where: `${slug}.displayName`, value: entry.displayName });
     if (entry.tagline) out.push({ where: `${slug}.tagline`, value: entry.tagline });
     if (entry.explainer.title) out.push({ where: `${slug}.explainer.title`, value: entry.explainer.title });
-    entry.explainer.points.forEach((p, i) => out.push({ where: `${slug}.explainer.points[${i}]`, value: p }));
+    entry.explainer.points.forEach((p, i) => {
+      if (p) out.push({ where: `${slug}.explainer.points[${i}]`, value: p });
+    });
   }
   return out;
 }
@@ -77,6 +79,13 @@ test("every string carries a source of the form '<Repo> <path>:<line> @ <sha>'",
     assert.ok(value.text.trim().length > 0, `${where}: empty text (use null instead)`);
     assert.match(value.source, /^[A-Za-z][\w.-]* \S+:\d+(-\d+)? @ [0-9a-f]{7,40}$/, `${where}: bad source "${value.source}"`);
   }
+});
+
+test("no quoted text holds an HTML entity (text is what renders, not source markup; GD-47)", () => {
+  const withEntity = sourcedTexts()
+    .filter(({ value }) => /&(?:[a-z][a-z0-9]*|#\d+|#x[0-9a-f]+);/i.test(value.text))
+    .map(({ where }) => where);
+  assert.deepEqual(withEntity, []);
 });
 
 test("copy rules: no string in the package breaks one (no price, no AI, no NMLS/ClearPath, no rate claim)", () => {

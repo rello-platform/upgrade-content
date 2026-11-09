@@ -8,6 +8,8 @@ Install from a git tag (no npm registry):
 "@rello-platform/upgrade-content": "github:rello-platform/upgrade-content#v0.1.0"
 ```
 
+ES module only: `"type": "module"`, with `"exports"` → `./dist/index.js` (types `./dist/index.d.ts`). Import it with `import { … } from "@rello-platform/upgrade-content"`. Plain Node, bundlers and TypeScript (`NodeNext` or `Bundler` resolution) all load it; the consumer test proves each on every push.
+
 ## Exports
 
 | Export | What it is | Who reads it |
@@ -22,8 +24,8 @@ Install from a git tag (no npm registry):
 
 ## Rules
 
-1. **No new copy.** Every non-null string already ships in product code. Each carries a `source`, `<Repo> <path>:<line> @ <sha>`, and is quoted as it renders (HTML entities decoded, JS escapes unescaped). A change of copy happens in the product first, then is copied here with its new source.
-2. **Null means omit.** A `null` field, or an empty `points`, means no shipped copy exists. The consumer renders nothing in its place: never a placeholder, a default sentence or a stand-in.
+1. **No new copy.** Every non-null string already ships in product code. Each carries a `source`, `<Repo> <path>:<line> @ <sha>`, and is quoted byte for byte as it renders. JSX text and JSX attribute strings decode HTML entities. A JS string rendered as `{expression}` shows exactly as written, so an entity inside it renders literally and cannot be quoted decoded: that line stays `null`. A change of copy happens in the product first, then is copied here with its new source.
+2. **Null means omit.** A `null` field, a `null` point, or an empty `points` means no shipped copy exists. The consumer renders nothing in its place: never a placeholder, a default sentence or a stand-in.
 3. **No prices, ever.** There is no money field. Prices come only from Rello `Plan` through `GET /api/public/pricing?app=<slug>`.
 4. **Copy rules** (`src/copy-rules.ts`, enforced by `src/content.test.ts` over every string). The package refuses:
    - a currency figure;
@@ -40,6 +42,7 @@ Install from a git tag (no npm registry):
 ## Known nulls and choices at v0.1.0
 
 - `pathfinder-pro.tagline` is `null`. The shipped tagline (Rello `spoke-branding.ts:87`) says "AI".
+- `home-ready.explainer.points[0]` is `null`. HomeReady `src/app/page.tsx:459` is a JS string holding `who&apos;s`, which the page shows literally (PLATFORM AUDIT 78 GD-47).
 - `the-drumbeat.tagline` is the app's own description (The-Drumbeat `src/app/layout.tsx:49`). Rello's `spoke-branding.ts:63` tagline for The Drumbeat describes Market Intel.
 - `open-house-hub`, `the-drumbeat`, `the-oven` and `home-scout` have no explainer points, because no short shipped copy was found.
 - `arive` and `prequal-pro` (`unlisted`) have no copy.
@@ -53,6 +56,6 @@ npm test
 npm run compile           # dist/ is committed; the pre-push hook refuses a stale one
 ```
 
-The pre-push hook runs, in order: the `tag-dist-gate` (tag pushes only), the lockfile git+ssh check, typecheck, compile and a dist/ freshness check, tests, and lint. Never push with `--no-verify`.
+The pre-push hook runs, in order: the `tag-dist-gate` (tag pushes only), the lockfile git+ssh check, typecheck, compile and a dist/ freshness check, tests, the consumer test (`npm run test:consumer`: `npm pack`, install the tarball into a fresh project, import it by name from plain Node, then `tsc --noEmit` a TypeScript consumer under NodeNext and Bundler), and lint. Never push with `--no-verify`.
 
 Releases are git tags (`v0.1.0`, …) pushed by the Platform KA after an audit CLEAR.
