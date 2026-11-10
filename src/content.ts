@@ -89,7 +89,8 @@ export const UPGRADE_CONTENT = {
         { text: "Lead intelligence platform — discover, score, and enrich real estate leads", source: "Harvest-Home src/app/layout.tsx:50 @ a198a63" },
       ],
     },
-    upgradePath: null,
+    // Harvest Home's in-app /upgrade page (RELLO UPSELL Phase 4, src/app/(app)/upgrade/page.tsx).
+    upgradePath: "/upgrade",
   },
   "home-ready": {
     displayName: { text: "Home Ready", source: `${BRAND}:34 ${R}` },

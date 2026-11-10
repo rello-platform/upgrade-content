@@ -1,6 +1,6 @@
 {
   "name": "@rello-platform/upgrade-content",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "type": "module",
   "description": "Shared upgrade and public-site content for the Rello ecosystem: the product map, app public hosts and sourced app copy, read by the in-app /upgrade pages, the public Rello site and Rello Growth. Never prices.",
   "main": "dist/index.js",
