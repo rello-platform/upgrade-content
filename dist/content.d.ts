@@ -223,9 +223,15 @@ export declare const UPGRADE_CONTENT: {
         };
         readonly explainer: {
             readonly title: null;
-            readonly points: readonly [];
+            readonly points: readonly [{
+                readonly text: "Record and publish video content for social media.";
+                readonly source: "The-Drumbeat src/app/(dashboard)/content/video/page.tsx:55 @ 3f89afc";
+            }, {
+                readonly text: "Plan and schedule content across all channels.";
+                readonly source: "The-Drumbeat src/app/(dashboard)/content/calendar/page.tsx:199 @ 3f89afc";
+            }];
         };
-        readonly upgradePath: null;
+        readonly upgradePath: "/upgrade";
     };
     readonly "the-oven": {
         readonly displayName: {
