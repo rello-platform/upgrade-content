@@ -93,7 +93,7 @@ export declare const UPGRADE_CONTENT: {
                 readonly source: "Harvest-Home src/app/layout.tsx:50 @ a198a63";
             }];
         };
-        readonly upgradePath: null;
+        readonly upgradePath: "/upgrade";
     };
     readonly "home-ready": {
         readonly displayName: {

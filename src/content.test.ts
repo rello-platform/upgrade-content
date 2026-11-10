@@ -124,9 +124,9 @@ test("rello-feature and unlisted products never carry an upgrade path", () => {
   }
 });
 
-test("upgrade paths shipped: 1 of 8 at v0.2.0, The Drumbeat (each spoke's Phase-4 PR moves this count)", () => {
+test("upgrade paths shipped: 2 of 8 at v0.3.0, Harvest Home and The Drumbeat (each spoke's Phase-4 PR moves this count)", () => {
   assert.equal(STANDALONE.length, 8);
-  assert.deepEqual(shippedUpgradePaths(STANDALONE), ["the-drumbeat"]);
+  assert.deepEqual([...shippedUpgradePaths(STANDALONE)].sort(), ["harvest-home", "the-drumbeat"]);
 });
 
 test("every upgradePath that is set is a root-relative path with no host, query or trailing slash", () => {
@@ -168,9 +168,25 @@ test("the-drumbeat: displayName and tagline are unchanged from v0.1.0", () => {
   });
 });
 
-test("package version is 0.2.0", () => {
+// ── Harvest Home (RELLO UPSELL Phase 4, Platform KA 871) ─────────────────────
+
+test("harvest-home: upgradePath is /upgrade, the page Harvest Home's Phase-4 chrome PR ships at src/app/(app)/upgrade/page.tsx", () => {
+  assert.equal(UPGRADE_CONTENT["harvest-home"].upgradePath, "/upgrade");
+});
+
+test("harvest-home: displayName, tagline and explainer are unchanged from v0.2.0 (no new points)", () => {
+  const entry = UPGRADE_CONTENT["harvest-home"] as UpgradeContentEntry;
+  assert.deepEqual(entry.displayName, { text: "Harvest Home", source: "Rello src/lib/spoke-branding.ts:74 @ 8114c16d7" });
+  assert.deepEqual(entry.tagline, { text: "Turn signals into qualified leads", source: "Rello src/lib/spoke-branding.ts:79 @ 8114c16d7" });
+  assert.equal(entry.explainer.title, null);
+  assert.deepEqual(entry.explainer.points, [
+    { text: "Lead intelligence platform — discover, score, and enrich real estate leads", source: "Harvest-Home src/app/layout.tsx:50 @ a198a63" },
+  ]);
+});
+
+test("package version is 0.3.0", () => {
   const pkg = JSON.parse(readFileSync(new URL("../package.json", import.meta.url), "utf8")) as { version: string };
-  assert.equal(pkg.version, "0.2.0");
+  assert.equal(pkg.version, "0.3.0");
 });
 
 // ── Stories ──────────────────────────────────────────────────────────────────
