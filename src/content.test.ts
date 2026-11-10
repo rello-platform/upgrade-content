@@ -145,14 +145,19 @@ test("the-drumbeat: upgradePath is /upgrade, the page Drumbeat's slice-1 PR ship
   assert.equal(UPGRADE_CONTENT["the-drumbeat"].upgradePath, "/upgrade");
 });
 
-test("the-drumbeat: explainer is three shipped page subtitles, each sourced to The-Drumbeat @ 3f89afc", () => {
+test("the-drumbeat: explainer is exactly two shipped page subtitles (video, calendar), each sourced to The-Drumbeat @ 3f89afc", () => {
   const explainer = UPGRADE_CONTENT["the-drumbeat"].explainer as UpgradeContentEntry["explainer"];
   assert.equal(explainer.title, null);
   assert.deepEqual(explainer.points, [
     { text: "Record and publish video content for social media.", source: "The-Drumbeat src/app/(dashboard)/content/video/page.tsx:55 @ 3f89afc" },
     { text: "Plan and schedule content across all channels.", source: "The-Drumbeat src/app/(dashboard)/content/calendar/page.tsx:199 @ 3f89afc" },
-    { text: "Create and manage direct mail campaigns powered by Lob.", source: "The-Drumbeat src/app/(dashboard)/outreach/direct-mail/page.tsx:55 @ 3f89afc" },
   ]);
+});
+
+test("the-drumbeat: no explainer point promises direct mail until Drumbeat ships a job flow (PLATFORM AUDIT 82 GD-331)", () => {
+  const points = (UPGRADE_CONTENT["the-drumbeat"].explainer as UpgradeContentEntry["explainer"]).points;
+  assert.equal(points.length, 2);
+  for (const p of points) assert.doesNotMatch(p?.text ?? "", /direct mail|\bLob\b/i);
 });
 
 test("the-drumbeat: displayName and tagline are unchanged from v0.1.0", () => {

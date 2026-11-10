@@ -113,15 +113,19 @@ export const UPGRADE_CONTENT = {
         tagline: { text: "Marketing automation platform for mortgage and real estate professionals", source: "The-Drumbeat src/app/layout.tsx:49 @ 0221ccb" },
         explainer: {
             title: null,
-            // Three page subtitles, each JSX text under the page's <h1>, so each renders
-            // exactly as quoted. The Video Messages subtitle ("Send personalized video
-            // messages to your leads") is left out: its send route answers 503 until the
-            // Newsletter Studio rewire ships, so the line would describe a feature that
-            // does not work today.
+            // Two page subtitles, each JSX text under the page's <h1>, so each renders
+            // exactly as quoted. Left out because the product cannot do them from its UI
+            // today, so the line would promise a workflow Drumbeat does not have:
+            // - Video Messages ("Send personalized video messages to your leads"): its
+            //   send route answers 503 until the Newsletter Studio rewire ships.
+            // - Direct Mail ("Create and manage direct mail campaigns powered by Lob.",
+            //   outreach/direct-mail/page.tsx:55): "New Job" opens the template form and
+            //   no page calls /api/direct-mail/jobs (PLATFORM AUDIT 82 GD-331;
+            //   DISCOVERED-DRUMBEAT-DIRECT-MAIL-NEW-JOB-OPENS-TEMPLATE-FORM-261110).
+            //   Back in once Drumbeat ships a job flow.
             points: [
                 { text: "Record and publish video content for social media.", source: `${DRUM}/content/video/page.tsx:55 ${D}` },
                 { text: "Plan and schedule content across all channels.", source: `${DRUM}/content/calendar/page.tsx:199 ${D}` },
-                { text: "Create and manage direct mail campaigns powered by Lob.", source: `${DRUM}/outreach/direct-mail/page.tsx:55 ${D}` },
             ],
         },
         // The Drumbeat's in-app /upgrade page (RELLO UPSELL Drumbeat slice 1).

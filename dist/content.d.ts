@@ -229,9 +229,6 @@ export declare const UPGRADE_CONTENT: {
             }, {
                 readonly text: "Plan and schedule content across all channels.";
                 readonly source: "The-Drumbeat src/app/(dashboard)/content/calendar/page.tsx:199 @ 3f89afc";
-            }, {
-                readonly text: "Create and manage direct mail campaigns powered by Lob.";
-                readonly source: "The-Drumbeat src/app/(dashboard)/outreach/direct-mail/page.tsx:55 @ 3f89afc";
             }];
         };
         readonly upgradePath: "/upgrade";

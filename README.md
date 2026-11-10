@@ -44,7 +44,9 @@ ES module only: `"type": "module"`, with `"exports"` → `./dist/index.js` (type
 - `pathfinder-pro.tagline` is `null`. The shipped tagline (Rello `spoke-branding.ts:87`) says "AI".
 - `home-ready.explainer.points[0]` is `null`. HomeReady `src/app/page.tsx:459` is a JS string holding `who&apos;s`, which the page shows literally (PLATFORM AUDIT 78 GD-47).
 - `the-drumbeat.tagline` is the app's own description (The-Drumbeat `src/app/layout.tsx:49`). Rello's `spoke-branding.ts:63` tagline for The Drumbeat describes Market Intel.
-- `the-drumbeat.explainer.points` (v0.2.0) are three page subtitles, each JSX text under the page's `<h1>` in The-Drumbeat at `3f89afc`: Video, Content Calendar and Direct Mail. The Video Messages subtitle is left out because its send route answers 503 today. `the-drumbeat.upgradePath` is `"/upgrade"`.
+- `the-drumbeat.explainer.points` (v0.2.0) are two page subtitles, each JSX text under the page's `<h1>` in The-Drumbeat at `3f89afc`: Video and Content Calendar. `the-drumbeat.upgradePath` is `"/upgrade"`. Left out because Drumbeat cannot do them from its UI today:
+  - Video Messages: its send route answers 503.
+  - Direct Mail ("Create and manage direct mail campaigns powered by Lob."): "New Job" opens the template form and no page calls `/api/direct-mail/jobs` (PLATFORM AUDIT 82 GD-331; `APP REBUILDS/DRUMBEAT/DISCOVERED/DISCOVERED-DRUMBEAT-DIRECT-MAIL-NEW-JOB-OPENS-TEMPLATE-FORM-261110.md`). It comes back once Drumbeat ships a job flow.
 - `open-house-hub`, `the-oven` and `home-scout` have no explainer points, because no short shipped copy was found.
 - `arive` and `prequal-pro` (`unlisted`) have no copy.
 
