@@ -57,6 +57,8 @@ export interface UpgradeContentEntry {
 const RELLO = "Rello src/app/page.tsx";
 const BRAND = "Rello src/lib/spoke-branding.ts";
 const R = "@ 8114c16d7";
+const DRUM = "The-Drumbeat src/app/(dashboard)";
+const D = "@ 3f89afc";
 
 const none = { title: null, points: [] } as const;
 
@@ -167,8 +169,21 @@ export const UPGRADE_CONTENT = {
     // (:63, "Daily market intelligence for real estate pros") describes Market Intel,
     // not The Drumbeat; it is filed as DISCOVERED and not used here.
     tagline: { text: "Marketing automation platform for mortgage and real estate professionals", source: "The-Drumbeat src/app/layout.tsx:49 @ 0221ccb" },
-    explainer: none,
-    upgradePath: null,
+    explainer: {
+      title: null,
+      // Three page subtitles, each JSX text under the page's <h1>, so each renders
+      // exactly as quoted. The Video Messages subtitle ("Send personalized video
+      // messages to your leads") is left out: its send route answers 503 until the
+      // Newsletter Studio rewire ships, so the line would describe a feature that
+      // does not work today.
+      points: [
+        { text: "Record and publish video content for social media.", source: `${DRUM}/content/video/page.tsx:55 ${D}` },
+        { text: "Plan and schedule content across all channels.", source: `${DRUM}/content/calendar/page.tsx:199 ${D}` },
+        { text: "Create and manage direct mail campaigns powered by Lob.", source: `${DRUM}/outreach/direct-mail/page.tsx:55 ${D}` },
+      ],
+    },
+    // The Drumbeat's in-app /upgrade page (RELLO UPSELL Drumbeat slice 1).
+    upgradePath: "/upgrade",
   },
   // Never sold on their own (product map kind "rello-feature"): shown only as part of
   // Rello, with no buy or trial button. upgradePath stays null by design.

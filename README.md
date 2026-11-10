@@ -5,7 +5,7 @@ The one source of product facts and shipped copy for Rello's upgrade and public 
 Install from a git tag (no npm registry):
 
 ```json
-"@rello-platform/upgrade-content": "github:rello-platform/upgrade-content#v0.1.0"
+"@rello-platform/upgrade-content": "github:rello-platform/upgrade-content#v0.2.0"
 ```
 
 ES module only: `"type": "module"`, with `"exports"` → `./dist/index.js` (types `./dist/index.d.ts`). Import it with `import { … } from "@rello-platform/upgrade-content"`. Plain Node, bundlers and TypeScript (`NodeNext` or `Bundler` resolution) all load it; the consumer test proves each on every push.
@@ -18,7 +18,7 @@ ES module only: `"type": "module"`, with `"exports"` → `./dist/index.js` (type
 | `APP_PUBLIC_HOSTS`, `StandaloneProductSlug`, `BundleProductSlug`, `HostedProductSlug` | The host each app really serves: the `host` field of Rello's `SPOKE_BRANDING` (`src/lib/spoke-branding.ts @ 8114c16d7`) for the eight standalone apps, plus `rello: "hellorello.app"`. Bare hostnames; consumers build URLs. | RELLO FRONT DOOR "See plans" links (`https://<host>/pricing`); Rello (in place of `SPOKE_BRANDING.host`, in a later Rello PR). |
 | `RELLO_SITE_HOST` | The public Rello site's host. `null` until Kelly answers RELLO FRONT DOOR ANSWERS Q1. A consumer renders no link while it is null and never guesses a domain. | RELLO FRONT DOOR; the spokes' `/upgrade` pages ("Learn about Rello"). |
 | `UPGRADE_CONTENT`, `UpgradeContentEntry`, `SourcedText`, `ExplainerPoints` | One entry per product-map key: `displayName`, `tagline`, `explainer` (`title` + at most three `points`), `upgradePath`. | Each spoke's in-app `/upgrade` page (RELLO UPSELL Q-CS-10); RELLO FRONT DOOR product cards. |
-| `shippedUpgradePaths(standalone)` | The standalone apps whose `upgradePath` is set. 0 of 8 at v0.1.0. | Tests; RELLO FRONT DOOR (shows "Start a Rello trial" only for these). |
+| `shippedUpgradePaths(standalone)` | The standalone apps whose `upgradePath` is set. 0 of 8 at v0.1.0; 1 of 8 at v0.2.0 (`the-drumbeat`). | Tests; RELLO FRONT DOOR (shows "Start a Rello trial" only for these). |
 | `PEER_STORIES`, `PeerStory`, `assertPeerStory` | Customer stories. Empty at v0.1.0. Each story's type requires `consentRecordedAt` and `customerTenantId`. | RELLO FRONT DOOR and the `/upgrade` pages, once a real, authorized story exists (RELLO UPSELL Q-CS-9). |
 | `COPY_RULES`, `refusedCopy(text)` | The copy rules below, as code. | This package's tests; any consumer that wants to check its own strings. |
 
@@ -39,12 +39,13 @@ ES module only: `"type": "module"`, with `"exports"` → `./dist/index.js` (type
 5. **Stories need consent.** `PEER_STORIES` holds only real, authorized outcomes. A story with no `consentRecordedAt` is a compile error and a test failure. Placeholder people are never published.
 6. **upgradePath is set by each app's own PR.** It stays `null` until that app's `/upgrade` page ships (RELLO UPSELL Phase 4). The Oven and The Home Scout (`rello-feature`) and the `unlisted` slugs never get one.
 
-## Known nulls and choices at v0.1.0
+## Known nulls and choices at v0.2.0
 
 - `pathfinder-pro.tagline` is `null`. The shipped tagline (Rello `spoke-branding.ts:87`) says "AI".
 - `home-ready.explainer.points[0]` is `null`. HomeReady `src/app/page.tsx:459` is a JS string holding `who&apos;s`, which the page shows literally (PLATFORM AUDIT 78 GD-47).
 - `the-drumbeat.tagline` is the app's own description (The-Drumbeat `src/app/layout.tsx:49`). Rello's `spoke-branding.ts:63` tagline for The Drumbeat describes Market Intel.
-- `open-house-hub`, `the-drumbeat`, `the-oven` and `home-scout` have no explainer points, because no short shipped copy was found.
+- `the-drumbeat.explainer.points` (v0.2.0) are three page subtitles, each JSX text under the page's `<h1>` in The-Drumbeat at `3f89afc`: Video, Content Calendar and Direct Mail. The Video Messages subtitle is left out because its send route answers 503 today. `the-drumbeat.upgradePath` is `"/upgrade"`.
+- `open-house-hub`, `the-oven` and `home-scout` have no explainer points, because no short shipped copy was found.
 - `arive` and `prequal-pro` (`unlisted`) have no copy.
 
 ## Develop

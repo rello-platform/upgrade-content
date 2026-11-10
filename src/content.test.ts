@@ -1,5 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
 import { APP_SLUGS } from "@rello-platform/slugs";
 import {
   APP_PUBLIC_HOSTS,
@@ -123,9 +124,48 @@ test("rello-feature and unlisted products never carry an upgrade path", () => {
   }
 });
 
-test("upgrade paths shipped: 0 of 8 at v0.1.0 (each spoke's Phase-4 PR moves this count)", () => {
+test("upgrade paths shipped: 1 of 8 at v0.2.0, The Drumbeat (each spoke's Phase-4 PR moves this count)", () => {
   assert.equal(STANDALONE.length, 8);
-  assert.deepEqual(shippedUpgradePaths(STANDALONE), []);
+  assert.deepEqual(shippedUpgradePaths(STANDALONE), ["the-drumbeat"]);
+});
+
+test("every upgradePath that is set is a root-relative path with no host, query or trailing slash", () => {
+  for (const [slug, raw] of Object.entries(UPGRADE_CONTENT)) {
+    const path = (raw as UpgradeContentEntry).upgradePath;
+    if (path === null) continue;
+    assert.match(path, /^\/[a-z0-9-]+(\/[a-z0-9-]+)*$/, `${slug}: "${path}"`);
+  }
+});
+
+// ── The Drumbeat (RELLO UPSELL Drumbeat slice 1, Platform KA 825) ────────────
+// Each point is JSX text in The-Drumbeat at 3f89afc, so it renders exactly as quoted
+// (JSX trims the line breaks and indentation around it; no entity in any of them).
+
+test("the-drumbeat: upgradePath is /upgrade, the page Drumbeat's slice-1 PR ships", () => {
+  assert.equal(UPGRADE_CONTENT["the-drumbeat"].upgradePath, "/upgrade");
+});
+
+test("the-drumbeat: explainer is three shipped page subtitles, each sourced to The-Drumbeat @ 3f89afc", () => {
+  const explainer = UPGRADE_CONTENT["the-drumbeat"].explainer as UpgradeContentEntry["explainer"];
+  assert.equal(explainer.title, null);
+  assert.deepEqual(explainer.points, [
+    { text: "Record and publish video content for social media.", source: "The-Drumbeat src/app/(dashboard)/content/video/page.tsx:55 @ 3f89afc" },
+    { text: "Plan and schedule content across all channels.", source: "The-Drumbeat src/app/(dashboard)/content/calendar/page.tsx:199 @ 3f89afc" },
+    { text: "Create and manage direct mail campaigns powered by Lob.", source: "The-Drumbeat src/app/(dashboard)/outreach/direct-mail/page.tsx:55 @ 3f89afc" },
+  ]);
+});
+
+test("the-drumbeat: displayName and tagline are unchanged from v0.1.0", () => {
+  assert.deepEqual(UPGRADE_CONTENT["the-drumbeat"].displayName, { text: "The Drumbeat", source: "Rello src/lib/spoke-branding.ts:58 @ 8114c16d7" });
+  assert.deepEqual(UPGRADE_CONTENT["the-drumbeat"].tagline, {
+    text: "Marketing automation platform for mortgage and real estate professionals",
+    source: "The-Drumbeat src/app/layout.tsx:49 @ 0221ccb",
+  });
+});
+
+test("package version is 0.2.0", () => {
+  const pkg = JSON.parse(readFileSync(new URL("../package.json", import.meta.url), "utf8")) as { version: string };
+  assert.equal(pkg.version, "0.2.0");
 });
 
 // ── Stories ──────────────────────────────────────────────────────────────────
