@@ -146,17 +146,17 @@ export declare const UPGRADE_CONTENT: {
         readonly explainer: {
             readonly title: null;
             readonly points: readonly [{
-                readonly text: "Organize contacts into flows like New Leads, Active Buyers, Past Clients. Each gets content tailored to their journey.";
-                readonly source: "Newsletter-Studio src/app/page.tsx:229 @ def9ae5";
+                readonly text: "Organize contacts into flows for targeted newsletters.";
+                readonly source: "Newsletter-Studio src/app/dashboard/flows/page.tsx:160 @ 26c5c8ff";
             }, {
-                readonly text: "Milo, your smart assistant, helps personalize content based on lead interests, market conditions, and engagement history.";
-                readonly source: "Newsletter-Studio src/app/page.tsx:235 @ def9ae5";
+                readonly text: "See how your newsletters are performing. The charts show opens, clicks, and bounces over time.";
+                readonly source: "Newsletter-Studio src/app/dashboard/analytics/page.tsx:223 @ 26c5c8ff";
             }, {
-                readonly text: "See who opens, clicks, and engages. Know which leads are hot and ready for a call.";
-                readonly source: "Newsletter-Studio src/app/page.tsx:241 @ def9ae5";
+                readonly text: "Announcements, partner spotlights, and sponsored content that appear in your newsletters.";
+                readonly source: "Newsletter-Studio src/app/dashboard/announcements/page.tsx:262 @ 26c5c8ff";
             }];
         };
-        readonly upgradePath: null;
+        readonly upgradePath: "/dashboard/upgrade";
     };
     readonly "open-house-hub": {
         readonly displayName: {

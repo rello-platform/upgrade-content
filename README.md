@@ -18,7 +18,7 @@ ES module only: `"type": "module"`, with `"exports"` → `./dist/index.js` (type
 | `APP_PUBLIC_HOSTS`, `StandaloneProductSlug`, `BundleProductSlug`, `HostedProductSlug` | The host each app really serves: the `host` field of Rello's `SPOKE_BRANDING` (`src/lib/spoke-branding.ts @ 8114c16d7`) for the eight standalone apps, plus `rello: "hellorello.app"`. Bare hostnames; consumers build URLs. | RELLO FRONT DOOR "See plans" links (`https://<host>/pricing`); Rello (in place of `SPOKE_BRANDING.host`, in a later Rello PR). |
 | `RELLO_SITE_HOST` | The public Rello site's host. `null` until Kelly answers RELLO FRONT DOOR ANSWERS Q1. A consumer renders no link while it is null and never guesses a domain. | RELLO FRONT DOOR; the spokes' `/upgrade` pages ("Learn about Rello"). |
 | `UPGRADE_CONTENT`, `UpgradeContentEntry`, `SourcedText`, `ExplainerPoints` | One entry per product-map key: `displayName`, `tagline`, `explainer` (`title` + at most three `points`), `upgradePath`. | Each spoke's in-app `/upgrade` page (RELLO UPSELL Q-CS-10); RELLO FRONT DOOR product cards. |
-| `shippedUpgradePaths(standalone)` | The standalone apps whose `upgradePath` is set. 0 of 8 at v0.1.0; 1 of 8 at v0.2.0 (`the-drumbeat`); 2 of 8 at v0.3.0 (`harvest-home`, `the-drumbeat`); 3 of 8 at v0.4.0 (adds `pathfinder-pro`). | Tests; RELLO FRONT DOOR (shows "Start a Rello trial" only for these). |
+| `shippedUpgradePaths(standalone)` | The standalone apps whose `upgradePath` is set. 0 of 8 at v0.1.0; 1 of 8 at v0.2.0 (`the-drumbeat`); 2 of 8 at v0.3.0 (`harvest-home`, `the-drumbeat`); 3 of 8 at v0.4.0 (adds `pathfinder-pro`); 4 of 8 at v0.5.0 (adds `newsletter-studio`). | Tests; RELLO FRONT DOOR (shows "Start a Rello trial" only for these). |
 | `PEER_STORIES`, `PeerStory`, `assertPeerStory` | Customer stories. Empty at v0.1.0. Each story's type requires `consentRecordedAt` and `customerTenantId`. | RELLO FRONT DOOR and the `/upgrade` pages, once a real, authorized story exists (RELLO UPSELL Q-CS-9). |
 | `COPY_RULES`, `refusedCopy(text)` | The copy rules below, as code. | This package's tests; any consumer that wants to check its own strings. |
 
@@ -39,7 +39,7 @@ ES module only: `"type": "module"`, with `"exports"` → `./dist/index.js` (type
 5. **Stories need consent.** `PEER_STORIES` holds only real, authorized outcomes. A story with no `consentRecordedAt` is a compile error and a test failure. Placeholder people are never published.
 6. **upgradePath is set by each app's own PR.** It stays `null` until that app's `/upgrade` page ships (RELLO UPSELL Phase 4). The Oven and The Home Scout (`rello-feature`) and the `unlisted` slugs never get one.
 
-## Known nulls and choices at v0.4.0
+## Known nulls and choices at v0.5.0
 
 - `pathfinder-pro.tagline` is `null`. The shipped tagline (Rello `spoke-branding.ts:87`) says "AI".
 - `home-ready.explainer.points[0]` is `null`. HomeReady `src/app/page.tsx:459` is a JS string holding `who&apos;s`, which the page shows literally (PLATFORM AUDIT 78 GD-47).
@@ -49,6 +49,7 @@ ES module only: `"type": "module"`, with `"exports"` → `./dist/index.js` (type
   - Direct Mail ("Create and manage direct mail campaigns powered by Lob."): "New Job" opens the template form and no page calls `/api/direct-mail/jobs` (PLATFORM AUDIT 82 GD-331; `APP REBUILDS/DRUMBEAT/DISCOVERED/DISCOVERED-DRUMBEAT-DIRECT-MAIL-NEW-JOB-OPENS-TEMPLATE-FORM-261110.md`). It comes back once Drumbeat ships a job flow.
 - `harvest-home.upgradePath` is `"/upgrade"` (v0.3.0), the page Harvest Home's RELLO UPSELL Phase-4 PR ships at `src/app/(app)/upgrade/page.tsx`. Its explainer is unchanged: the one shipped point (`src/app/layout.tsx:50`).
 - `pathfinder-pro.upgradePath` is `"/dashboard/upgrade"` (v0.4.0), the page PFP's RELLO UPSELL Phase-4 PR ships at `src/app/(dashboard)/dashboard/upgrade/page.tsx` (PFP's MLO app lives under `/dashboard`). Its one point is now the cockpit page subtitle "MLO Phone Call Workstation" (`scenarios/page.tsx:322`), rendered text; v0.3.0 quoted the HTML metadata description, which no screen shows and which claimed "in under 5 minutes". Check Your Rate's subtitle is left out: no production site exists yet.
+- `newsletter-studio.upgradePath` is `"/dashboard/upgrade"` (v0.5.0), the page Newsletter Studio's RELLO UPSELL Phase-4 PR ships at `src/app/dashboard/upgrade/page.tsx` (NS's authenticated app lives under `/dashboard`). Its three points are now in-app page subtitles at `26c5c8ff` (Flows `flows/page.tsx:160`, Analytics `analytics/page.tsx:223`, Spotlights & Promos `announcements/page.tsx:262`); v0.1.0 quoted the public landing page, whose claims (named default flows, "know which leads are hot") trace to no app screen.
 - `open-house-hub`, `the-oven` and `home-scout` have no explainer points, because no short shipped copy was found.
 - `arive` and `prequal-pro` (`unlisted`) have no copy.
 

@@ -124,9 +124,9 @@ test("rello-feature and unlisted products never carry an upgrade path", () => {
   }
 });
 
-test("upgrade paths shipped: 3 of 8 at v0.4.0, Harvest Home, Pathfinder Pro and The Drumbeat (each spoke's Phase-4 PR moves this count)", () => {
+test("upgrade paths shipped: 4 of 8 at v0.5.0, Harvest Home, Newsletter Studio, Pathfinder Pro and The Drumbeat (each spoke's Phase-4 PR moves this count)", () => {
   assert.equal(STANDALONE.length, 8);
-  assert.deepEqual([...shippedUpgradePaths(STANDALONE)].sort(), ["harvest-home", "pathfinder-pro", "the-drumbeat"]);
+  assert.deepEqual([...shippedUpgradePaths(STANDALONE)].sort(), ["harvest-home", "newsletter-studio", "pathfinder-pro", "the-drumbeat"]);
 });
 
 test("every upgradePath that is set is a root-relative path with no host, query or trailing slash", () => {
@@ -213,9 +213,9 @@ test("pathfinder-pro: displayName and tagline are unchanged from v0.3.0 (tagline
   assert.equal(entry.explainer.title, null);
 });
 
-test("package version is 0.4.0", () => {
+test("package version is 0.5.0", () => {
   const pkg = JSON.parse(readFileSync(new URL("../package.json", import.meta.url), "utf8")) as { version: string };
-  assert.equal(pkg.version, "0.4.0");
+  assert.equal(pkg.version, "0.5.0");
 });
 
 // ── Stories ──────────────────────────────────────────────────────────────────
@@ -237,4 +237,46 @@ test("assertPeerStory refuses a story with no, blank or unparseable consent", ()
   assert.throws(() => assertPeerStory({ ...ok, consentRecordedAt: " " }), /consentRecordedAt is required/);
   assert.throws(() => assertPeerStory({ ...ok, consentRecordedAt: "yesterday" }), /consentRecordedAt is required/);
   assert.throws(() => assertPeerStory({ ...ok, customerTenantId: "" }), /customerTenantId is required/);
+});
+
+// ── Newsletter Studio (RELLO UPSELL Phase 4, Platform KA 922/924) ───────────
+// Each point is JSX text under an in-app <h1> in Newsletter-Studio at 26c5c8ff, quoted
+// verbatim (JSX trims the line breaks and indentation around it; no entity in any of them).
+// v0.1.0 quoted the public landing page (src/app/page.tsx:229/235/241 @ def9ae5), whose
+// claims trace to no app screen: default flows "New Leads, Active Buyers, Past Clients"
+// exist only as an input placeholder, and "know which leads are hot" is Rello's data.
+
+test("newsletter-studio: upgradePath is /dashboard/upgrade, the page NS's Phase-4 chrome PR ships at src/app/dashboard/upgrade/page.tsx", () => {
+  // /dashboard, not /upgrade: NS's authenticated app is src/app/dashboard/** (its middleware sends an
+  // unauthenticated /dashboard to sign-in); every lead-facing page (/unsubscribe, /preferences, /reopt-in) is outside it.
+  assert.equal(UPGRADE_CONTENT["newsletter-studio"].upgradePath, "/dashboard/upgrade");
+});
+
+test("newsletter-studio: the explainer is exactly three in-app page subtitles (flows, analytics, spotlights), each sourced to Newsletter-Studio @ 26c5c8ff", () => {
+  const explainer = UPGRADE_CONTENT["newsletter-studio"].explainer as UpgradeContentEntry["explainer"];
+  assert.equal(explainer.title, null);
+  assert.deepEqual(explainer.points, [
+    { text: "Organize contacts into flows for targeted newsletters.", source: "Newsletter-Studio src/app/dashboard/flows/page.tsx:160 @ 26c5c8ff" },
+    {
+      text: "See how your newsletters are performing. The charts show opens, clicks, and bounces over time.",
+      source: "Newsletter-Studio src/app/dashboard/analytics/page.tsx:223 @ 26c5c8ff",
+    },
+    {
+      text: "Announcements, partner spotlights, and sponsored content that appear in your newsletters.",
+      source: "Newsletter-Studio src/app/dashboard/announcements/page.tsx:262 @ 26c5c8ff",
+    },
+  ]);
+});
+
+test("newsletter-studio: no point quotes the public landing page or promises what no NS screen does (GD-331 class)", () => {
+  const points = (UPGRADE_CONTENT["newsletter-studio"].explainer as UpgradeContentEntry["explainer"]).points;
+  for (const p of points) {
+    assert.doesNotMatch(p?.source ?? "", /src\/app\/page\.tsx/);
+    assert.doesNotMatch(p?.text ?? "", /Active Buyers|Past Clients|hot and ready|market conditions|SMS|text message|postcard|direct mail/i);
+  }
+});
+
+test("newsletter-studio: displayName and tagline are unchanged from v0.1.0", () => {
+  assert.deepEqual(UPGRADE_CONTENT["newsletter-studio"].displayName, { text: "Newsletter Studio", source: "Rello src/lib/spoke-branding.ts:90 @ 8114c16d7" });
+  assert.deepEqual(UPGRADE_CONTENT["newsletter-studio"].tagline, { text: "Nurture your sphere on autopilot", source: "Rello src/lib/spoke-branding.ts:95 @ 8114c16d7" });
 });

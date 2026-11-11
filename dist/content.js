@@ -66,13 +66,26 @@ export const UPGRADE_CONTENT = {
         tagline: { text: "Nurture your sphere on autopilot", source: `${BRAND}:95 ${R}` },
         explainer: {
             title: null,
+            // Three in-app page subtitles, each JSX text under the page's <h1> in Newsletter-Studio at
+            // 26c5c8ff, so each renders exactly as quoted (the first two are the opening sentences of
+            // their subtitle). v0.1.0 quoted the public landing page (src/app/page.tsx:229/235/241 @
+            // def9ae5), whose claims trace to no app screen: the named default flows exist only as an
+            // input placeholder, and "know which leads are hot" is Rello's data (PLATFORM KA 922 A2).
             points: [
-                { text: "Organize contacts into flows like New Leads, Active Buyers, Past Clients. Each gets content tailored to their journey.", source: "Newsletter-Studio src/app/page.tsx:229 @ def9ae5" },
-                { text: "Milo, your smart assistant, helps personalize content based on lead interests, market conditions, and engagement history.", source: "Newsletter-Studio src/app/page.tsx:235 @ def9ae5" },
-                { text: "See who opens, clicks, and engages. Know which leads are hot and ready for a call.", source: "Newsletter-Studio src/app/page.tsx:241 @ def9ae5" },
+                { text: "Organize contacts into flows for targeted newsletters.", source: "Newsletter-Studio src/app/dashboard/flows/page.tsx:160 @ 26c5c8ff" },
+                {
+                    text: "See how your newsletters are performing. The charts show opens, clicks, and bounces over time.",
+                    source: "Newsletter-Studio src/app/dashboard/analytics/page.tsx:223 @ 26c5c8ff",
+                },
+                {
+                    text: "Announcements, partner spotlights, and sponsored content that appear in your newsletters.",
+                    source: "Newsletter-Studio src/app/dashboard/announcements/page.tsx:262 @ 26c5c8ff",
+                },
             ],
         },
-        upgradePath: null,
+        // Newsletter Studio's in-app /upgrade page (RELLO UPSELL Phase 4, src/app/dashboard/upgrade/page.tsx).
+        // Under /dashboard, NS's authenticated app; every lead-facing page is outside it.
+        upgradePath: "/dashboard/upgrade",
     },
     "open-house-hub": {
         displayName: { text: "Open House Hub", source: `${BRAND}:50 ${R}` },
