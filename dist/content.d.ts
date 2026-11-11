@@ -206,11 +206,11 @@ export declare const UPGRADE_CONTENT: {
         readonly explainer: {
             readonly title: null;
             readonly points: readonly [{
-                readonly text: "MLO phone call workstation — pre-qualify borrowers, build rate scenarios, and deliver branded comparisons in under 5 minutes.";
-                readonly source: "PathfinderPro src/app/layout.tsx:8 @ cc842d42";
+                readonly text: "MLO Phone Call Workstation";
+                readonly source: "PathfinderPro src/app/(dashboard)/dashboard/scenarios/page.tsx:322 @ 23b902a6";
             }];
         };
-        readonly upgradePath: null;
+        readonly upgradePath: "/dashboard/upgrade";
     };
     readonly "the-drumbeat": {
         readonly displayName: {
