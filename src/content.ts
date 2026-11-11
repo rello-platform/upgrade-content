@@ -132,7 +132,7 @@ export const UPGRADE_CONTENT = {
       points: [
         { text: "Organize contacts into flows for targeted newsletters.", source: "Newsletter-Studio src/app/dashboard/flows/page.tsx:160 @ 26c5c8ff" },
         {
-          text: "See how your newsletters are performing. The charts show opens, clicks, and bounces over time.",
+          text: "See how your newsletters are performing.",
           source: "Newsletter-Studio src/app/dashboard/analytics/page.tsx:223 @ 26c5c8ff",
         },
         {

@@ -149,7 +149,7 @@ export declare const UPGRADE_CONTENT: {
                 readonly text: "Organize contacts into flows for targeted newsletters.";
                 readonly source: "Newsletter-Studio src/app/dashboard/flows/page.tsx:160 @ 26c5c8ff";
             }, {
-                readonly text: "See how your newsletters are performing. The charts show opens, clicks, and bounces over time.";
+                readonly text: "See how your newsletters are performing.";
                 readonly source: "Newsletter-Studio src/app/dashboard/analytics/page.tsx:223 @ 26c5c8ff";
             }, {
                 readonly text: "Announcements, partner spotlights, and sponsored content that appear in your newsletters.";
