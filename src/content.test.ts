@@ -124,9 +124,9 @@ test("rello-feature and unlisted products never carry an upgrade path", () => {
   }
 });
 
-test("upgrade paths shipped: 2 of 8 at v0.3.0, Harvest Home and The Drumbeat (each spoke's Phase-4 PR moves this count)", () => {
+test("upgrade paths shipped: 3 of 8 at v0.4.0, Harvest Home, Pathfinder Pro and The Drumbeat (each spoke's Phase-4 PR moves this count)", () => {
   assert.equal(STANDALONE.length, 8);
-  assert.deepEqual([...shippedUpgradePaths(STANDALONE)].sort(), ["harvest-home", "the-drumbeat"]);
+  assert.deepEqual([...shippedUpgradePaths(STANDALONE)].sort(), ["harvest-home", "pathfinder-pro", "the-drumbeat"]);
 });
 
 test("every upgradePath that is set is a root-relative path with no host, query or trailing slash", () => {
@@ -184,9 +184,38 @@ test("harvest-home: displayName, tagline and explainer are unchanged from v0.2.0
   ]);
 });
 
-test("package version is 0.3.0", () => {
+// ── Pathfinder Pro (RELLO UPSELL Phase 4, Platform KA 893/894) ──────────────
+
+test("pathfinder-pro: upgradePath is /dashboard/upgrade, the page PFP's Phase-4 chrome PR ships at src/app/(dashboard)/dashboard/upgrade/page.tsx", () => {
+  // /dashboard, not /upgrade: PFP's MLO app lives under /dashboard on pathfinder-pro.app (its middleware 404s /dashboard on
+  // agent subdomains, and the borrower-facing routes are outside it).
+  assert.equal(UPGRADE_CONTENT["pathfinder-pro"].upgradePath, "/dashboard/upgrade");
+});
+
+test("pathfinder-pro: the one explainer point is rendered screen text (the cockpit page subtitle), not the HTML metadata description", () => {
+  const entry = UPGRADE_CONTENT["pathfinder-pro"] as UpgradeContentEntry;
+  assert.deepEqual(entry.explainer.points, [
+    { text: "MLO Phone Call Workstation", source: "PathfinderPro src/app/(dashboard)/dashboard/scenarios/page.tsx:322 @ 23b902a6" },
+  ]);
+});
+
+test("pathfinder-pro: no point claims a time ('in under 5 minutes' is shown on no PFP screen, KA 894 R6)", () => {
+  const entry = UPGRADE_CONTENT["pathfinder-pro"] as UpgradeContentEntry;
+  for (const p of entry.explainer.points) {
+    assert.doesNotMatch(p?.text ?? "", /minute|second|hour/i);
+  }
+});
+
+test("pathfinder-pro: displayName and tagline are unchanged from v0.3.0 (tagline stays null: the shipped one says AI)", () => {
+  const entry = UPGRADE_CONTENT["pathfinder-pro"] as UpgradeContentEntry;
+  assert.deepEqual(entry.displayName, { text: "Pathfinder Pro", source: "Rello src/lib/spoke-branding.ts:82 @ 8114c16d7" });
+  assert.equal(entry.tagline, null);
+  assert.equal(entry.explainer.title, null);
+});
+
+test("package version is 0.4.0", () => {
   const pkg = JSON.parse(readFileSync(new URL("../package.json", import.meta.url), "utf8")) as { version: string };
-  assert.equal(pkg.version, "0.3.0");
+  assert.equal(pkg.version, "0.4.0");
 });
 
 // ── Stories ──────────────────────────────────────────────────────────────────

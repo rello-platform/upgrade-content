@@ -158,11 +158,16 @@ export const UPGRADE_CONTENT = {
     tagline: null,
     explainer: {
       title: null,
+      // The cockpit page's subtitle, JSX text under its <h1>, so it renders exactly as quoted. v0.3.0 quoted the HTML
+      // metadata description (layout.tsx:8), which no screen shows and which claims "in under 5 minutes" (KA 894 R6).
+      // Not used: Check Your Rate's subtitle (check-your-rate/page.tsx:553): 0 sites exist in production (2026-11-11).
       points: [
-        { text: "MLO phone call workstation — pre-qualify borrowers, build rate scenarios, and deliver branded comparisons in under 5 minutes.", source: "PathfinderPro src/app/layout.tsx:8 @ cc842d42" },
+        { text: "MLO Phone Call Workstation", source: "PathfinderPro src/app/(dashboard)/dashboard/scenarios/page.tsx:322 @ 23b902a6" },
       ],
     },
-    upgradePath: null,
+    // Pathfinder Pro's in-app /upgrade page (RELLO UPSELL Phase 4, src/app/(dashboard)/dashboard/upgrade/page.tsx). Under
+    // /dashboard, where PFP's MLO app lives on pathfinder-pro.app.
+    upgradePath: "/dashboard/upgrade",
   },
   "the-drumbeat": {
     displayName: { text: "The Drumbeat", source: `${BRAND}:58 ${R}` },
