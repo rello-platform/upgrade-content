@@ -124,11 +124,41 @@ test("rello-feature and unlisted products never carry an upgrade path", () => {
   }
 });
 
-test("upgrade paths shipped: 7 of 8 at v0.8.0, Harvest Home, Home Ready, Market Intel, Newsletter Studio, Open House Hub, Pathfinder Pro and The Drumbeat (each spoke's Phase-4 PR moves this count)", () => {
+test("upgrade paths shipped: 8 of 8 at v0.9.0, Harvest Home, Home Ready, Home Stretch, Market Intel, Newsletter Studio, Open House Hub, Pathfinder Pro and The Drumbeat (each spoke's Phase-4 PR moves this count)", () => {
   assert.equal(STANDALONE.length, 8);
   assert.deepEqual([...shippedUpgradePaths(STANDALONE)].sort(), [
-    "harvest-home", "home-ready", "market-intel", "newsletter-studio", "open-house-hub", "pathfinder-pro", "the-drumbeat",
+    "harvest-home", "home-ready", "home-stretch", "market-intel", "newsletter-studio", "open-house-hub", "pathfinder-pro", "the-drumbeat",
   ]);
+});
+
+test("home-stretch: upgradePath is /dashboard/upgrade, the page Home Stretch's Phase-4 chrome PR ships at src/app/dashboard/upgrade/page.tsx", () => {
+  // /dashboard: the agent/MLO app. /portal (the buyer's leads), /guest-mlo and the public pages are outside it.
+  assert.equal(UPGRADE_CONTENT["home-stretch"].upgradePath, "/dashboard/upgrade");
+});
+
+test("home-stretch: the explainer is exactly three in-app page subtitles (leads, preferences, voice), each sourced to TheHomeStretch @ 4fa8cdb", () => {
+  const explainer = UPGRADE_CONTENT["home-stretch"].explainer as UpgradeContentEntry["explainer"];
+  assert.equal(explainer.title, null);
+  assert.deepEqual(explainer.points, [
+    { text: "Manage and track your homebuyer leads", source: "TheHomeStretch src/app/dashboard/leads/page.tsx:221 @ 4fa8cdb" },
+    { text: "Control topics, frequency, and content guardrails.", source: "TheHomeStretch src/app/dashboard/settings/preferences/page.tsx:74 @ 4fa8cdb" },
+    { text: "How content is written on your behalf.", source: "TheHomeStretch src/app/dashboard/settings/voice/page.tsx:50 @ 4fa8cdb" },
+  ]);
+});
+
+test("home-stretch: no point quotes a public or Rello marketing page; every source is an authenticated /dashboard screen", () => {
+  const points = (UPGRADE_CONTENT["home-stretch"].explainer as UpgradeContentEntry["explainer"]).points;
+  for (const p of points) {
+    assert.ok(p, "every home-stretch point is set");
+    assert.match(p.source, /^TheHomeStretch src\/app\/dashboard\//);
+    assert.doesNotMatch(p.source, /src\/app\/page\.tsx|Rello /);
+    assert.deepEqual(refusedCopy(p.text), [], p.text);
+  }
+});
+
+test("home-stretch: displayName and tagline are unchanged from v0.8.0", () => {
+  assert.deepEqual(UPGRADE_CONTENT["home-stretch"].displayName, { text: "The Home Stretch", source: "Rello src/lib/spoke-branding.ts:42 @ 8114c16d7" });
+  assert.deepEqual(UPGRADE_CONTENT["home-stretch"].tagline, { text: "Your guided path to closing day", source: "Rello src/lib/spoke-branding.ts:47 @ 8114c16d7" });
 });
 
 test("market-intel: upgradePath is /admin/upgrade, the page MI's Phase-4 chrome PR ships at src/app/(admin)/admin/upgrade/page.tsx", () => {
@@ -324,9 +354,9 @@ test("pathfinder-pro: displayName and tagline are unchanged from v0.3.0 (tagline
   assert.equal(entry.explainer.title, null);
 });
 
-test("package version is 0.8.0", () => {
+test("package version is 0.9.0", () => {
   const pkg = JSON.parse(readFileSync(new URL("../package.json", import.meta.url), "utf8")) as { version: string };
-  assert.equal(pkg.version, "0.8.0");
+  assert.equal(pkg.version, "0.9.0");
 });
 
 // ── Stories ──────────────────────────────────────────────────────────────────

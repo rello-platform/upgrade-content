@@ -131,11 +131,17 @@ export declare const UPGRADE_CONTENT: {
         readonly explainer: {
             readonly title: null;
             readonly points: readonly [{
-                readonly text: "Homebuyer education journey. Guide buyers from credit basics to closing.";
-                readonly source: "Rello src/app/page.tsx:538 @ 8114c16d7";
+                readonly text: "Manage and track your homebuyer leads";
+                readonly source: "TheHomeStretch src/app/dashboard/leads/page.tsx:221 @ 4fa8cdb";
+            }, {
+                readonly text: "Control topics, frequency, and content guardrails.";
+                readonly source: "TheHomeStretch src/app/dashboard/settings/preferences/page.tsx:74 @ 4fa8cdb";
+            }, {
+                readonly text: "How content is written on your behalf.";
+                readonly source: "TheHomeStretch src/app/dashboard/settings/voice/page.tsx:50 @ 4fa8cdb";
             }];
         };
-        readonly upgradePath: null;
+        readonly upgradePath: "/dashboard/upgrade";
     };
     readonly "newsletter-studio": {
         readonly displayName: {
