@@ -124,9 +124,57 @@ test("rello-feature and unlisted products never carry an upgrade path", () => {
   }
 });
 
-test("upgrade paths shipped: 5 of 8 at v0.6.0, Harvest Home, Home Ready, Newsletter Studio, Pathfinder Pro and The Drumbeat (each spoke's Phase-4 PR moves this count)", () => {
+test("upgrade paths shipped: 6 of 8 at v0.7.0, Harvest Home, Home Ready, Newsletter Studio, Open House Hub, Pathfinder Pro and The Drumbeat (each spoke's Phase-4 PR moves this count)", () => {
   assert.equal(STANDALONE.length, 8);
-  assert.deepEqual([...shippedUpgradePaths(STANDALONE)].sort(), ["harvest-home", "home-ready", "newsletter-studio", "pathfinder-pro", "the-drumbeat"]);
+  assert.deepEqual([...shippedUpgradePaths(STANDALONE)].sort(), [
+    "harvest-home", "home-ready", "newsletter-studio", "open-house-hub", "pathfinder-pro", "the-drumbeat",
+  ]);
+});
+
+test("open-house-hub: upgradePath is /dashboard/upgrade, the page OHH's Phase-4 chrome PR ships at src/app/dashboard/upgrade/page.tsx", () => {
+  // /dashboard: OHH's authenticated app is src/app/dashboard/**; the public pages (/, agent
+  // subdomains, /kiosk, /f, /coop, /invitations, /pricing, /sign-in) are outside it.
+  assert.equal(UPGRADE_CONTENT["open-house-hub"].upgradePath, "/dashboard/upgrade");
+});
+
+test("open-house-hub: the explainer is exactly three in-app page subtitles (events, showings, attendees), each sourced to Open-House-Hub @ 5ed705d5", () => {
+  const explainer = UPGRADE_CONTENT["open-house-hub"].explainer as UpgradeContentEntry["explainer"];
+  assert.equal(explainer.title, null);
+  assert.deepEqual(explainer.points, [
+    { text: "Manage your open house events", source: "Open-House-Hub src/app/dashboard/events/page.tsx:103 @ 5ed705d5" },
+    { text: "Schedule and track private property showings for your leads.", source: "Open-House-Hub src/app/dashboard/showings/page.tsx:130 @ 5ed705d5" },
+    { text: "All open house attendees across your events", source: "Open-House-Hub src/app/dashboard/attendees/page.tsx:101 @ 5ed705d5" },
+  ]);
+});
+
+test("open-house-hub: no point quotes a public page, the analytics funnel, tours/SMS or a hot-lead alert", () => {
+  const points = (UPGRADE_CONTENT["open-house-hub"].explainer as UpgradeContentEntry["explainer"]).points;
+  for (const p of points) {
+    assert.ok(p, "every open-house-hub point is set");
+    assert.match(p.source, /^Open-House-Hub src\/app\/dashboard\//);
+    assert.doesNotMatch(p.text, /funnel|conversion|tour|itinerary|SMS|text message|hot lead|alert/i);
+    assert.deepEqual(refusedCopy(p.text), [], p.text);
+  }
+});
+
+test("open-house-hub: displayName and tagline are unchanged from v0.6.0", () => {
+  assert.deepEqual(UPGRADE_CONTENT["open-house-hub"].displayName, { text: "Open House Hub", source: "Rello src/lib/spoke-branding.ts:50 @ 8114c16d7" });
+  assert.deepEqual(UPGRADE_CONTENT["open-house-hub"].tagline, { text: "Run better open houses", source: "Rello src/lib/spoke-branding.ts:55 @ 8114c16d7" });
+});
+
+test("rello: copy unchanged; the six sources name where each string renders today, Rello src/components/marketing/SalesPage.tsx @ 4223795b (src/app/page.tsx no longer exists there)", () => {
+  const r = UPGRADE_CONTENT.rello;
+  const S = "Rello src/components/marketing/SalesPage.tsx";
+  assert.deepEqual(r.displayName, { text: "Rello", source: `${S}:39 @ 4223795b` });
+  assert.deepEqual(r.tagline, { text: "Powerful standalone apps that work even better together", source: `${S}:508 @ 4223795b` });
+  const explainer = r.explainer as UpgradeContentEntry["explainer"];
+  assert.deepEqual(explainer.title, { text: "The Rello Ecosystem", source: `${S}:505 @ 4223795b` });
+  assert.deepEqual(explainer.points, [
+    { text: "Visual lead scoring shows who's hot, warm, and cold at a glance.", source: `${S}:263 @ 4223795b` },
+    { text: "Set up intelligent nurture sequences that adapt to each lead's behavior.", source: `${S}:283 @ 4223795b` },
+    { text: "Track agent partnerships, referral leaderboards, and co-marketing campaigns.", source: `${S}:295 @ 4223795b` },
+  ]);
+  assert.equal(r.upgradePath, null);
 });
 
 test("home-ready: upgradePath is /dashboard/upgrade, the page HomeReady's Phase-4 chrome PR ships at src/app/dashboard/upgrade/page.tsx", () => {
@@ -244,9 +292,9 @@ test("pathfinder-pro: displayName and tagline are unchanged from v0.3.0 (tagline
   assert.equal(entry.explainer.title, null);
 });
 
-test("package version is 0.6.0", () => {
+test("package version is 0.7.0", () => {
   const pkg = JSON.parse(readFileSync(new URL("../package.json", import.meta.url), "utf8")) as { version: string };
-  assert.equal(pkg.version, "0.6.0");
+  assert.equal(pkg.version, "0.7.0");
 });
 
 // ── Stories ──────────────────────────────────────────────────────────────────

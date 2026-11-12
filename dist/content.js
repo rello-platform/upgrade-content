@@ -1,4 +1,9 @@
 const RELLO = "Rello src/app/page.tsx";
+// Rello's marketing page moved from src/app/page.tsx (8114c16d7) to this component; the
+// rello entry's six strings render from it at the same line numbers (PLATFORM KA 971 ruling,
+// sources only: no copy changed).
+const RELLO_SALES = "Rello src/components/marketing/SalesPage.tsx";
+const RS = "@ 4223795b";
 const BRAND = "Rello src/lib/spoke-branding.ts";
 const R = "@ 8114c16d7";
 const DRUM = "The-Drumbeat src/app/(dashboard)";
@@ -10,14 +15,14 @@ const none = { title: null, points: [] };
  */
 export const UPGRADE_CONTENT = {
     rello: {
-        displayName: { text: "Rello", source: `${RELLO}:39 ${R}` },
-        tagline: { text: "Powerful standalone apps that work even better together", source: `${RELLO}:508 ${R}` },
+        displayName: { text: "Rello", source: `${RELLO_SALES}:39 ${RS}` },
+        tagline: { text: "Powerful standalone apps that work even better together", source: `${RELLO_SALES}:508 ${RS}` },
         explainer: {
-            title: { text: "The Rello Ecosystem", source: `${RELLO}:505 ${R}` },
+            title: { text: "The Rello Ecosystem", source: `${RELLO_SALES}:505 ${RS}` },
             points: [
-                { text: "Visual lead scoring shows who's hot, warm, and cold at a glance.", source: `${RELLO}:263 ${R}` },
-                { text: "Set up intelligent nurture sequences that adapt to each lead's behavior.", source: `${RELLO}:283 ${R}` },
-                { text: "Track agent partnerships, referral leaderboards, and co-marketing campaigns.", source: `${RELLO}:295 ${R}` },
+                { text: "Visual lead scoring shows who's hot, warm, and cold at a glance.", source: `${RELLO_SALES}:263 ${RS}` },
+                { text: "Set up intelligent nurture sequences that adapt to each lead's behavior.", source: `${RELLO_SALES}:283 ${RS}` },
+                { text: "Track agent partnerships, referral leaderboards, and co-marketing campaigns.", source: `${RELLO_SALES}:295 ${RS}` },
             ],
         },
         upgradePath: null,
@@ -96,8 +101,23 @@ export const UPGRADE_CONTENT = {
     "open-house-hub": {
         displayName: { text: "Open House Hub", source: `${BRAND}:50 ${R}` },
         tagline: { text: "Run better open houses", source: `${BRAND}:55 ${R}` },
-        explainer: none,
-        upgradePath: null,
+        explainer: {
+            title: null,
+            // Three in-app page subtitles, each JSX text under the page's <h1> in Open-House-Hub at
+            // 5ed705d5, so each renders exactly as quoted. Not used: Analytics (its conversion funnel
+            // never renders, DISCOVERED-OHH-ANALYTICS-FUNNEL-TOP-EVENTS-NEVER-RENDER-261112) and Tours
+            // (sharing the itinerary depends on an SMS route not proven for standalone tenants)
+            // (PLATFORM KA 969/971).
+            points: [
+                { text: "Manage your open house events", source: "Open-House-Hub src/app/dashboard/events/page.tsx:103 @ 5ed705d5" },
+                { text: "Schedule and track private property showings for your leads.", source: "Open-House-Hub src/app/dashboard/showings/page.tsx:130 @ 5ed705d5" },
+                { text: "All open house attendees across your events", source: "Open-House-Hub src/app/dashboard/attendees/page.tsx:101 @ 5ed705d5" },
+            ],
+        },
+        // Open House Hub's in-app /upgrade page (RELLO UPSELL Phase 4, src/app/dashboard/upgrade/page.tsx).
+        // Under /dashboard, OHH's authenticated app; every public page (/, {agent}.openhousehub.app,
+        // /kiosk, /f, /coop, /invitations, /pricing, /sign-in) is outside it.
+        upgradePath: "/dashboard/upgrade",
     },
     "market-intel": {
         displayName: { text: "Market Intel", source: `${BRAND}:66 ${R}` },
