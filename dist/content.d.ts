@@ -197,17 +197,17 @@ export declare const UPGRADE_CONTENT: {
         readonly explainer: {
             readonly title: null;
             readonly points: readonly [{
-                readonly text: "Daily market digests & podcasts. Stay informed with curated real estate news.";
-                readonly source: "Rello src/app/page.tsx:544 @ 8114c16d7";
+                readonly text: "Websites scraped for articles to include in your digest.";
+                readonly source: "MarketIntel src/app/(admin)/admin/websites/page.tsx:19 @ 58caff6e";
             }, {
-                readonly text: "10+ industry sources distilled into a clean 5-minute read, delivered by 7:45 AM.";
-                readonly source: "MarketIntel src/app/page.tsx:207 @ d0747b4";
+                readonly text: "Email addresses that send newsletters to be included in your digest.";
+                readonly source: "MarketIntel src/app/(admin)/admin/sources/page.tsx:19 @ 58caff6e";
             }, {
-                readonly text: "A buyer/seller market gauge with 6 key indicators. Share with clients instantly.";
-                readonly source: "MarketIntel src/app/page.tsx:235 @ d0747b4";
+                readonly text: "Customize how your digest and podcast appear to subscribers.";
+                readonly source: "MarketIntel src/app/(admin)/admin/branding/page.tsx:83 @ 58caff6e";
             }];
         };
-        readonly upgradePath: null;
+        readonly upgradePath: "/admin/upgrade";
     };
     readonly "pathfinder-pro": {
         readonly displayName: {

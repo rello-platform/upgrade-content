@@ -124,13 +124,24 @@ export const UPGRADE_CONTENT = {
         tagline: { text: "Live market data for your sphere", source: `${BRAND}:71 ${R}` },
         explainer: {
             title: null,
+            // Three in-app admin page descriptions in MarketIntel at 58caff6e, each a JSX attribute
+            // string passed to PageHeader, which renders it as `<p>{description}</p>`
+            // (src/components/admin/PageHeader.tsx:15-16), so each renders exactly as quoted. All are
+            // under src/app/(admin)/, the authenticated owner/admin app (requireAdmin). The earlier
+            // points quoted MI's public landing page and a Rello marketing page; they are gone.
+            // Not used: the podcast settings line (it says "daily"; cadence is configurable) and the
+            // voices line (it names a vendor) (PLATFORM KA 982/985).
             points: [
-                { text: "Daily market digests & podcasts. Stay informed with curated real estate news.", source: `${RELLO}:544 ${R}` },
-                { text: "10+ industry sources distilled into a clean 5-minute read, delivered by 7:45 AM.", source: "MarketIntel src/app/page.tsx:207 @ d0747b4" },
-                { text: "A buyer/seller market gauge with 6 key indicators. Share with clients instantly.", source: "MarketIntel src/app/page.tsx:235 @ d0747b4" },
+                { text: "Websites scraped for articles to include in your digest.", source: "MarketIntel src/app/(admin)/admin/websites/page.tsx:19 @ 58caff6e" },
+                { text: "Email addresses that send newsletters to be included in your digest.", source: "MarketIntel src/app/(admin)/admin/sources/page.tsx:19 @ 58caff6e" },
+                { text: "Customize how your digest and podcast appear to subscribers.", source: "MarketIntel src/app/(admin)/admin/branding/page.tsx:83 @ 58caff6e" },
             ],
         },
-        upgradePath: null,
+        // Market Intel's in-app /upgrade page (RELLO UPSELL Phase 4,
+        // src/app/(admin)/admin/upgrade/page.tsx). Under /admin, MI's owner/admin app; the public
+        // pages (/, /pricing, /agent, /share, /subscribe, /unsubscribe) and the subscriber app
+        // ((dashboard): /dashboard, /archive, /insights, /shares, /profile, /settings) are outside it.
+        upgradePath: "/admin/upgrade",
     },
     "pathfinder-pro": {
         displayName: { text: "Pathfinder Pro", source: `${BRAND}:82 ${R}` },
