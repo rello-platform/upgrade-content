@@ -53,26 +53,26 @@ export declare const UPGRADE_CONTENT: {
     readonly rello: {
         readonly displayName: {
             readonly text: "Rello";
-            readonly source: "Rello src/app/page.tsx:39 @ 8114c16d7";
+            readonly source: "Rello src/components/marketing/SalesPage.tsx:39 @ 4223795b";
         };
         readonly tagline: {
             readonly text: "Powerful standalone apps that work even better together";
-            readonly source: "Rello src/app/page.tsx:508 @ 8114c16d7";
+            readonly source: "Rello src/components/marketing/SalesPage.tsx:508 @ 4223795b";
         };
         readonly explainer: {
             readonly title: {
                 readonly text: "The Rello Ecosystem";
-                readonly source: "Rello src/app/page.tsx:505 @ 8114c16d7";
+                readonly source: "Rello src/components/marketing/SalesPage.tsx:505 @ 4223795b";
             };
             readonly points: readonly [{
                 readonly text: "Visual lead scoring shows who's hot, warm, and cold at a glance.";
-                readonly source: "Rello src/app/page.tsx:263 @ 8114c16d7";
+                readonly source: "Rello src/components/marketing/SalesPage.tsx:263 @ 4223795b";
             }, {
                 readonly text: "Set up intelligent nurture sequences that adapt to each lead's behavior.";
-                readonly source: "Rello src/app/page.tsx:283 @ 8114c16d7";
+                readonly source: "Rello src/components/marketing/SalesPage.tsx:283 @ 4223795b";
             }, {
                 readonly text: "Track agent partnerships, referral leaderboards, and co-marketing campaigns.";
-                readonly source: "Rello src/app/page.tsx:295 @ 8114c16d7";
+                readonly source: "Rello src/components/marketing/SalesPage.tsx:295 @ 4223795b";
             }];
         };
         readonly upgradePath: null;
@@ -172,9 +172,18 @@ export declare const UPGRADE_CONTENT: {
         };
         readonly explainer: {
             readonly title: null;
-            readonly points: readonly [];
+            readonly points: readonly [{
+                readonly text: "Manage your open house events";
+                readonly source: "Open-House-Hub src/app/dashboard/events/page.tsx:103 @ 5ed705d5";
+            }, {
+                readonly text: "Schedule and track private property showings for your leads.";
+                readonly source: "Open-House-Hub src/app/dashboard/showings/page.tsx:130 @ 5ed705d5";
+            }, {
+                readonly text: "All open house attendees across your events";
+                readonly source: "Open-House-Hub src/app/dashboard/attendees/page.tsx:101 @ 5ed705d5";
+            }];
         };
-        readonly upgradePath: null;
+        readonly upgradePath: "/dashboard/upgrade";
     };
     readonly "market-intel": {
         readonly displayName: {
