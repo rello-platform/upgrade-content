@@ -106,15 +106,18 @@ export declare const UPGRADE_CONTENT: {
         };
         readonly explainer: {
             readonly title: null;
-            readonly points: readonly [null, {
-                readonly text: "Get notified the moment a lead hits a milestone or becomes mortgage-ready.";
-                readonly source: "HomeReady src/app/page.tsx:465 @ 08bf4051";
+            readonly points: readonly [{
+                readonly text: "Manage automated lead nurturing sequences";
+                readonly source: "HomeReady src/app/dashboard/journeys/JourneysClient.tsx:259 @ f0ea99f0";
             }, {
-                readonly text: "Email and SMS sequences that educate and engage leads without manual work.";
-                readonly source: "HomeReady src/app/page.tsx:471 @ 08bf4051";
+                readonly text: "Share your landing page with clients to capture leads.";
+                readonly source: "HomeReady src/app/dashboard/qr-code/QRCodeClient.tsx:108 @ f0ea99f0";
+            }, {
+                readonly text: "Track cost and performance by acquisition channel";
+                readonly source: "HomeReady src/app/dashboard/mlo/source-analytics/SourceAnalyticsClient.tsx:141 @ f0ea99f0";
             }];
         };
-        readonly upgradePath: null;
+        readonly upgradePath: "/dashboard/upgrade";
     };
     readonly "home-stretch": {
         readonly displayName: {

@@ -124,9 +124,40 @@ test("rello-feature and unlisted products never carry an upgrade path", () => {
   }
 });
 
-test("upgrade paths shipped: 4 of 8 at v0.5.0, Harvest Home, Newsletter Studio, Pathfinder Pro and The Drumbeat (each spoke's Phase-4 PR moves this count)", () => {
+test("upgrade paths shipped: 5 of 8 at v0.6.0, Harvest Home, Home Ready, Newsletter Studio, Pathfinder Pro and The Drumbeat (each spoke's Phase-4 PR moves this count)", () => {
   assert.equal(STANDALONE.length, 8);
-  assert.deepEqual([...shippedUpgradePaths(STANDALONE)].sort(), ["harvest-home", "newsletter-studio", "pathfinder-pro", "the-drumbeat"]);
+  assert.deepEqual([...shippedUpgradePaths(STANDALONE)].sort(), ["harvest-home", "home-ready", "newsletter-studio", "pathfinder-pro", "the-drumbeat"]);
+});
+
+test("home-ready: upgradePath is /dashboard/upgrade, the page HomeReady's Phase-4 chrome PR ships at src/app/dashboard/upgrade/page.tsx", () => {
+  // /dashboard: HomeReady's authenticated app is src/app/dashboard/**; every lead-facing page
+  // (/start, /results, /portal, /almost-home, /landing, ...) is outside it.
+  assert.equal(UPGRADE_CONTENT["home-ready"].upgradePath, "/dashboard/upgrade");
+});
+
+test("home-ready: the explainer is exactly three in-app page subtitles (journeys, QR code, source ROI), each sourced to HomeReady @ f0ea99f0", () => {
+  const explainer = UPGRADE_CONTENT["home-ready"].explainer as UpgradeContentEntry["explainer"];
+  assert.equal(explainer.title, null);
+  assert.deepEqual(explainer.points, [
+    { text: "Manage automated lead nurturing sequences", source: "HomeReady src/app/dashboard/journeys/JourneysClient.tsx:259 @ f0ea99f0" },
+    { text: "Share your landing page with clients to capture leads.", source: "HomeReady src/app/dashboard/qr-code/QRCodeClient.tsx:108 @ f0ea99f0" },
+    { text: "Track cost and performance by acquisition channel", source: "HomeReady src/app/dashboard/mlo/source-analytics/SourceAnalyticsClient.tsx:141 @ f0ea99f0" },
+  ]);
+});
+
+test("home-ready: no point quotes the public landing page, a notification no screen sends, or SMS (GD-331 class)", () => {
+  const points = (UPGRADE_CONTENT["home-ready"].explainer as UpgradeContentEntry["explainer"]).points;
+  for (const p of points) {
+    assert.ok(p, "every home-ready point is set");
+    assert.doesNotMatch(p.source, /src\/app\/page\.tsx/);
+    assert.doesNotMatch(p.text, /notif|milestone|mortgage-ready|SMS|text message|who&apos;s/i);
+    assert.deepEqual(refusedCopy(p.text), [], p.text);
+  }
+});
+
+test("home-ready: displayName and tagline are unchanged from v0.5.0", () => {
+  assert.equal(UPGRADE_CONTENT["home-ready"].displayName?.text, "Home Ready");
+  assert.equal(UPGRADE_CONTENT["home-ready"].tagline?.text, "Your guided path to homeownership");
 });
 
 test("every upgradePath that is set is a root-relative path with no host, query or trailing slash", () => {
@@ -213,9 +244,9 @@ test("pathfinder-pro: displayName and tagline are unchanged from v0.3.0 (tagline
   assert.equal(entry.explainer.title, null);
 });
 
-test("package version is 0.5.0", () => {
+test("package version is 0.6.0", () => {
   const pkg = JSON.parse(readFileSync(new URL("../package.json", import.meta.url), "utf8")) as { version: string };
-  assert.equal(pkg.version, "0.5.0");
+  assert.equal(pkg.version, "0.6.0");
 });
 
 // ── Stories ──────────────────────────────────────────────────────────────────
