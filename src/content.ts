@@ -97,16 +97,22 @@ export const UPGRADE_CONTENT = {
     tagline: { text: "Your guided path to homeownership", source: `${BRAND}:39 ${R}` },
     explainer: {
       title: null,
+      // Three in-app page subtitles, each JSX text under the page's <h1> in HomeReady at f0ea99f0,
+      // so each renders exactly as quoted. v0.1.0 quoted the public landing page
+      // (src/app/page.tsx:459/465/471 @ 08bf4051): :459 renders `who&apos;s` literally (GD-47),
+      // :465 promises a milestone notification whose in-app notifier (notifyHotLead,
+      // src/lib/notifications/agent-notifications.ts:151) has no caller, and :471 claims SMS
+      // sequences (PLATFORM KA 963).
       points: [
-        // null (PLATFORM AUDIT 78 GD-47): HomeReady src/app/page.tsx:459 @ 08bf4051 is a
-        // JS string containing `who&apos;s`, rendered as {feature.desc} at :501, so the
-        // page shows the entity literally. Not quotable as it renders; not fixed here.
-        null,
-        { text: "Get notified the moment a lead hits a milestone or becomes mortgage-ready.", source: "HomeReady src/app/page.tsx:465 @ 08bf4051" },
-        { text: "Email and SMS sequences that educate and engage leads without manual work.", source: "HomeReady src/app/page.tsx:471 @ 08bf4051" },
+        { text: "Manage automated lead nurturing sequences", source: "HomeReady src/app/dashboard/journeys/JourneysClient.tsx:259 @ f0ea99f0" },
+        { text: "Share your landing page with clients to capture leads.", source: "HomeReady src/app/dashboard/qr-code/QRCodeClient.tsx:108 @ f0ea99f0" },
+        { text: "Track cost and performance by acquisition channel", source: "HomeReady src/app/dashboard/mlo/source-analytics/SourceAnalyticsClient.tsx:141 @ f0ea99f0" },
       ],
     },
-    upgradePath: null,
+    // HomeReady's in-app /upgrade page (RELLO UPSELL Phase 4, src/app/dashboard/upgrade/page.tsx).
+    // Under /dashboard, HomeReady's authenticated app; every lead-facing page (/start, /results,
+    // /portal, /almost-home, ...) is outside it.
+    upgradePath: "/dashboard/upgrade",
   },
   "home-stretch": {
     displayName: { text: "The Home Stretch", source: `${BRAND}:42 ${R}` },

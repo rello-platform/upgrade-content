@@ -39,10 +39,10 @@ ES module only: `"type": "module"`, with `"exports"` → `./dist/index.js` (type
 5. **Stories need consent.** `PEER_STORIES` holds only real, authorized outcomes. A story with no `consentRecordedAt` is a compile error and a test failure. Placeholder people are never published.
 6. **upgradePath is set by each app's own PR.** It stays `null` until that app's `/upgrade` page ships (RELLO UPSELL Phase 4). The Oven and The Home Scout (`rello-feature`) and the `unlisted` slugs never get one.
 
-## Known nulls and choices at v0.5.0
+## Known nulls and choices at v0.6.0
 
 - `pathfinder-pro.tagline` is `null`. The shipped tagline (Rello `spoke-branding.ts:87`) says "AI".
-- `home-ready.explainer.points[0]` is `null`. HomeReady `src/app/page.tsx:459` is a JS string holding `who&apos;s`, which the page shows literally (PLATFORM AUDIT 78 GD-47).
+- `home-ready.explainer.points` (v0.6.0) are three in-app page subtitles, each JSX text under the page's `<h1>` in HomeReady at `f0ea99f0`: Journeys, QR Code and Lead Source ROI. `home-ready.upgradePath` is `"/dashboard/upgrade"`. The v0.1.0 points quoted the public landing page and are gone: `:459` renders `who&apos;s` literally (GD-47), `:465` promises a milestone notification no in-app notifier sends (`notifyHotLead` has no caller), and `:471` claims SMS sequences.
 - `the-drumbeat.tagline` is the app's own description (The-Drumbeat `src/app/layout.tsx:49`). Rello's `spoke-branding.ts:63` tagline for The Drumbeat describes Market Intel.
 - `the-drumbeat.explainer.points` (v0.2.0) are two page subtitles, each JSX text under the page's `<h1>` in The-Drumbeat at `3f89afc`: Video and Content Calendar. `the-drumbeat.upgradePath` is `"/upgrade"`. Left out because Drumbeat cannot do them from its UI today:
   - Video Messages: its send route answers 503.

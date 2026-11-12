@@ -57,7 +57,8 @@ assert.ok(m.refusedCopy("Only $49/mo").includes("currency figure"));
 assert.deepEqual(m.refusedCopy("Run better open houses"), []);
 assert.ok(Array.isArray(m.COPY_RULES) && m.COPY_RULES.length > 0);
 assert.equal(typeof m.shippedUpgradePaths, "function");
-assert.deepEqual(m.shippedUpgradePaths(["home-ready"]), []);
+assert.deepEqual(m.shippedUpgradePaths(["open-house-hub"]), []);
+assert.deepEqual(m.shippedUpgradePaths(["home-ready"]), ["home-ready"]);
 console.log("runtime: " + want.length + " of " + want.length + " exports import and check out in plain Node " + process.version);
 `;
 
