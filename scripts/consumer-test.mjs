@@ -61,6 +61,7 @@ assert.deepEqual(m.shippedUpgradePaths(["the-oven"]), []);
 assert.deepEqual(m.shippedUpgradePaths(["home-ready"]), ["home-ready"]);
 assert.deepEqual(m.shippedUpgradePaths(["open-house-hub"]), ["open-house-hub"]);
 assert.deepEqual(m.shippedUpgradePaths(["market-intel"]), ["market-intel"]);
+assert.deepEqual(m.shippedUpgradePaths(["home-stretch"]), ["home-stretch"]);
 console.log("runtime: " + want.length + " of " + want.length + " exports import and check out in plain Node " + process.version);
 `;
 

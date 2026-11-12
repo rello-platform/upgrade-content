@@ -124,11 +124,18 @@ export const UPGRADE_CONTENT = {
     tagline: { text: "Your guided path to closing day", source: `${BRAND}:47 ${R}` },
     explainer: {
       title: null,
+      // Three in-app page subtitles, each JSX text under the page's <h1> in TheHomeStretch at
+      // 4fa8cdb, so each renders exactly as quoted. v0.1.0 quoted a Rello marketing page
+      // (src/app/page.tsx:538, which no longer exists in Rello) that no Home Stretch screen says.
       points: [
-        { text: "Homebuyer education journey. Guide buyers from credit basics to closing.", source: `${RELLO}:538 ${R}` },
+        { text: "Manage and track your homebuyer leads", source: "TheHomeStretch src/app/dashboard/leads/page.tsx:221 @ 4fa8cdb" },
+        { text: "Control topics, frequency, and content guardrails.", source: "TheHomeStretch src/app/dashboard/settings/preferences/page.tsx:74 @ 4fa8cdb" },
+        { text: "How content is written on your behalf.", source: "TheHomeStretch src/app/dashboard/settings/voice/page.tsx:50 @ 4fa8cdb" },
       ],
     },
-    upgradePath: null,
+    // The Home Stretch's in-app /upgrade page (RELLO UPSELL Phase 4, src/app/dashboard/upgrade/page.tsx).
+    // Under /dashboard, the agent/MLO app; the lead-facing /portal, /guest-mlo and public pages are outside it.
+    upgradePath: "/dashboard/upgrade",
   },
   "newsletter-studio": {
     displayName: { text: "Newsletter Studio", source: `${BRAND}:90 ${R}` },
