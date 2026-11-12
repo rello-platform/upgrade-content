@@ -124,11 +124,43 @@ test("rello-feature and unlisted products never carry an upgrade path", () => {
   }
 });
 
-test("upgrade paths shipped: 6 of 8 at v0.7.0, Harvest Home, Home Ready, Newsletter Studio, Open House Hub, Pathfinder Pro and The Drumbeat (each spoke's Phase-4 PR moves this count)", () => {
+test("upgrade paths shipped: 7 of 8 at v0.8.0, Harvest Home, Home Ready, Market Intel, Newsletter Studio, Open House Hub, Pathfinder Pro and The Drumbeat (each spoke's Phase-4 PR moves this count)", () => {
   assert.equal(STANDALONE.length, 8);
   assert.deepEqual([...shippedUpgradePaths(STANDALONE)].sort(), [
-    "harvest-home", "home-ready", "newsletter-studio", "open-house-hub", "pathfinder-pro", "the-drumbeat",
+    "harvest-home", "home-ready", "market-intel", "newsletter-studio", "open-house-hub", "pathfinder-pro", "the-drumbeat",
   ]);
+});
+
+test("market-intel: upgradePath is /admin/upgrade, the page MI's Phase-4 chrome PR ships at src/app/(admin)/admin/upgrade/page.tsx", () => {
+  // /admin: MI's owner/admin app (requireAdmin). The subscriber app ((dashboard)) and the
+  // public pages are outside it: the subscriber is MI's audience, not the Rello buyer.
+  assert.equal(UPGRADE_CONTENT["market-intel"].upgradePath, "/admin/upgrade");
+});
+
+test("market-intel: the explainer is exactly three in-app admin page descriptions (websites, sources, branding), each sourced to MarketIntel @ 58caff6e", () => {
+  const explainer = UPGRADE_CONTENT["market-intel"].explainer as UpgradeContentEntry["explainer"];
+  assert.equal(explainer.title, null);
+  assert.deepEqual(explainer.points, [
+    { text: "Websites scraped for articles to include in your digest.", source: "MarketIntel src/app/(admin)/admin/websites/page.tsx:19 @ 58caff6e" },
+    { text: "Email addresses that send newsletters to be included in your digest.", source: "MarketIntel src/app/(admin)/admin/sources/page.tsx:19 @ 58caff6e" },
+    { text: "Customize how your digest and podcast appear to subscribers.", source: "MarketIntel src/app/(admin)/admin/branding/page.tsx:83 @ 58caff6e" },
+  ]);
+});
+
+test("market-intel: no point quotes a public or marketing page, a delivery time, a cadence or a vendor", () => {
+  const points = (UPGRADE_CONTENT["market-intel"].explainer as UpgradeContentEntry["explainer"]).points;
+  for (const p of points) {
+    assert.ok(p, "every market-intel point is set");
+    assert.match(p.source, /^MarketIntel src\/app\/\(admin\)\/admin\//);
+    assert.doesNotMatch(p.source, /src\/app\/page\.tsx|Rello /);
+    assert.doesNotMatch(p.text, /\b\d{1,2}:\d{2}\b|\bAM\b|\bPM\b|daily|weekly|ElevenLabs/i);
+    assert.deepEqual(refusedCopy(p.text), [], p.text);
+  }
+});
+
+test("market-intel: displayName and tagline are unchanged from v0.7.0", () => {
+  assert.deepEqual(UPGRADE_CONTENT["market-intel"].displayName, { text: "Market Intel", source: "Rello src/lib/spoke-branding.ts:66 @ 8114c16d7" });
+  assert.deepEqual(UPGRADE_CONTENT["market-intel"].tagline, { text: "Live market data for your sphere", source: "Rello src/lib/spoke-branding.ts:71 @ 8114c16d7" });
 });
 
 test("open-house-hub: upgradePath is /dashboard/upgrade, the page OHH's Phase-4 chrome PR ships at src/app/dashboard/upgrade/page.tsx", () => {
@@ -292,9 +324,9 @@ test("pathfinder-pro: displayName and tagline are unchanged from v0.3.0 (tagline
   assert.equal(entry.explainer.title, null);
 });
 
-test("package version is 0.7.0", () => {
+test("package version is 0.8.0", () => {
   const pkg = JSON.parse(readFileSync(new URL("../package.json", import.meta.url), "utf8")) as { version: string };
-  assert.equal(pkg.version, "0.7.0");
+  assert.equal(pkg.version, "0.8.0");
 });
 
 // ── Stories ──────────────────────────────────────────────────────────────────
