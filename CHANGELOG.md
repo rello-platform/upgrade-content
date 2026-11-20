@@ -2,6 +2,19 @@
 
 Earlier versions (v0.1.0 to v0.9.0) are described in the README's "Known nulls and choices" section and in each tag's commit.
 
+## v0.12.0 (additive minor)
+
+- **PathfinderPro gateway Home words (PFP GATEWAY X2c; ruling K-822; MAP-LAND-EXPAND-261119 §2):** `PFP_HOME_COPY`, 14 Kelly D60 strings added to the frozen copy:
+  - the card row label;
+  - setup "steps done" / "See all steps →";
+  - "Your rates" / "Put your rates on your site →";
+  - Check Your Rate's "Your page is live. …", "Open Check Your Rate →" and "Newest:";
+  - Recent Calls' "No calls yet" / "No leads yet" with their lines;
+  - the "From Check Your Rate" / "New" chips.
+- Words with a count, a time or a second hole are not added (README).
+- The consumer test imports `PFP_HOME_COPY`.
+- Nothing renamed or removed; no existing string changed.
+
 ## v0.11.0 (additive minor)
 
 - **PathfinderPro Get set up words (PFP GATEWAY X2b; ruling K-812; MAP-LAND-EXPAND-261119 §5 LE-4b, A5):** `PFP_SETUP_COPY` (card title, per-step `where` and `rule` lines, labels for `test-quote` and `email-signature`, two footer sentences), `PFP_SETUP_STEP_IDS`, `PfpSetupStepId`, `PfpSetupStepCopy`. Source is Kelly D60 (sha256 31a8b00489d56ae6…); 19 strings added to the frozen copy. `identity.where`/`identity.rule` are null (they name NMLS).

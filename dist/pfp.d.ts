@@ -238,4 +238,49 @@ export declare const PFP_SETUP_COPY: {
         readonly neverTicked: SourcedText;
     };
 };
+/**
+ * PathfinderPro's gateway Home words (PFP GATEWAY X2c; ruling K-822; MAP-LAND-EXPAND §2), as Kelly approved them (D60):
+ * the card row's name, the setup card's "steps done" and link, the rates card's title and link, the Check Your Rate
+ * card's lines, and Recent Calls' empty states and chips. ⛔ No price anywhere, no figure, and no hole: words the mockup
+ * draws with a count or a time ("leads this week", "sheet in …", "Next: …", the website lines that carry "shown N
+ * times" / "sheet in …") are NOT here, nor the locked-item screen-reader text (its hole isn't `{feature}`'s form).
+ * The PFP Gateway KA has the list.
+ */
+export declare const PFP_HOME_COPY: {
+    /** The card row's accessible name. */
+    readonly cardRowLabel: SourcedText;
+    readonly setup: {
+        /** Follows the card's "N of M" count. */
+        readonly stepsDone: SourcedText;
+        readonly seeAll: SourcedText;
+    };
+    readonly rates: {
+        readonly title: SourcedText;
+        /** The link to the Rate Widget step when the widget isn't on the website yet. */
+        readonly putOnSite: SourcedText;
+    };
+    readonly cyr: {
+        /** Check Your Rate on with no quote yet. */
+        readonly pageLive: SourcedText;
+        readonly open: SourcedText;
+        /** Precedes the newest quote's borrower. */
+        readonly newest: SourcedText;
+    };
+    readonly recentCalls: {
+        /** Check Your Rate off. */
+        readonly noCalls: {
+            readonly title: SourcedText;
+            readonly body: SourcedText;
+        };
+        /** Check Your Rate on, no quote yet. */
+        readonly noLeads: {
+            readonly title: SourcedText;
+            readonly body: SourcedText;
+        };
+        readonly chips: {
+            readonly fromCheckYourRate: SourcedText;
+            readonly new: SourcedText;
+        };
+    };
+};
 //# sourceMappingURL=pfp.d.ts.map

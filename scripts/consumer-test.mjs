@@ -32,7 +32,7 @@ const RUNTIME_EXPORTS = [
   "PEER_STORIES", "assertPeerStory",
   "COPY_RULES", "refusedCopy",
   "KELLY_D60", "PFP_FEATURES", "PFP_LOCKED_FEATURE_SLUGS", "PFP_LOCK_COPY",
-  "PFP_SETUP_COPY", "PFP_SETUP_STEP_IDS",
+  "PFP_SETUP_COPY", "PFP_SETUP_STEP_IDS", "PFP_HOME_COPY",
 ];
 
 const RUNTIME_CHECK = `
@@ -61,6 +61,7 @@ assert.ok(Array.isArray(m.COPY_RULES) && m.COPY_RULES.length > 0);
 assert.deepEqual(Object.keys(m.PFP_SETUP_COPY.steps), [...m.PFP_SETUP_STEP_IDS]);
 assert.equal(m.PFP_SETUP_COPY.title.source, m.KELLY_D60);
 assert.equal(m.PFP_SETUP_COPY.steps.identity.rule, null);
+assert.equal(m.PFP_HOME_COPY.rates.title.source, m.KELLY_D60);
 assert.equal(typeof m.shippedUpgradePaths, "function");
 assert.deepEqual(m.shippedUpgradePaths(["the-oven"]), []);
 assert.deepEqual(m.shippedUpgradePaths(["home-ready"]), ["home-ready"]);
@@ -77,7 +78,7 @@ import {
   type ProductKind, type ProductEntry, type GrowthProductSlug, type StandaloneProductSlug,
   type BundleProductSlug, type HostedProductSlug, type UpgradeContentEntry, type SourcedText,
   type ExplainerPoints, type PeerStory, type CopyRule,
-  PFP_SETUP_COPY, PFP_SETUP_STEP_IDS, type PfpSetupStepId, type PfpSetupStepCopy,
+  PFP_SETUP_COPY, PFP_SETUP_STEP_IDS, type PfpSetupStepId, type PfpSetupStepCopy, PFP_HOME_COPY,
 } from "${PKG}";
 
 const kind: ProductKind = GROWTH_PRODUCTS["home-ready"].kind;
@@ -101,6 +102,7 @@ const narrowed: PeerStory = maybe;
 const stepId: PfpSetupStepId = PFP_SETUP_STEP_IDS[0];
 const stepCopy: PfpSetupStepCopy = PFP_SETUP_COPY.steps[stepId];
 const setupTitle: SourcedText = PFP_SETUP_COPY.title;
+const homeChip: SourcedText = PFP_HOME_COPY.recentCalls.chips.new;
 // The types are real, not \`any\`: each of these must be a compile error.
 // @ts-expect-error not a product slug
 UPGRADE_CONTENT["not-an-app"];
@@ -110,7 +112,9 @@ const notStandalone: StandaloneProductSlug = "the-oven";
 content.price;
 // @ts-expect-error billing is not a Get set up step
 PFP_SETUP_COPY.steps.billing;
-export { stepCopy, setupTitle, kind, entry, slug, host, site, name, points, stories, rules, refused, shipped, narrowed, notStandalone };
+// @ts-expect-error no count words in the Home copy
+PFP_HOME_COPY.cyr.leadsThisWeek;
+export { homeChip, stepCopy, setupTitle, kind, entry, slug, host, site, name, points, stories, rules, refused, shipped, narrowed, notStandalone };
 `;
 
 function run(cmd, args, opts) {
