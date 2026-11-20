@@ -256,3 +256,35 @@ export const PFP_HOME_COPY = {
         },
     },
 };
+/**
+ * PathfinderPro's feature sales pages (PFP GATEWAY X2e; LE-16; MAP-LAND-EXPAND amendment A2; ruling K-834). A page at
+ * `/features/<slug>` prints `PFP_FEATURES[slug].name`, its `value` and, when present, `more` below. Every `more` is a
+ * line the D60 mockup draws under that feature's heading in its preview; the five that exist also render in
+ * PathfinderPro today (noted per line). Kelly approves these pages' words before PathfinderPro merges them; until a
+ * slug's page is live its `PFP_FEATURES[slug].learnMore` stays null. ⛔ No price, no figure that is a price or a rate.
+ */
+export const PFP_FEATURE_PAGE_COPY = {
+    "call-workstation": { more: null },
+    // mockup :1128 (also QuickQuoteMiniForm.tsx:198)
+    "quick-quote": { more: kelly("30-second ballpark — no intake created until you save.") },
+    // mockup :1234 (also HecmWorkspace.tsx:962)
+    "hecm-advisor": { more: kelly("Reverse-mortgage co-pilot — enter what you hear, see eligibility live, learn the rules in-context.") },
+    "va-advisor": { more: null },
+    // mockup :1315 (also DscrWorkspace.tsx:1230)
+    "dscr-advisor": {
+        more: kelly("Investor co-pilot — qualify on the property's rent vs. debt service, see eligibility live, learn the niche rules in-context."),
+    },
+    // mockup :1363 (also BankStatementWorkspace.tsx:1351); the mockup writes "P&amp;L" as markup, the reader sees "P&L"
+    "bank-statement-advisor": {
+        more: kelly("Self-employed co-pilot — qualify on bank deposits, P&L, or 1099 income, see eligibility live, learn the Non-QM rules in-context."),
+    },
+    "pre-approval-letter": { more: null },
+    events: { more: null },
+    // mockup :1435 (also loan-programs/page.tsx:60)
+    "loan-programs": { more: kelly("Reference library of canonical loan-program rules. Versioned per regulator update.") },
+    exports: { more: null },
+    "check-your-rate": { more: null },
+    "refi-radar": { more: null },
+    "rate-widget": { more: null },
+    "email-signature": { more: null },
+};

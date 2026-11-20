@@ -2,6 +2,14 @@
 
 Earlier versions (v0.1.0 to v0.9.0) are described in the README's "Known nulls and choices" section and in each tag's commit.
 
+## v0.14.0 (additive minor; v0.13.0 is X2d's)
+
+- **PathfinderPro feature sales pages (PFP GATEWAY X2e; ruling K-834; MAP-LAND-EXPAND-261119 amendment A2, unit LE-16):** `PFP_FEATURE_PAGE_COPY` (`more`: a longer line per locked slug, null where the mockup draws none) and `PfpFeaturePageCopy`. Five Kelly D60 strings added to the frozen copy (73 in all): Quick Quote, HECM Advisor, DSCR Advisor, Bank-Statement Advisor and Loan Programs. Each is the line the mockup draws under that feature's heading (each also renders in PathfinderPro today).
+- **Derive kind `markup`:** a quoted string the mockup writes into the page as markup; its entities are decoded as the reader sees them (`P&amp;L` reads "P&L"). The existing kinds are unchanged.
+- `PFP_FEATURES[slug].learnMore` stays null for every slug: no `/features/<slug>` page is live yet.
+- The consumer test imports `PFP_FEATURE_PAGE_COPY`.
+- Nothing renamed or removed; no existing string changed.
+
 ## v0.12.0 (additive minor)
 
 - **PathfinderPro gateway Home words (PFP GATEWAY X2c; ruling K-822; MAP-LAND-EXPAND-261119 §2):** `PFP_HOME_COPY`, 14 Kelly D60 strings added to the frozen copy:

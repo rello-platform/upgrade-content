@@ -7,6 +7,7 @@ import { join } from "node:path";
 import {
   KELLY_D60,
   PFP_FEATURES,
+  PFP_FEATURE_PAGE_COPY,
   PFP_HOME_COPY,
   PFP_LOCKED_FEATURE_SLUGS,
   PFP_LOCK_COPY,
@@ -59,6 +60,7 @@ function pfpTexts(): Array<{ key: string; value: SourcedText }> {
   walk("PFP_LOCK_COPY", PFP_LOCK_COPY);
   walk("PFP_SETUP_COPY", PFP_SETUP_COPY);
   walk("PFP_HOME_COPY", PFP_HOME_COPY);
+  walk("PFP_FEATURE_PAGE_COPY", PFP_FEATURE_PAGE_COPY);
   return out;
 }
 
@@ -74,7 +76,7 @@ test("PFP features: exactly the map's 14 locked slugs (§1.3), each with a name 
 
 test("every PFP string has exactly one source, shipped or kelly; every kelly source is D60's", () => {
   const texts = pfpTexts();
-  assert.equal(texts.length, 78); // 14 names + 14 values + 17 lock-UI + 19 Get set up (v0.11.0) + 14 Home (v0.12.0)
+  assert.equal(texts.length, 83); // 14 names + 14 values + 17 lock-UI + 19 Get set up (v0.11.0) + 14 Home (v0.12.0) + 5 feature pages (v0.14.0)
   for (const { key, value } of texts) {
     assert.ok(value.text.trim().length > 0, `${key}: empty`);
     const form = sourceForm(value.source);
@@ -275,4 +277,54 @@ test("Home: the locked-item screen-reader text can't be derived by the package r
   for (const f of FROZEN.strings.filter((s) => s.key.startsWith("PFP_HOME_COPY."))) {
     assert.equal(src.split(f.mockup).length - 1, 1, `${f.key}: snippet must occur exactly once`);
   }
+});
+
+/**
+ * X2e (PFP GATEWAY; ruling K-834; MAP-LAND-EXPAND A2, LE-16): the feature sales pages' longer lines. As Kelly strings,
+ * the tests above already hold them byte-equal to the frozen copy and (when readable) to the mockup, one source each,
+ * clean under the copy rules. These add the shape, the nulls, the one-occurrence rule and the markup derivation.
+ */
+test("feature pages: keyed by exactly the 14 locked slugs in the map's order; a line only where the mockup draws one", () => {
+  assert.deepEqual(Object.keys(PFP_FEATURE_PAGE_COPY), [...PFP_LOCKED_FEATURE_SLUGS]);
+  const withLine = PFP_LOCKED_FEATURE_SLUGS.filter((s) => PFP_FEATURE_PAGE_COPY[s].more !== null);
+  assert.deepEqual(withLine, ["quick-quote", "hecm-advisor", "dscr-advisor", "bank-statement-advisor", "loan-programs"]);
+  for (const s of withLine) assert.equal(PFP_FEATURE_PAGE_COPY[s].more?.source, KELLY_D60, s);
+  // Learn more stays hidden until a page is live (A2): this package version does not flip any learnMore.
+  for (const s of PFP_LOCKED_FEATURE_SLUGS) assert.equal(PFP_FEATURES[s].learnMore, null, s);
+});
+
+test("feature pages: no hole, no price, no rate claim; the line is not the value sentence again", () => {
+  for (const s of PFP_LOCKED_FEATURE_SLUGS) {
+    const more = PFP_FEATURE_PAGE_COPY[s].more;
+    if (!more) continue;
+    assert.doesNotMatch(more.text, /[{}$]/, s);
+    assert.deepEqual(refusedCopy(more.text), [], s);
+    assert.notEqual(more.text, PFP_FEATURES[s].value?.text, s);
+  }
+});
+
+test("markup derivation decodes the mockup's entities, and nothing else changes (planted)", () => {
+  assert.equal(deriveD60Text("markup", '"P&amp;L, or 1099"'), "P&L, or 1099");
+  assert.equal(deriveD60Text("markup", '"a &lt;b&gt; &quot;c&quot; &apos;d&apos;"'), 'a <b> "c" \'d\'');
+  assert.equal(deriveD60Text("quoted", '"P&amp;L"'), "P&amp;L", "the quoted kind is unchanged: it never decodes");
+  // A frozen markup entry whose text kept the entity would fail the frozen-copy test above.
+  assert.notEqual(deriveD60Text("markup", '"P&amp;L"'), "P&amp;L");
+});
+
+test("feature pages: every snippet occurs exactly once in the approved mockup (skipped when the file is not readable here)", (t) => {
+  let raw: Buffer;
+  try {
+    raw = readFileSync(MOCKUP_PATH);
+  } catch {
+    t.skip("mockup not readable here");
+    return;
+  }
+  if (createHash("sha256").update(raw).digest("hex") !== PINNED_SHA256) {
+    t.skip("mockup on disk is not the approved version");
+    return;
+  }
+  const src = raw.toString("utf8");
+  const pages = FROZEN.strings.filter((s) => s.key.startsWith("PFP_FEATURE_PAGE_COPY."));
+  assert.equal(pages.length, 5);
+  for (const f of pages) assert.equal(src.split(f.mockup).length - 1, 1, `${f.key}: snippet must occur exactly once`);
 });

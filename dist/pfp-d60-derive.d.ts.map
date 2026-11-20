@@ -1,1 +1,1 @@
-{"version":3,"file":"pfp-d60-derive.d.ts","sourceRoot":"","sources":["../src/pfp-d60-derive.ts"],"names":[],"mappings":"AAAA;;;;;;;;;GASG;AACH,MAAM,MAAM,OAAO,GAAG,QAAQ,GAAG,QAAQ,GAAG,UAAU,CAAC;AAWvD,wBAAgB,aAAa,CAAC,IAAI,EAAE,OAAO,EAAE,OAAO,EAAE,MAAM,GAAG,MAAM,CAMpE"}
+{"version":3,"file":"pfp-d60-derive.d.ts","sourceRoot":"","sources":["../src/pfp-d60-derive.ts"],"names":[],"mappings":"AAAA;;;;;;;;;;;;GAYG;AACH,MAAM,MAAM,OAAO,GAAG,QAAQ,GAAG,QAAQ,GAAG,UAAU,GAAG,QAAQ,CAAC;AAalE,wBAAgB,aAAa,CAAC,IAAI,EAAE,OAAO,EAAE,OAAO,EAAE,MAAM,GAAG,MAAM,CAOpE"}

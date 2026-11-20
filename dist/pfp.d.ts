@@ -283,4 +283,62 @@ export declare const PFP_HOME_COPY: {
         };
     };
 };
+export interface PfpFeaturePageCopy {
+    /**
+     * A longer line about the feature for its `/features/<slug>` sales page, beyond the one value sentence: the line the
+     * mockup draws under the feature's own heading (Kelly D60). null where the mockup has none: the page omits it.
+     */
+    readonly more: SourcedText | null;
+}
+/**
+ * PathfinderPro's feature sales pages (PFP GATEWAY X2e; LE-16; MAP-LAND-EXPAND amendment A2; ruling K-834). A page at
+ * `/features/<slug>` prints `PFP_FEATURES[slug].name`, its `value` and, when present, `more` below. Every `more` is a
+ * line the D60 mockup draws under that feature's heading in its preview; the five that exist also render in
+ * PathfinderPro today (noted per line). Kelly approves these pages' words before PathfinderPro merges them; until a
+ * slug's page is live its `PFP_FEATURES[slug].learnMore` stays null. ⛔ No price, no figure that is a price or a rate.
+ */
+export declare const PFP_FEATURE_PAGE_COPY: {
+    readonly "call-workstation": {
+        readonly more: null;
+    };
+    readonly "quick-quote": {
+        readonly more: SourcedText;
+    };
+    readonly "hecm-advisor": {
+        readonly more: SourcedText;
+    };
+    readonly "va-advisor": {
+        readonly more: null;
+    };
+    readonly "dscr-advisor": {
+        readonly more: SourcedText;
+    };
+    readonly "bank-statement-advisor": {
+        readonly more: SourcedText;
+    };
+    readonly "pre-approval-letter": {
+        readonly more: null;
+    };
+    readonly events: {
+        readonly more: null;
+    };
+    readonly "loan-programs": {
+        readonly more: SourcedText;
+    };
+    readonly exports: {
+        readonly more: null;
+    };
+    readonly "check-your-rate": {
+        readonly more: null;
+    };
+    readonly "refi-radar": {
+        readonly more: null;
+    };
+    readonly "rate-widget": {
+        readonly more: null;
+    };
+    readonly "email-signature": {
+        readonly more: null;
+    };
+};
 //# sourceMappingURL=pfp.d.ts.map

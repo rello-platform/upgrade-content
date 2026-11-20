@@ -24,6 +24,7 @@ ES module only: `"type": "module"`, with `"exports"` → `./dist/index.js` (type
 | `sourceForm(source)` | Which of the two source forms (rule 1) a `source` is: `"shipped"`, `"kelly"`, or `null` (refused). | This package's tests. |
 | `PFP_FEATURES`, `PFP_LOCKED_FEATURE_SLUGS`, `LockedFeatureSlug`, `PfpFeatureCopy` (v0.10.0) | PathfinderPro's 14 locked features (MAP-LAND-EXPAND §1.3): `name`, `value` (one sentence) and `learnMore` (null for every slug until its `/features/<slug>` page is live). | PathfinderPro's lock banners and locked pages (PFP GATEWAY land-and-expand). |
 | `PFP_LOCK_COPY`, `KELLY_D60` (v0.10.0) | Every string PathfinderPro's lock UI shows: the banner frame, buttons, tags, menu group labels and the preview hint. `{feature}` in a template is filled with `PFP_FEATURES[slug].name.text`. | Same. |
+| `PFP_FEATURE_PAGE_COPY`, `PfpFeaturePageCopy` (v0.14.0) | PathfinderPro's feature sales pages (`/features/<slug>`): per locked slug, `more`, a longer line beyond the value sentence, or null where the mockup draws none. | PathfinderPro's feature pages (PFP GATEWAY LE-16). |
 | `PFP_HOME_COPY` (v0.12.0) | PathfinderPro's gateway Home words: the card row's name, the setup card's "steps done" and "See all steps →", the rates card's title and link, the Check Your Rate card's lines, Recent Calls' two empty states and its chips. No count, time or hole. | PathfinderPro's gateway Home (PFP GATEWAY LE-5). |
 | `PFP_SETUP_COPY`, `PFP_SETUP_STEP_IDS`, `PfpSetupStepId`, `PfpSetupStepCopy` (v0.11.0) | PathfinderPro's Get set up card: the title, per step the `where` and `rule` ("Checks off when …") lines, a `label` for the two steps PathfinderPro has no title for (`test-quote`, `email-signature`), and the footer sentences. Keyed by the step ids of PathfinderPro's setup-progress read. | PathfinderPro's Get Started page (PFP GATEWAY LE-4b). |
 
@@ -72,6 +73,14 @@ Source: Kelly D60, the same mockup and hash. Frozen copy: 14 more strings (68 in
   - words drawn with a count or a time: "leads this week", "sheet in …", "Next: …", and the three website/rates lines that carry "shown N times" or "sheet in …";
   - the locked-item screen-reader text at mockup :832 ("…, locked: opens a preview of …"), because its holes aren't in the form the derive rule turns into `{feature}`.
 - No filter or search words, and no "Sample data".
+
+## PathfinderPro feature sales pages (v0.14.0)
+
+Source: Kelly D60, the same mockup and hash. Frozen copy: 5 more strings (73 in all), each derived from a snippet that occurs exactly once.
+
+- `more` is the line the mockup draws under the feature's own heading in its preview (the workspace subtitle, Quick Quote's card line, the Loan Program Library's subtitle). Each also renders in PathfinderPro today. The other nine slugs have no such line in the mockup, so `more` is null and the page omits it.
+- Bank-Statement Advisor's line is written in the mockup as markup (`P&amp;L`); the `markup` derive kind decodes it to what the reader sees ("P&L").
+- `learnMore` stays null: a slug's page must be live, and Kelly must have approved its words, before it is set.
 
 ## Known nulls and choices at v0.9.0
 

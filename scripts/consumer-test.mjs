@@ -32,7 +32,7 @@ const RUNTIME_EXPORTS = [
   "PEER_STORIES", "assertPeerStory",
   "COPY_RULES", "refusedCopy",
   "KELLY_D60", "PFP_FEATURES", "PFP_LOCKED_FEATURE_SLUGS", "PFP_LOCK_COPY",
-  "PFP_SETUP_COPY", "PFP_SETUP_STEP_IDS", "PFP_HOME_COPY",
+  "PFP_SETUP_COPY", "PFP_SETUP_STEP_IDS", "PFP_HOME_COPY", "PFP_FEATURE_PAGE_COPY",
 ];
 
 const RUNTIME_CHECK = `
@@ -62,6 +62,8 @@ assert.deepEqual(Object.keys(m.PFP_SETUP_COPY.steps), [...m.PFP_SETUP_STEP_IDS])
 assert.equal(m.PFP_SETUP_COPY.title.source, m.KELLY_D60);
 assert.equal(m.PFP_SETUP_COPY.steps.identity.rule, null);
 assert.equal(m.PFP_HOME_COPY.rates.title.source, m.KELLY_D60);
+assert.equal(m.PFP_FEATURE_PAGE_COPY["hecm-advisor"].more.source, m.KELLY_D60);
+assert.equal(m.PFP_FEATURE_PAGE_COPY.events.more, null);
 assert.equal(typeof m.shippedUpgradePaths, "function");
 assert.deepEqual(m.shippedUpgradePaths(["the-oven"]), []);
 assert.deepEqual(m.shippedUpgradePaths(["home-ready"]), ["home-ready"]);
@@ -79,6 +81,7 @@ import {
   type BundleProductSlug, type HostedProductSlug, type UpgradeContentEntry, type SourcedText,
   type ExplainerPoints, type PeerStory, type CopyRule,
   PFP_SETUP_COPY, PFP_SETUP_STEP_IDS, type PfpSetupStepId, type PfpSetupStepCopy, PFP_HOME_COPY,
+  PFP_FEATURE_PAGE_COPY, type PfpFeaturePageCopy, type LockedFeatureSlug,
 } from "${PKG}";
 
 const kind: ProductKind = GROWTH_PRODUCTS["home-ready"].kind;
@@ -103,6 +106,9 @@ const stepId: PfpSetupStepId = PFP_SETUP_STEP_IDS[0];
 const stepCopy: PfpSetupStepCopy = PFP_SETUP_COPY.steps[stepId];
 const setupTitle: SourcedText = PFP_SETUP_COPY.title;
 const homeChip: SourcedText = PFP_HOME_COPY.recentCalls.chips.new;
+const pageSlug: LockedFeatureSlug = "loan-programs";
+const pageCopy: PfpFeaturePageCopy = PFP_FEATURE_PAGE_COPY[pageSlug];
+const pageMore: SourcedText | null = pageCopy.more;
 // The types are real, not \`any\`: each of these must be a compile error.
 // @ts-expect-error not a product slug
 UPGRADE_CONTENT["not-an-app"];

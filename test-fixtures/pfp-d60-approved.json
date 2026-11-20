@@ -411,6 +411,36 @@
       "kind": "template",
       "mockup": "<span class=\"chip hot\">New</span>",
       "text": "New"
+    },
+    {
+      "key": "PFP_FEATURE_PAGE_COPY.quick-quote.more",
+      "kind": "template",
+      "mockup": "<p class=\"csub\">30-second ballpark — no intake created until you save.</p>",
+      "text": "30-second ballpark — no intake created until you save."
+    },
+    {
+      "key": "PFP_FEATURE_PAGE_COPY.hecm-advisor.more",
+      "kind": "quoted",
+      "mockup": "\"Reverse-mortgage co-pilot — enter what you hear, see eligibility live, learn the rules in-context.\"",
+      "text": "Reverse-mortgage co-pilot — enter what you hear, see eligibility live, learn the rules in-context."
+    },
+    {
+      "key": "PFP_FEATURE_PAGE_COPY.dscr-advisor.more",
+      "kind": "quoted",
+      "mockup": "\"Investor co-pilot — qualify on the property's rent vs. debt service, see eligibility live, learn the niche rules in-context.\"",
+      "text": "Investor co-pilot — qualify on the property's rent vs. debt service, see eligibility live, learn the niche rules in-context."
+    },
+    {
+      "key": "PFP_FEATURE_PAGE_COPY.bank-statement-advisor.more",
+      "kind": "markup",
+      "mockup": "\"Self-employed co-pilot — qualify on bank deposits, P&amp;L, or 1099 income, see eligibility live, learn the Non-QM rules in-context.\"",
+      "text": "Self-employed co-pilot — qualify on bank deposits, P&L, or 1099 income, see eligibility live, learn the Non-QM rules in-context."
+    },
+    {
+      "key": "PFP_FEATURE_PAGE_COPY.loan-programs.more",
+      "kind": "template",
+      "mockup": "<p class=\"page-sub\">Reference library of canonical loan-program rules. Versioned per regulator update.</p>",
+      "text": "Reference library of canonical loan-program rules. Versioned per regulator update."
     }
   ]
 }
