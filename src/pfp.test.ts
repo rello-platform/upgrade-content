@@ -9,6 +9,8 @@ import {
   PFP_FEATURES,
   PFP_LOCKED_FEATURE_SLUGS,
   PFP_LOCK_COPY,
+  PFP_SETUP_COPY,
+  PFP_SETUP_STEP_IDS,
   UPGRADE_CONTENT,
   refusedCopy,
   sourceForm,
@@ -48,11 +50,13 @@ function pfpTexts(): Array<{ key: string; value: SourcedText }> {
     if (f.value) out.push({ key: `PFP_FEATURES.${slug}.value`, value: f.value });
   }
   const walk = (prefix: string, node: unknown) => {
+    if (node === null) return; // null means omit: no string here
     const o = node as Record<string, unknown>;
     if (typeof o.text === "string" && typeof o.source === "string") out.push({ key: prefix, value: o as unknown as SourcedText });
     else for (const [k, v] of Object.entries(o)) walk(`${prefix}.${k}`, v);
   };
   walk("PFP_LOCK_COPY", PFP_LOCK_COPY);
+  walk("PFP_SETUP_COPY", PFP_SETUP_COPY);
   return out;
 }
 
@@ -68,7 +72,7 @@ test("PFP features: exactly the map's 14 locked slugs (§1.3), each with a name 
 
 test("every PFP string has exactly one source, shipped or kelly; every kelly source is D60's", () => {
   const texts = pfpTexts();
-  assert.equal(texts.length, 45); // 14 names + 14 values + 17 lock-UI strings
+  assert.equal(texts.length, 64); // 14 names + 14 values + 17 lock-UI strings + 19 Get set up strings (v0.11.0)
   for (const { key, value } of texts) {
     assert.ok(value.text.trim().length > 0, `${key}: empty`);
     const form = sourceForm(value.source);
@@ -165,6 +169,65 @@ test("copy rules: no PFP string breaks one; no price anywhere", () => {
     .map(({ key, value }) => ({ key, rules: refusedCopy(value.text) }))
     .filter((r) => r.rules.length > 0);
   assert.deepEqual(broken, []);
-  const json = JSON.stringify({ PFP_FEATURES, PFP_LOCK_COPY });
+  const json = JSON.stringify({ PFP_FEATURES, PFP_LOCK_COPY, PFP_SETUP_COPY });
   assert.doesNotMatch(json, /\$\s?\d|\bprice\b"?\s*:|\bamount\b"?\s*:/i);
+});
+
+/**
+ * X2b (PFP GATEWAY; ruling K-812; MAP-LAND-EXPAND §5 LE-4b, A5): the Get set up card's words. They are Kelly strings, so
+ * the tests above already hold them byte-equal to the frozen copy and (when readable) to the mockup, one source each, no
+ * figures. These add the shape: keyed by PathfinderPro's step ids, no billing, labels only for the two new steps, and
+ * the identity lines null for the reason the README gives.
+ */
+test("Get set up: keyed by exactly PathfinderPro's eight step ids (setup-progress.ts @ 4102cabd), no billing", () => {
+  assert.deepEqual([...PFP_SETUP_STEP_IDS], [
+    "lenders", "comp", "identity", "compliance", "check-your-rate", "test-quote", "rate-widget", "email-signature",
+  ]);
+  assert.deepEqual(Object.keys(PFP_SETUP_COPY.steps), [...PFP_SETUP_STEP_IDS]);
+  assert.doesNotMatch(JSON.stringify(PFP_SETUP_COPY), /billing|payment/i);
+});
+
+test("Get set up: a label only for the two steps PathfinderPro has no title for; every other line sourced or null", () => {
+  const labelled = PFP_SETUP_STEP_IDS.filter((id) => "label" in PFP_SETUP_COPY.steps[id]);
+  assert.deepEqual(labelled, ["test-quote", "email-signature"]);
+  for (const id of PFP_SETUP_STEP_IDS) {
+    const s = PFP_SETUP_COPY.steps[id];
+    for (const v of [s.where, s.rule]) if (v !== null) assert.equal(v.source, KELLY_D60, id);
+    if (s.rule) assert.match(s.rule.text, /^Checks off when /, id);
+  }
+  // identity's mockup lines name NMLS (copy rule 4), so they are null: the card renders nothing there.
+  assert.equal(PFP_SETUP_COPY.steps.identity.where, null);
+  assert.equal(PFP_SETUP_COPY.steps.identity.rule, null);
+  assert.ok(refusedCopy("your NMLS").includes("NMLS"), "the rule that nulls them exists");
+});
+
+test("Get set up: no count is templated (templates hold only {feature}); the footer reads in the mockup's order", () => {
+  for (const { key, value } of pfpTexts().filter((t) => t.key.startsWith("PFP_SETUP_COPY."))) {
+    assert.doesNotMatch(value.text, /[{}$]|\d/, `${key}: no hole, no figure`);
+  }
+  assert.deepEqual(Object.keys(PFP_SETUP_COPY.footer), ["goTo", "neverTicked"]);
+});
+
+test("Get set up: the identity lines the package leaves null are the mockup's NMLS lines (skipped when the file is not readable here)", (t) => {
+  let raw: Buffer;
+  try {
+    raw = readFileSync(MOCKUP_PATH);
+  } catch {
+    t.skip(`mockup not readable here (${MOCKUP_PATH})`);
+    return;
+  }
+  if (createHash("sha256").update(raw).digest("hex") !== PINNED_SHA256) {
+    t.skip("mockup on disk is not the approved version");
+    return;
+  }
+  const src = raw.toString("utf8");
+  const block = src.slice(src.indexOf("identity:  {title:"), src.indexOf("compliance:{title:"));
+  const where = /where:"([^"]*)"/.exec(block)![1];
+  const rule = /rule:"([^"]*)"/.exec(block)![1];
+  assert.ok(refusedCopy(where).includes("NMLS"), where);
+  assert.ok(refusedCopy(rule).includes("NMLS"), rule);
+  // Every frozen Get set up snippet occurs exactly once in the approved file (no ambiguous source).
+  for (const f of FROZEN.strings.filter((s) => s.key.startsWith("PFP_SETUP_COPY."))) {
+    assert.equal(src.split(f.mockup).length - 1, 1, `${f.key}: snippet must occur exactly once`);
+  }
 });

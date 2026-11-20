@@ -169,3 +169,91 @@ export const PFP_LOCK_COPY = {
   /** Shown when a locked preview's input is used. */
   hint: kelly("Start your trial to price your own borrower"),
 } as const satisfies Record<string, SourcedText | Record<string, SourcedText>>;
+
+/**
+ * The step ids PathfinderPro's setup-progress read uses (PathfinderPro `src/lib/gateway/setup-progress.ts:32-40 @ 4102cabd`),
+ * in its order. Billing is not a step (MAP-LAND-EXPAND amendment A5).
+ */
+export const PFP_SETUP_STEP_IDS = [
+  "lenders",
+  "comp",
+  "identity",
+  "compliance",
+  "check-your-rate",
+  "test-quote",
+  "rate-widget",
+  "email-signature",
+] as const;
+
+export type PfpSetupStepId = (typeof PFP_SETUP_STEP_IDS)[number];
+
+export interface PfpSetupStepCopy {
+  /**
+   * The step's label, present only for the two steps PathfinderPro has no shipped title for (MAP §5 LE-4b). The other
+   * six steps keep the title PathfinderPro already shows; this package holds no label for them.
+   */
+  readonly label?: SourcedText;
+  /** Where in PathfinderPro the step is done (the mockup's `where`). */
+  readonly where: SourcedText | null;
+  /** When the step checks off (the mockup's `rule`): it checks off by itself, never by a tick. */
+  readonly rule: SourcedText | null;
+}
+
+/**
+ * The Get set up card's words, as Kelly approved them (D60), keyed by the PathfinderPro read's step ids. The mockup's
+ * `test-lead` step is the read's `test-quote`.
+ *
+ * NULLS. `identity.where` and `identity.rule` are null: the mockup's lines name "NMLS", which this package's copy rules
+ * refuse (README rule 4). The consumer renders nothing in their place.
+ *
+ * NOT HERE. The footer's last sentence ("When all ${g.m} are done, this card goes away.") interpolates a count; this
+ * package's templates hold only `{feature}`, so it is left for the PFP Gateway KA. ⛔ No price anywhere.
+ */
+export const PFP_SETUP_COPY = {
+  title: kelly("Get set up"),
+  steps: {
+    lenders: {
+      where: kelly("Settings › Lenders & Rate Sheets"),
+      rule: kelly("Checks off when at least one lender is turned on and saved in Settings › Lenders & Rate Sheets."),
+    },
+    comp: {
+      where: kelly("My Rates › Comp"),
+      rule: kelly("Checks off when your comp is saved in My Rates for a lender you turned on."),
+    },
+    identity: {
+      where: null,
+      rule: null,
+    },
+    compliance: {
+      where: kelly("Settings › Compliance"),
+      rule: kelly("Checks off when your disclosures are saved in Settings › Compliance."),
+    },
+    "check-your-rate": {
+      where: kelly("Check Your Rate › Setup"),
+      rule: kelly("Checks off when your page is turned on and saved in Check Your Rate › Setup."),
+    },
+    "test-quote": {
+      label: kelly("Send yourself a test quote"),
+      where: kelly("Check Your Rate › your page, then Pipeline › Quotes"),
+      rule: kelly("Checks off when one quote from your page is saved in Pipeline › Quotes."),
+    },
+    "rate-widget": {
+      where: kelly("Rate Widget"),
+      rule: kelly("Checks off when your widget is first seen on your website."),
+    },
+    "email-signature": {
+      label: kelly("Add rates to your email signature"),
+      where: kelly("Email Signature"),
+      rule: kelly("Checks off when your signature is saved in Email Signature."),
+    },
+  },
+  /** The card's footer, in order. */
+  footer: {
+    goTo: kelly("Click › to go to that spot in PathfinderPro."),
+    neverTicked: kelly("A circle checks off by itself when that data is saved there; you never tick it."),
+  },
+} as const satisfies {
+  title: SourcedText;
+  steps: Record<PfpSetupStepId, PfpSetupStepCopy>;
+  footer: Record<string, SourcedText>;
+};

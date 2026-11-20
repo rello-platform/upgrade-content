@@ -213,6 +213,120 @@
       "kind": "quoted",
       "mockup": ": \"Start your trial to price your own borrower\"",
       "text": "Start your trial to price your own borrower"
+    },
+    {
+      "key": "PFP_SETUP_COPY.title",
+      "kind": "template",
+      "mockup": "<div class=\"eyebrow\">Get set up</div>",
+      "text": "Get set up"
+    },
+    {
+      "key": "PFP_SETUP_COPY.steps.lenders.where",
+      "kind": "quoted",
+      "mockup": "lenders:   {title:\"Turn on your lenders\", short:\"Lenders\", where:\"Settings › Lenders & Rate Sheets\"",
+      "text": "Settings › Lenders & Rate Sheets"
+    },
+    {
+      "key": "PFP_SETUP_COPY.steps.lenders.rule",
+      "kind": "quoted",
+      "mockup": "rule:\"Checks off when at least one lender is turned on and saved in Settings › Lenders & Rate Sheets.\"",
+      "text": "Checks off when at least one lender is turned on and saved in Settings › Lenders & Rate Sheets."
+    },
+    {
+      "key": "PFP_SETUP_COPY.steps.comp.where",
+      "kind": "quoted",
+      "mockup": "comp:      {title:\"Set your comp\", short:\"Comp\", where:\"My Rates › Comp\"",
+      "text": "My Rates › Comp"
+    },
+    {
+      "key": "PFP_SETUP_COPY.steps.comp.rule",
+      "kind": "quoted",
+      "mockup": "rule:\"Checks off when your comp is saved in My Rates for a lender you turned on.\"",
+      "text": "Checks off when your comp is saved in My Rates for a lender you turned on."
+    },
+    {
+      "key": "PFP_SETUP_COPY.steps.compliance.where",
+      "kind": "quoted",
+      "mockup": "compliance:{title:\"Review your disclosures\", short:\"Disclosures\", where:\"Settings › Compliance\"",
+      "text": "Settings › Compliance"
+    },
+    {
+      "key": "PFP_SETUP_COPY.steps.compliance.rule",
+      "kind": "quoted",
+      "mockup": "rule:\"Checks off when your disclosures are saved in Settings › Compliance.\"",
+      "text": "Checks off when your disclosures are saved in Settings › Compliance."
+    },
+    {
+      "key": "PFP_SETUP_COPY.steps.check-your-rate.where",
+      "kind": "quoted",
+      "mockup": "\"check-your-rate\":{title:\"Set up Check Your Rate\", short:\"CYR page live\", where:\"Check Your Rate › Setup\"",
+      "text": "Check Your Rate › Setup"
+    },
+    {
+      "key": "PFP_SETUP_COPY.steps.check-your-rate.rule",
+      "kind": "quoted",
+      "mockup": "rule:\"Checks off when your page is turned on and saved in Check Your Rate › Setup.\"",
+      "text": "Checks off when your page is turned on and saved in Check Your Rate › Setup."
+    },
+    {
+      "key": "PFP_SETUP_COPY.steps.test-quote.label",
+      "kind": "quoted",
+      "mockup": "\"test-lead\":{title:\"Send yourself a test quote\"",
+      "text": "Send yourself a test quote"
+    },
+    {
+      "key": "PFP_SETUP_COPY.steps.test-quote.where",
+      "kind": "quoted",
+      "mockup": "\"test-lead\":{title:\"Send yourself a test quote\", short:\"Test quote\", where:\"Check Your Rate › your page, then Pipeline › Quotes\"",
+      "text": "Check Your Rate › your page, then Pipeline › Quotes"
+    },
+    {
+      "key": "PFP_SETUP_COPY.steps.test-quote.rule",
+      "kind": "quoted",
+      "mockup": "rule:\"Checks off when one quote from your page is saved in Pipeline › Quotes.\"",
+      "text": "Checks off when one quote from your page is saved in Pipeline › Quotes."
+    },
+    {
+      "key": "PFP_SETUP_COPY.steps.rate-widget.where",
+      "kind": "quoted",
+      "mockup": "\"rate-widget\":{title:\"Put your rates on your website\", short:\"Widget seen\", where:\"Rate Widget\"",
+      "text": "Rate Widget"
+    },
+    {
+      "key": "PFP_SETUP_COPY.steps.rate-widget.rule",
+      "kind": "quoted",
+      "mockup": "rule:\"Checks off when your widget is first seen on your website.\"",
+      "text": "Checks off when your widget is first seen on your website."
+    },
+    {
+      "key": "PFP_SETUP_COPY.steps.email-signature.label",
+      "kind": "quoted",
+      "mockup": "\"email-signature\":{title:\"Add rates to your email signature\"",
+      "text": "Add rates to your email signature"
+    },
+    {
+      "key": "PFP_SETUP_COPY.steps.email-signature.where",
+      "kind": "quoted",
+      "mockup": "\"email-signature\":{title:\"Add rates to your email signature\", short:\"Signature\", where:\"Email Signature\"",
+      "text": "Email Signature"
+    },
+    {
+      "key": "PFP_SETUP_COPY.steps.email-signature.rule",
+      "kind": "quoted",
+      "mockup": "rule:\"Checks off when your signature is saved in Email Signature.\"",
+      "text": "Checks off when your signature is saved in Email Signature."
+    },
+    {
+      "key": "PFP_SETUP_COPY.footer.goTo",
+      "kind": "template",
+      "mockup": "Click › to go to that spot in PathfinderPro.",
+      "text": "Click › to go to that spot in PathfinderPro."
+    },
+    {
+      "key": "PFP_SETUP_COPY.footer.neverTicked",
+      "kind": "template",
+      "mockup": "A circle checks off by itself when that data is saved there; you never tick it.",
+      "text": "A circle checks off by itself when that data is saved there; you never tick it."
     }
   ]
 }

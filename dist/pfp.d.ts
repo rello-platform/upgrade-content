@@ -167,4 +167,75 @@ export declare const PFP_LOCK_COPY: {
     /** Shown when a locked preview's input is used. */
     readonly hint: SourcedText;
 };
+/**
+ * The step ids PathfinderPro's setup-progress read uses (PathfinderPro `src/lib/gateway/setup-progress.ts:32-40 @ 4102cabd`),
+ * in its order. Billing is not a step (MAP-LAND-EXPAND amendment A5).
+ */
+export declare const PFP_SETUP_STEP_IDS: readonly ["lenders", "comp", "identity", "compliance", "check-your-rate", "test-quote", "rate-widget", "email-signature"];
+export type PfpSetupStepId = (typeof PFP_SETUP_STEP_IDS)[number];
+export interface PfpSetupStepCopy {
+    /**
+     * The step's label, present only for the two steps PathfinderPro has no shipped title for (MAP §5 LE-4b). The other
+     * six steps keep the title PathfinderPro already shows; this package holds no label for them.
+     */
+    readonly label?: SourcedText;
+    /** Where in PathfinderPro the step is done (the mockup's `where`). */
+    readonly where: SourcedText | null;
+    /** When the step checks off (the mockup's `rule`): it checks off by itself, never by a tick. */
+    readonly rule: SourcedText | null;
+}
+/**
+ * The Get set up card's words, as Kelly approved them (D60), keyed by the PathfinderPro read's step ids. The mockup's
+ * `test-lead` step is the read's `test-quote`.
+ *
+ * NULLS. `identity.where` and `identity.rule` are null: the mockup's lines name "NMLS", which this package's copy rules
+ * refuse (README rule 4). The consumer renders nothing in their place.
+ *
+ * NOT HERE. The footer's last sentence ("When all ${g.m} are done, this card goes away.") interpolates a count; this
+ * package's templates hold only `{feature}`, so it is left for the PFP Gateway KA. ⛔ No price anywhere.
+ */
+export declare const PFP_SETUP_COPY: {
+    readonly title: SourcedText;
+    readonly steps: {
+        readonly lenders: {
+            readonly where: SourcedText;
+            readonly rule: SourcedText;
+        };
+        readonly comp: {
+            readonly where: SourcedText;
+            readonly rule: SourcedText;
+        };
+        readonly identity: {
+            readonly where: null;
+            readonly rule: null;
+        };
+        readonly compliance: {
+            readonly where: SourcedText;
+            readonly rule: SourcedText;
+        };
+        readonly "check-your-rate": {
+            readonly where: SourcedText;
+            readonly rule: SourcedText;
+        };
+        readonly "test-quote": {
+            readonly label: SourcedText;
+            readonly where: SourcedText;
+            readonly rule: SourcedText;
+        };
+        readonly "rate-widget": {
+            readonly where: SourcedText;
+            readonly rule: SourcedText;
+        };
+        readonly "email-signature": {
+            readonly label: SourcedText;
+            readonly where: SourcedText;
+            readonly rule: SourcedText;
+        };
+    };
+    /** The card's footer, in order. */
+    readonly footer: {
+        readonly goTo: SourcedText;
+        readonly neverTicked: SourcedText;
+    };
+};
 //# sourceMappingURL=pfp.d.ts.map
