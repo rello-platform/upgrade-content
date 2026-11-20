@@ -1,19 +1,27 @@
 import type { StandaloneProductSlug } from "./hosts.js";
 /**
- * One piece of shipped copy and where it already ships.
+ * One piece of copy and where its exact words come from. No agent-written words live in
+ * this package: every `text` has exactly ONE source, in one of two forms.
  *
- * ⛔ No new copy lives in this package. Every `text` is a string that already exists
- * in shipped product code, byte for byte as it RENDERS to the reader:
- * - JSX text and JSX attribute strings: HTML entities decode (`&apos;` shows `'`);
- * - a JS string (an object field, metadata, a constant rendered as `{expr}`): it
- *   renders as written, so an entity inside it shows literally and cannot be
- *   quoted here as decoded. Such a line is left null, never "fixed" here.
- * `source` names it: `<Repo> <path>:<line> @ <short sha>`.
+ * 1. SHIPPED: `<Repo> <path>:<line> @ <short sha>`. The string already exists in shipped
+ *    product code, byte for byte as it RENDERS to the reader:
+ *    - JSX text and JSX attribute strings: HTML entities decode (`&apos;` shows `'`);
+ *    - a JS string (an object field, metadata, a constant rendered as `{expr}`): it
+ *      renders as written, so an entity inside it shows literally and cannot be
+ *      quoted here as decoded. Such a line is left null, never "fixed" here.
+ * 2. KELLY: `kelly: <decision id> · <file under iCloud RELLO TO BE BUILT> · sha256 <first 16 hex>`
+ *    (Platform KA 1415). Kelly approved these exact words in that artefact. The text is
+ *    byte-equal to it (no paraphrase, no punctuation fixes), and a frozen copy of the
+ *    approved strings with the artefact's hash is committed and tested (src/pfp.test.ts).
+ *
+ * A string with neither source fails this package's tests.
  */
 export interface SourcedText {
     readonly text: string;
     readonly source: string;
 }
+/** Which of the two source forms (see SourcedText) `source` is, or null when it is neither: such a string fails the tests. */
+export declare function sourceForm(source: string): "shipped" | "kelly" | null;
 /**
  * At most three short points. A fourth is a compile error. A `null` point is a
  * shipped line that cannot be quoted as it renders (see SourcedText): the consumer

@@ -1,0 +1,218 @@
+{
+  "decision": "Kelly D60 (ANSWERS.md); Platform KA 1415 accepted a Kelly-approved source",
+  "mockup": "RELLO TO BE BUILT/BUILD-|-WORKSTREAM/PFP-GATEWAY/mockup/land-expand/pfp-land-expand-261119.html",
+  "sha256": "31a8b00489d56ae65744f6741df0026b62893bbc2fd9f3dae7a3a163e34e9529",
+  "note": "Frozen copy of every approved string. `mockup` is an exact substring of the approved file; `text` is deriveD60Text(kind, mockup) (src/pfp-d60-derive.ts). Never edit by hand: regenerate from the file at this hash.",
+  "strings": [
+    {
+      "key": "PFP_FEATURES.call-workstation.value",
+      "kind": "quoted",
+      "mockup": "value:\"Run the whole phone call on one screen: the borrower's answers on the left, live rates and payments on the right.\"",
+      "text": "Run the whole phone call on one screen: the borrower's answers on the left, live rates and payments on the right."
+    },
+    {
+      "key": "PFP_FEATURES.quick-quote.value",
+      "kind": "quoted",
+      "mockup": "value:\"Price a scenario in seconds while the borrower is still on the line.\"",
+      "text": "Price a scenario in seconds while the borrower is still on the line."
+    },
+    {
+      "key": "PFP_FEATURES.hecm-advisor.value",
+      "kind": "quoted",
+      "mockup": "value:\"Show a reverse-mortgage borrower what they can draw and what it costs, side by side.\"",
+      "text": "Show a reverse-mortgage borrower what they can draw and what it costs, side by side."
+    },
+    {
+      "key": "PFP_FEATURES.va-advisor.value",
+      "kind": "quoted",
+      "mockup": "value:\"Walk a veteran through funding fee, entitlement and payment in one view.\"",
+      "text": "Walk a veteran through funding fee, entitlement and payment in one view."
+    },
+    {
+      "key": "PFP_FEATURES.dscr-advisor.value",
+      "kind": "quoted",
+      "mockup": "value:\"Qualify an investor on the property's rent instead of their tax returns.\"",
+      "text": "Qualify an investor on the property's rent instead of their tax returns."
+    },
+    {
+      "key": "PFP_FEATURES.bank-statement-advisor.value",
+      "kind": "quoted",
+      "mockup": "value:\"Turn a self-employed borrower's deposits into qualifying income.\"",
+      "text": "Turn a self-employed borrower's deposits into qualifying income."
+    },
+    {
+      "key": "PFP_FEATURES.pre-approval-letter.value",
+      "kind": "quoted",
+      "mockup": "value:\"Send a branded pre-approval letter the moment a borrower qualifies, filled in from the call.\"",
+      "text": "Send a branded pre-approval letter the moment a borrower qualifies, filled in from the call."
+    },
+    {
+      "key": "PFP_FEATURES.events.value",
+      "kind": "quoted",
+      "mockup": "value:\"Plan homebuyer events and keep every attendee in your pipeline.\"",
+      "text": "Plan homebuyer events and keep every attendee in your pipeline."
+    },
+    {
+      "key": "PFP_FEATURES.loan-programs.value",
+      "kind": "quoted",
+      "mockup": "value:\"Your library of loan programs, so you can match a borrower to the right one during the call.\"",
+      "text": "Your library of loan programs, so you can match a borrower to the right one during the call."
+    },
+    {
+      "key": "PFP_FEATURES.exports.value",
+      "kind": "quoted",
+      "mockup": "value:\"Send a finished file to your loan system without typing it in twice.\"",
+      "text": "Send a finished file to your loan system without typing it in twice."
+    },
+    {
+      "key": "PFP_FEATURES.check-your-rate.value",
+      "kind": "quoted",
+      "mockup": "value:\"A page on your website where borrowers price their own loan and land in your pipeline.\"",
+      "text": "A page on your website where borrowers price their own loan and land in your pipeline."
+    },
+    {
+      "key": "PFP_FEATURES.refi-radar.value",
+      "kind": "quoted",
+      "mockup": "value:\"Upload your past clients and see which ones today's rates could help.\"",
+      "text": "Upload your past clients and see which ones today's rates could help."
+    },
+    {
+      "key": "PFP_FEATURES.rate-widget.value",
+      "kind": "quoted",
+      "mockup": "value:\"Your live rates on your own website, updated whenever your lenders' sheets change.\"",
+      "text": "Your live rates on your own website, updated whenever your lenders' sheets change."
+    },
+    {
+      "key": "PFP_FEATURES.email-signature.value",
+      "kind": "quoted",
+      "mockup": "value:\"Today's rates in every email you send.\"",
+      "text": "Today's rates in every email you send."
+    },
+    {
+      "key": "PFP_FEATURES.check-your-rate.name",
+      "kind": "quoted",
+      "mockup": "long:\"Check Your Rate\"",
+      "text": "Check Your Rate"
+    },
+    {
+      "key": "PFP_FEATURES.refi-radar.name",
+      "kind": "quoted",
+      "mockup": "long:\"Refi Radar\"",
+      "text": "Refi Radar"
+    },
+    {
+      "key": "PFP_FEATURES.rate-widget.name",
+      "kind": "quoted",
+      "mockup": "long:\"Rate Widget\"",
+      "text": "Rate Widget"
+    },
+    {
+      "key": "PFP_FEATURES.email-signature.name",
+      "kind": "quoted",
+      "mockup": "long:\"Email signature\"",
+      "text": "Email signature"
+    },
+    {
+      "key": "PFP_LOCK_COPY.banner.full",
+      "kind": "banner",
+      "mockup": "part:\"is part of Full PathfinderPro\"",
+      "text": "{feature} is part of Full PathfinderPro."
+    },
+    {
+      "key": "PFP_LOCK_COPY.banner.addOn",
+      "kind": "banner",
+      "mockup": "part:\"is an add-on to your Rates plan\"",
+      "text": "{feature} is an add-on to your Rates plan."
+    },
+    {
+      "key": "PFP_LOCK_COPY.banner.rates",
+      "kind": "banner",
+      "mockup": "part:\"comes with PathfinderPro Rates\"",
+      "text": "{feature} comes with PathfinderPro Rates."
+    },
+    {
+      "key": "PFP_LOCK_COPY.banner.previewNote",
+      "kind": "quoted",
+      "mockup": "\" Below is a preview.\"",
+      "text": "Below is a preview."
+    },
+    {
+      "key": "PFP_LOCK_COPY.banner.lockedLabel",
+      "kind": "template",
+      "mockup": "aria-label=\"${esc(nm)} is locked\"",
+      "text": "{feature} is locked"
+    },
+    {
+      "key": "PFP_LOCK_COPY.buttons.startTrial",
+      "kind": "quoted",
+      "mockup": "primary:\"Start 14-day trial\"",
+      "text": "Start 14-day trial"
+    },
+    {
+      "key": "PFP_LOCK_COPY.buttons.addCheckYourRate",
+      "kind": "quoted",
+      "mockup": "primary:\"Add Check Your Rate\"",
+      "text": "Add Check Your Rate"
+    },
+    {
+      "key": "PFP_LOCK_COPY.buttons.addRefiRadar",
+      "kind": "quoted",
+      "mockup": "primary:\"Add Refi Radar\"",
+      "text": "Add Refi Radar"
+    },
+    {
+      "key": "PFP_LOCK_COPY.buttons.addRates",
+      "kind": "quoted",
+      "mockup": "primary:\"Add Rates to your plan\"",
+      "text": "Add Rates to your plan"
+    },
+    {
+      "key": "PFP_LOCK_COPY.buttons.learnMore",
+      "kind": "template",
+      "mockup": ">Learn more<span class=\"sr-only\">",
+      "text": "Learn more"
+    },
+    {
+      "key": "PFP_LOCK_COPY.buttons.learnMoreLabel",
+      "kind": "template",
+      "mockup": ">Learn more<span class=\"sr-only\"> about ${esc(F[slug].long)} (opens the sales page in a new tab)</span>",
+      "text": "Learn more about {feature} (opens the sales page in a new tab)"
+    },
+    {
+      "key": "PFP_LOCK_COPY.tags.full",
+      "kind": "quoted",
+      "mockup": "tagLabel:\"Full PathfinderPro\"",
+      "text": "Full PathfinderPro"
+    },
+    {
+      "key": "PFP_LOCK_COPY.tags.addOn",
+      "kind": "quoted",
+      "mockup": "tagLabel:\"Add-on\"",
+      "text": "Add-on"
+    },
+    {
+      "key": "PFP_LOCK_COPY.tags.rates",
+      "kind": "quoted",
+      "mockup": "tagLabel:\"PathfinderPro Rates\"",
+      "text": "PathfinderPro Rates"
+    },
+    {
+      "key": "PFP_LOCK_COPY.menu.inFull",
+      "kind": "quoted",
+      "mockup": "[\"group\",\"In Full PathfinderPro\"]",
+      "text": "In Full PathfinderPro"
+    },
+    {
+      "key": "PFP_LOCK_COPY.menu.addMore",
+      "kind": "quoted",
+      "mockup": "[\"group\",\"Add more\"]",
+      "text": "Add more"
+    },
+    {
+      "key": "PFP_LOCK_COPY.hint",
+      "kind": "quoted",
+      "mockup": ": \"Start your trial to price your own borrower\"",
+      "text": "Start your trial to price your own borrower"
+    }
+  ]
+}
