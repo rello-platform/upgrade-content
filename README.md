@@ -24,6 +24,7 @@ ES module only: `"type": "module"`, with `"exports"` → `./dist/index.js` (type
 | `sourceForm(source)` | Which of the two source forms (rule 1) a `source` is: `"shipped"`, `"kelly"`, or `null` (refused). | This package's tests. |
 | `PFP_FEATURES`, `PFP_LOCKED_FEATURE_SLUGS`, `LockedFeatureSlug`, `PfpFeatureCopy` (v0.10.0) | PathfinderPro's 14 locked features (MAP-LAND-EXPAND §1.3): `name`, `value` (one sentence) and `learnMore` (null for every slug until its `/features/<slug>` page is live). | PathfinderPro's lock banners and locked pages (PFP GATEWAY land-and-expand). |
 | `PFP_LOCK_COPY`, `KELLY_D60` (v0.10.0) | Every string PathfinderPro's lock UI shows: the banner frame, buttons, tags, menu group labels and the preview hint. `{feature}` in a template is filled with `PFP_FEATURES[slug].name.text`. | Same. |
+| `PFP_HOME_COPY` (v0.12.0) | PathfinderPro's gateway Home words: the card row's name, the setup card's "steps done" and "See all steps →", the rates card's title and link, the Check Your Rate card's lines, Recent Calls' two empty states and its chips. No count, time or hole. | PathfinderPro's gateway Home (PFP GATEWAY LE-5). |
 | `PFP_SETUP_COPY`, `PFP_SETUP_STEP_IDS`, `PfpSetupStepId`, `PfpSetupStepCopy` (v0.11.0) | PathfinderPro's Get set up card: the title, per step the `where` and `rule` ("Checks off when …") lines, a `label` for the two steps PathfinderPro has no title for (`test-quote`, `email-signature`), and the footer sentences. Keyed by the step ids of PathfinderPro's setup-progress read. | PathfinderPro's Get Started page (PFP GATEWAY LE-4b). |
 
 ## Rules
@@ -62,6 +63,15 @@ Source: Kelly D60, the same mockup and hash as the lock words. Frozen copy: 19 m
 - `label` exists only for `test-quote` and `email-signature`. The other six steps keep the title PathfinderPro already shows; this package holds none for them.
 - `identity.where` and `identity.rule` are `null`: the mockup's lines name NMLS (rule 4). The consumer renders nothing there.
 - Not here: the footer's last sentence, which interpolates a step count (templates hold only `{feature}`), and any menu screen-reader text for a locked item (the mockup has none). Both are listed for the PFP Gateway KA.
+
+## PathfinderPro gateway Home words (v0.12.0)
+
+Source: Kelly D60, the same mockup and hash. Frozen copy: 14 more strings (68 in all), each derived from a snippet that occurs exactly once.
+
+- Not here, listed for the PFP Gateway KA:
+  - words drawn with a count or a time: "leads this week", "sheet in …", "Next: …", and the three website/rates lines that carry "shown N times" or "sheet in …";
+  - the locked-item screen-reader text at mockup :832 ("…, locked: opens a preview of …"), because its holes aren't in the form the derive rule turns into `{feature}`.
+- No filter or search words, and no "Sample data".
 
 ## Known nulls and choices at v0.9.0
 

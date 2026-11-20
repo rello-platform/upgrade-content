@@ -327,6 +327,90 @@
       "kind": "template",
       "mockup": "A circle checks off by itself when that data is saved there; you never tick it.",
       "text": "A circle checks off by itself when that data is saved there; you never tick it."
+    },
+    {
+      "key": "PFP_HOME_COPY.cardRowLabel",
+      "kind": "template",
+      "mockup": "aria-label=\"Your plan at a glance\"",
+      "text": "Your plan at a glance"
+    },
+    {
+      "key": "PFP_HOME_COPY.setup.stepsDone",
+      "kind": "template",
+      "mockup": "<small>steps done</small>",
+      "text": "steps done"
+    },
+    {
+      "key": "PFP_HOME_COPY.setup.seeAll",
+      "kind": "template",
+      "mockup": ">See all steps →</button>",
+      "text": "See all steps →"
+    },
+    {
+      "key": "PFP_HOME_COPY.rates.title",
+      "kind": "template",
+      "mockup": "<span>Your rates</span><span class=\"newcard\">",
+      "text": "Your rates"
+    },
+    {
+      "key": "PFP_HOME_COPY.rates.putOnSite",
+      "kind": "template",
+      "mockup": ">Put your rates on your site →</button>",
+      "text": "Put your rates on your site →"
+    },
+    {
+      "key": "PFP_HOME_COPY.cyr.pageLive",
+      "kind": "template",
+      "mockup": "<div class=\"meta\">Your page is live. Share it to get your first quote.</div>",
+      "text": "Your page is live. Share it to get your first quote."
+    },
+    {
+      "key": "PFP_HOME_COPY.cyr.open",
+      "kind": "template",
+      "mockup": ">Open Check Your Rate →</button>",
+      "text": "Open Check Your Rate →"
+    },
+    {
+      "key": "PFP_HOME_COPY.cyr.newest",
+      "kind": "template",
+      "mockup": ">Newest:",
+      "text": "Newest:"
+    },
+    {
+      "key": "PFP_HOME_COPY.recentCalls.noCalls.title",
+      "kind": "template",
+      "mockup": "<h3>No calls yet</h3>",
+      "text": "No calls yet"
+    },
+    {
+      "key": "PFP_HOME_COPY.recentCalls.noCalls.body",
+      "kind": "template",
+      "mockup": "<p>Borrowers who price a loan on a Check Your Rate page land here as calls you can work.</p>",
+      "text": "Borrowers who price a loan on a Check Your Rate page land here as calls you can work."
+    },
+    {
+      "key": "PFP_HOME_COPY.recentCalls.noLeads.title",
+      "kind": "template",
+      "mockup": "<h3>No leads yet</h3>",
+      "text": "No leads yet"
+    },
+    {
+      "key": "PFP_HOME_COPY.recentCalls.noLeads.body",
+      "kind": "template",
+      "mockup": "<p>When a borrower prices a loan on your Check Your Rate page, they land here, newest first.</p>",
+      "text": "When a borrower prices a loan on your Check Your Rate page, they land here, newest first."
+    },
+    {
+      "key": "PFP_HOME_COPY.recentCalls.chips.fromCheckYourRate",
+      "kind": "template",
+      "mockup": "<span class=\"chip cyr\">From Check Your Rate</span>",
+      "text": "From Check Your Rate"
+    },
+    {
+      "key": "PFP_HOME_COPY.recentCalls.chips.new",
+      "kind": "template",
+      "mockup": "<span class=\"chip hot\">New</span>",
+      "text": "New"
     }
   ]
 }

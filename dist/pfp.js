@@ -217,3 +217,42 @@ export const PFP_SETUP_COPY = {
         neverTicked: kelly("A circle checks off by itself when that data is saved there; you never tick it."),
     },
 };
+/**
+ * PathfinderPro's gateway Home words (PFP GATEWAY X2c; ruling K-822; MAP-LAND-EXPAND §2), as Kelly approved them (D60):
+ * the card row's name, the setup card's "steps done" and link, the rates card's title and link, the Check Your Rate
+ * card's lines, and Recent Calls' empty states and chips. ⛔ No price anywhere, no figure, and no hole: words the mockup
+ * draws with a count or a time ("leads this week", "sheet in …", "Next: …", the website lines that carry "shown N
+ * times" / "sheet in …") are NOT here, nor the locked-item screen-reader text (its hole isn't `{feature}`'s form).
+ * The PFP Gateway KA has the list.
+ */
+export const PFP_HOME_COPY = {
+    /** The card row's accessible name. */
+    cardRowLabel: kelly("Your plan at a glance"),
+    setup: {
+        /** Follows the card's "N of M" count. */
+        stepsDone: kelly("steps done"),
+        seeAll: kelly("See all steps →"),
+    },
+    rates: {
+        title: kelly("Your rates"),
+        /** The link to the Rate Widget step when the widget isn't on the website yet. */
+        putOnSite: kelly("Put your rates on your site →"),
+    },
+    cyr: {
+        /** Check Your Rate on with no quote yet. */
+        pageLive: kelly("Your page is live. Share it to get your first quote."),
+        open: kelly("Open Check Your Rate →"),
+        /** Precedes the newest quote's borrower. */
+        newest: kelly("Newest:"),
+    },
+    recentCalls: {
+        /** Check Your Rate off. */
+        noCalls: { title: kelly("No calls yet"), body: kelly("Borrowers who price a loan on a Check Your Rate page land here as calls you can work.") },
+        /** Check Your Rate on, no quote yet. */
+        noLeads: { title: kelly("No leads yet"), body: kelly("When a borrower prices a loan on your Check Your Rate page, they land here, newest first.") },
+        chips: {
+            fromCheckYourRate: kelly("From Check Your Rate"),
+            new: kelly("New"),
+        },
+    },
+};

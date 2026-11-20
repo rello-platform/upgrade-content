@@ -7,6 +7,7 @@ import { join } from "node:path";
 import {
   KELLY_D60,
   PFP_FEATURES,
+  PFP_HOME_COPY,
   PFP_LOCKED_FEATURE_SLUGS,
   PFP_LOCK_COPY,
   PFP_SETUP_COPY,
@@ -57,6 +58,7 @@ function pfpTexts(): Array<{ key: string; value: SourcedText }> {
   };
   walk("PFP_LOCK_COPY", PFP_LOCK_COPY);
   walk("PFP_SETUP_COPY", PFP_SETUP_COPY);
+  walk("PFP_HOME_COPY", PFP_HOME_COPY);
   return out;
 }
 
@@ -72,7 +74,7 @@ test("PFP features: exactly the map's 14 locked slugs (§1.3), each with a name 
 
 test("every PFP string has exactly one source, shipped or kelly; every kelly source is D60's", () => {
   const texts = pfpTexts();
-  assert.equal(texts.length, 64); // 14 names + 14 values + 17 lock-UI strings + 19 Get set up strings (v0.11.0)
+  assert.equal(texts.length, 78); // 14 names + 14 values + 17 lock-UI + 19 Get set up (v0.11.0) + 14 Home (v0.12.0)
   for (const { key, value } of texts) {
     assert.ok(value.text.trim().length > 0, `${key}: empty`);
     const form = sourceForm(value.source);
@@ -169,7 +171,7 @@ test("copy rules: no PFP string breaks one; no price anywhere", () => {
     .map(({ key, value }) => ({ key, rules: refusedCopy(value.text) }))
     .filter((r) => r.rules.length > 0);
   assert.deepEqual(broken, []);
-  const json = JSON.stringify({ PFP_FEATURES, PFP_LOCK_COPY, PFP_SETUP_COPY });
+  const json = JSON.stringify({ PFP_FEATURES, PFP_LOCK_COPY, PFP_SETUP_COPY, PFP_HOME_COPY });
   assert.doesNotMatch(json, /\$\s?\d|\bprice\b"?\s*:|\bamount\b"?\s*:/i);
 });
 
@@ -228,6 +230,49 @@ test("Get set up: the identity lines the package leaves null are the mockup's NM
   assert.ok(refusedCopy(rule).includes("NMLS"), rule);
   // Every frozen Get set up snippet occurs exactly once in the approved file (no ambiguous source).
   for (const f of FROZEN.strings.filter((s) => s.key.startsWith("PFP_SETUP_COPY."))) {
+    assert.equal(src.split(f.mockup).length - 1, 1, `${f.key}: snippet must occur exactly once`);
+  }
+});
+
+/**
+ * X2c (PFP GATEWAY; ruling K-822; MAP §2): the gateway Home's words. As Kelly strings, the tests above already hold them
+ * byte-equal to the frozen copy and the mockup, one source each, no figures. These add: no hole and no digit anywhere
+ * in the Home copy, and the words the KA ruled out (a count, a time, a second hole) are absent.
+ */
+test("Home: no hole, no figure; every string is Kelly's D60", () => {
+  const home = pfpTexts().filter((t) => t.key.startsWith("PFP_HOME_COPY."));
+  assert.equal(home.length, 14);
+  for (const { key, value } of home) {
+    assert.equal(value.source, KELLY_D60, key);
+    assert.doesNotMatch(value.text, /[{}$]|\d/, `${key}: no hole, no figure`);
+  }
+});
+
+test("Home: the words with a count, a time or a second hole are NOT in the package (listed for the KA)", () => {
+  const all = pfpTexts().map((t) => t.value.text).join("\n");
+  for (const out of ["leads this week", "sheet in", "Next:", "shown", "Live on your website", "Not on your website yet", "Pricing your Check Your Rate page", "locked: opens a preview", "Sample data", "Search name"]) {
+    assert.ok(!all.includes(out), `"${out}" must not be in the package`);
+  }
+});
+
+test("Home: the locked-item screen-reader text can't be derived by the package rule (skipped when the mockup isn't readable)", (t) => {
+  let raw: Buffer;
+  try {
+    raw = readFileSync(MOCKUP_PATH);
+  } catch {
+    t.skip("mockup not readable here");
+    return;
+  }
+  if (createHash("sha256").update(raw).digest("hex") !== PINNED_SHA256) {
+    t.skip("mockup on disk is not the approved version");
+    return;
+  }
+  const src = raw.toString("utf8");
+  const snippet = 'locked: opens a preview of ${esc(F[slug].long.replace(/^The /,""))}';
+  assert.equal(src.split(snippet).length - 1, 1, "the :832 snippet is in the mockup once");
+  // Its hole is not the form the rule turns into {feature}, so derivation leaves code in the text: not a string.
+  assert.match(deriveD60Text("template", snippet), /\$\{/);
+  for (const f of FROZEN.strings.filter((s) => s.key.startsWith("PFP_HOME_COPY."))) {
     assert.equal(src.split(f.mockup).length - 1, 1, `${f.key}: snippet must occur exactly once`);
   }
 });
