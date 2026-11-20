@@ -26,7 +26,11 @@ export {
   PFP_FEATURES,
   PFP_LOCKED_FEATURE_SLUGS,
   PFP_LOCK_COPY,
+  PFP_SETUP_COPY,
+  PFP_SETUP_STEP_IDS,
   type LockedFeatureSlug,
   type PfpFeatureCopy,
+  type PfpSetupStepCopy,
+  type PfpSetupStepId,
 } from "./pfp.js";
 export { COPY_RULES, refusedCopy, type CopyRule } from "./copy-rules.js";

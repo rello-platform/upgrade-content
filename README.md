@@ -24,6 +24,7 @@ ES module only: `"type": "module"`, with `"exports"` → `./dist/index.js` (type
 | `sourceForm(source)` | Which of the two source forms (rule 1) a `source` is: `"shipped"`, `"kelly"`, or `null` (refused). | This package's tests. |
 | `PFP_FEATURES`, `PFP_LOCKED_FEATURE_SLUGS`, `LockedFeatureSlug`, `PfpFeatureCopy` (v0.10.0) | PathfinderPro's 14 locked features (MAP-LAND-EXPAND §1.3): `name`, `value` (one sentence) and `learnMore` (null for every slug until its `/features/<slug>` page is live). | PathfinderPro's lock banners and locked pages (PFP GATEWAY land-and-expand). |
 | `PFP_LOCK_COPY`, `KELLY_D60` (v0.10.0) | Every string PathfinderPro's lock UI shows: the banner frame, buttons, tags, menu group labels and the preview hint. `{feature}` in a template is filled with `PFP_FEATURES[slug].name.text`. | Same. |
+| `PFP_SETUP_COPY`, `PFP_SETUP_STEP_IDS`, `PfpSetupStepId`, `PfpSetupStepCopy` (v0.11.0) | PathfinderPro's Get set up card: the title, per step the `where` and `rule` ("Checks off when …") lines, a `label` for the two steps PathfinderPro has no title for (`test-quote`, `email-signature`), and the footer sentences. Keyed by the step ids of PathfinderPro's setup-progress read. | PathfinderPro's Get Started page (PFP GATEWAY LE-4b). |
 
 ## Rules
 
@@ -52,6 +53,15 @@ Source: Kelly D60, the approved land-and-expand mockup `BUILD-|-WORKSTREAM/PFP-G
 - `call-workstation.name` is the shipped "MLO Phone Call Workstation" (the rule: shipped where MAP §1.4 lists one). The D60 banner names this feature "call workstation"; which one the banner prints is for the PFP Gateway KA.
 - `closing-costs` is in the mockup's feature table but not in the map's locked list (§1.3), so it is not here.
 - No price anywhere.
+
+## PathfinderPro Get set up words (v0.11.0)
+
+Source: Kelly D60, the same mockup and hash as the lock words. Frozen copy: 19 more strings in `test-fixtures/pfp-d60-approved.json` (54 in all), each derived from a snippet that occurs exactly once in the mockup.
+
+- Keyed by PathfinderPro's step ids (`src/lib/gateway/setup-progress.ts:32-40 @ 4102cabd`). The mockup's `test-lead` step is the read's `test-quote`. Billing is not a step (MAP amendment A5).
+- `label` exists only for `test-quote` and `email-signature`. The other six steps keep the title PathfinderPro already shows; this package holds none for them.
+- `identity.where` and `identity.rule` are `null`: the mockup's lines name NMLS (rule 4). The consumer renders nothing there.
+- Not here: the footer's last sentence, which interpolates a step count (templates hold only `{feature}`), and any menu screen-reader text for a locked item (the mockup has none). Both are listed for the PFP Gateway KA.
 
 ## Known nulls and choices at v0.9.0
 
