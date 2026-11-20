@@ -23,6 +23,8 @@ export {
 export { PEER_STORIES, assertPeerStory, type PeerStory } from "./stories.js";
 export {
   KELLY_D60,
+  KELLY_DEMO,
+  PFP_DEMO_COPY,
   PFP_FEATURES,
   PFP_LOCKED_FEATURE_SLUGS,
   PFP_HOME_COPY,

@@ -6,6 +6,8 @@ import { homedir } from "node:os";
 import { join } from "node:path";
 import {
   KELLY_D60,
+  KELLY_DEMO,
+  PFP_DEMO_COPY,
   PFP_FEATURES,
   PFP_HOME_COPY,
   PFP_LOCKED_FEATURE_SLUGS,
@@ -275,4 +277,59 @@ test("Home: the locked-item screen-reader text can't be derived by the package r
   for (const f of FROZEN.strings.filter((s) => s.key.startsWith("PFP_HOME_COPY."))) {
     assert.equal(src.split(f.mockup).length - 1, 1, `${f.key}: snippet must occur exactly once`);
   }
+});
+
+/**
+ * DEMO-1 (PFP GATEWAY; K-900…K-903): the public demo's one word. Kelly approved it in chat (K-901); the unit doc records
+ * it as the label "Demo". The frozen copy holds the doc's line at the approval hash; the word is the quoted text in it.
+ */
+interface FrozenDemo {
+  doc: string;
+  sha256: string;
+  snippet: string;
+  text: string;
+}
+const FROZEN_DEMO = JSON.parse(
+  readFileSync(new URL("../test-fixtures/pfp-demo-approved.json", import.meta.url), "utf8"),
+) as FrozenDemo;
+const DEMO_DOC_PATH =
+  process.env.PFP_DEMO_UNIT_DOC ??
+  join(
+    homedir(),
+    "Library/Mobile Documents/com~apple~CloudDocs/ClearPath Utah Mortgage/Applications/~Application Docs/RELLO TO BE BUILT",
+    "BUILD-|-WORKSTREAM/PFP-GATEWAY/UNIT-PUBLIC-DEMO-261120.md",
+  );
+
+/** The one quoted word in the doc's line: the approved text, never hand-typed. */
+function quotedWord(snippet: string): string | null {
+  const m = /"([^"]+)"/.exec(snippet);
+  return m ? m[1] : null;
+}
+
+test("Demo: one kelly-sourced word, naming the unit doc at the frozen hash; byte-equal to the doc's quoted word", () => {
+  assert.deepEqual(Object.keys(PFP_DEMO_COPY), ["label"]);
+  const label = PFP_DEMO_COPY.label;
+  assert.equal(sourceForm(label.source), "kelly");
+  assert.equal(label.source, KELLY_DEMO);
+  assert.equal(KELLY_DEMO, `kelly: K-901 · ${FROZEN_DEMO.doc.replace(/^RELLO TO BE BUILT\//, "")} · sha256 ${FROZEN_DEMO.sha256.slice(0, 16)}`);
+  assert.equal(quotedWord(FROZEN_DEMO.snippet), FROZEN_DEMO.text);
+  assert.equal(label.text, FROZEN_DEMO.text);
+  // The rule can fail: a paraphrase or a case change is not the approved word.
+  for (const wrong of ["demo", "DEMO", "Demo mode", "Sample", "Demo "]) assert.notEqual(wrong, FROZEN_DEMO.text, wrong);
+  assert.deepEqual(refusedCopy(label.text), []);
+});
+
+test("Demo: the word occurs in the unit doc's approval line (skipped when the doc is not readable here)", (t) => {
+  let raw: Buffer;
+  try {
+    raw = readFileSync(DEMO_DOC_PATH);
+  } catch {
+    t.skip("unit doc not readable on this machine");
+    return;
+  }
+  const text = raw.toString("utf8");
+  const hash = createHash("sha256").update(raw).digest("hex");
+  // The doc may grow after the pin. The approval line itself must still be there, once.
+  assert.equal(text.split(FROZEN_DEMO.snippet).length - 1, 1, "the approval line occurs exactly once");
+  if (hash !== FROZEN_DEMO.sha256) t.diagnostic(`doc changed since the pin (${hash.slice(0, 16)}); the approval line is unchanged`);
 });
