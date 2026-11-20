@@ -2,19 +2,35 @@ import type { AppSlug } from "@rello-platform/slugs";
 import type { StandaloneProductSlug } from "./hosts.js";
 
 /**
- * One piece of shipped copy and where it already ships.
+ * One piece of copy and where its exact words come from. No agent-written words live in
+ * this package: every `text` has exactly ONE source, in one of two forms.
  *
- * ⛔ No new copy lives in this package. Every `text` is a string that already exists
- * in shipped product code, byte for byte as it RENDERS to the reader:
- * - JSX text and JSX attribute strings: HTML entities decode (`&apos;` shows `'`);
- * - a JS string (an object field, metadata, a constant rendered as `{expr}`): it
- *   renders as written, so an entity inside it shows literally and cannot be
- *   quoted here as decoded. Such a line is left null, never "fixed" here.
- * `source` names it: `<Repo> <path>:<line> @ <short sha>`.
+ * 1. SHIPPED: `<Repo> <path>:<line> @ <short sha>`. The string already exists in shipped
+ *    product code, byte for byte as it RENDERS to the reader:
+ *    - JSX text and JSX attribute strings: HTML entities decode (`&apos;` shows `'`);
+ *    - a JS string (an object field, metadata, a constant rendered as `{expr}`): it
+ *      renders as written, so an entity inside it shows literally and cannot be
+ *      quoted here as decoded. Such a line is left null, never "fixed" here.
+ * 2. KELLY: `kelly: <decision id> · <file under iCloud RELLO TO BE BUILT> · sha256 <first 16 hex>`
+ *    (Platform KA 1415). Kelly approved these exact words in that artefact. The text is
+ *    byte-equal to it (no paraphrase, no punctuation fixes), and a frozen copy of the
+ *    approved strings with the artefact's hash is committed and tested (src/pfp.test.ts).
+ *
+ * A string with neither source fails this package's tests.
  */
 export interface SourcedText {
   readonly text: string;
   readonly source: string;
+}
+
+const SHIPPED_SOURCE = /^[A-Za-z][\w.-]* \S+:\d+(-\d+)? @ [0-9a-f]{7,40}$/;
+const KELLY_SOURCE = /^kelly: [A-Z]+-?\d+ · [^·]+\.[a-z0-9]+ · sha256 [0-9a-f]{16}$/;
+
+/** Which of the two source forms (see SourcedText) `source` is, or null when it is neither: such a string fails the tests. */
+export function sourceForm(source: string): "shipped" | "kelly" | null {
+  if (SHIPPED_SOURCE.test(source)) return "shipped";
+  if (KELLY_SOURCE.test(source)) return "kelly";
+  return null;
 }
 
 /**

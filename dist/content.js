@@ -1,3 +1,13 @@
+const SHIPPED_SOURCE = /^[A-Za-z][\w.-]* \S+:\d+(-\d+)? @ [0-9a-f]{7,40}$/;
+const KELLY_SOURCE = /^kelly: [A-Z]+-?\d+ · [^·]+\.[a-z0-9]+ · sha256 [0-9a-f]{16}$/;
+/** Which of the two source forms (see SourcedText) `source` is, or null when it is neither: such a string fails the tests. */
+export function sourceForm(source) {
+    if (SHIPPED_SOURCE.test(source))
+        return "shipped";
+    if (KELLY_SOURCE.test(source))
+        return "kelly";
+    return null;
+}
 const RELLO = "Rello src/app/page.tsx";
 // Rello's marketing page moved from src/app/page.tsx (8114c16d7) to this component; the
 // rello entry's six strings render from it at the same line numbers (PLATFORM KA 971 ruling,

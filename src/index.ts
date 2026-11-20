@@ -15,9 +15,18 @@ export {
 export {
   UPGRADE_CONTENT,
   shippedUpgradePaths,
+  sourceForm,
   type ExplainerPoints,
   type SourcedText,
   type UpgradeContentEntry,
 } from "./content.js";
 export { PEER_STORIES, assertPeerStory, type PeerStory } from "./stories.js";
+export {
+  KELLY_D60,
+  PFP_FEATURES,
+  PFP_LOCKED_FEATURE_SLUGS,
+  PFP_LOCK_COPY,
+  type LockedFeatureSlug,
+  type PfpFeatureCopy,
+} from "./pfp.js";
 export { COPY_RULES, refusedCopy, type CopyRule } from "./copy-rules.js";

@@ -21,10 +21,15 @@ ES module only: `"type": "module"`, with `"exports"` → `./dist/index.js` (type
 | `shippedUpgradePaths(standalone)` | The standalone apps whose `upgradePath` is set. 0 of 8 at v0.1.0; 1 of 8 at v0.2.0 (`the-drumbeat`); 2 of 8 at v0.3.0 (`harvest-home`, `the-drumbeat`); 3 of 8 at v0.4.0 (adds `pathfinder-pro`); 4 of 8 at v0.5.0 (adds `newsletter-studio`); 8 of 8 at v0.9.0 (adds `home-ready`, `open-house-hub`, `market-intel`, `home-stretch`). | Tests; RELLO FRONT DOOR (shows "Start a Rello trial" only for these). |
 | `PEER_STORIES`, `PeerStory`, `assertPeerStory` | Customer stories. Empty at v0.1.0. Each story's type requires `consentRecordedAt` and `customerTenantId`. | RELLO FRONT DOOR and the `/upgrade` pages, once a real, authorized story exists (RELLO UPSELL Q-CS-9). |
 | `COPY_RULES`, `refusedCopy(text)` | The copy rules below, as code. | This package's tests; any consumer that wants to check its own strings. |
+| `sourceForm(source)` | Which of the two source forms (rule 1) a `source` is: `"shipped"`, `"kelly"`, or `null` (refused). | This package's tests. |
+| `PFP_FEATURES`, `PFP_LOCKED_FEATURE_SLUGS`, `LockedFeatureSlug`, `PfpFeatureCopy` (v0.10.0) | PathfinderPro's 14 locked features (MAP-LAND-EXPAND §1.3): `name`, `value` (one sentence) and `learnMore` (null for every slug until its `/features/<slug>` page is live). | PathfinderPro's lock banners and locked pages (PFP GATEWAY land-and-expand). |
+| `PFP_LOCK_COPY`, `KELLY_D60` (v0.10.0) | Every string PathfinderPro's lock UI shows: the banner frame, buttons, tags, menu group labels and the preview hint. `{feature}` in a template is filled with `PFP_FEATURES[slug].name.text`. | Same. |
 
 ## Rules
 
-1. **No new copy.** Every non-null string already ships in product code. Each carries a `source`, `<Repo> <path>:<line> @ <sha>`, and is quoted byte for byte as it renders. JSX text and JSX attribute strings decode HTML entities. A JS string rendered as `{expression}` shows exactly as written, so an entity inside it renders literally and cannot be quoted decoded: that line stays `null`. A change of copy happens in the product first, then is copied here with its new source.
+1. **No agent-written words.** Every non-null string has exactly ONE source, in one of two forms (Platform KA 1415). A string with neither fails the package's tests.
+   - **Shipped:** `<Repo> <path>:<line> @ <sha>`. The string already ships in product code and is quoted byte for byte as it renders. JSX text and JSX attribute strings decode HTML entities. A JS string rendered as `{expression}` shows exactly as written, so an entity inside it renders literally and cannot be quoted decoded: that line stays `null`. A change of shipped copy happens in the product first, then is copied here with its new source.
+   - **Kelly:** `kelly: <decision id> · <file under iCloud RELLO TO BE BUILT> · sha256 <first 16 hex>`. Kelly approved these exact words in that artefact. They are byte-equal to it: no paraphrase, no punctuation fixes. A frozen copy of the approved strings, with the artefact's full hash, is committed (`test-fixtures/`) and tested on every push; the artefact itself is also read and compared when its file is readable at that hash.
 2. **Null means omit.** A `null` field, a `null` point, or an empty `points` means no shipped copy exists. The consumer renders nothing in its place: never a placeholder, a default sentence or a stand-in.
 3. **No prices, ever.** There is no money field. Prices come only from Rello `Plan` through `GET /api/public/pricing?app=<slug>`.
 4. **Copy rules** (`src/copy-rules.ts`, enforced by `src/content.test.ts` over every string). The package refuses:
@@ -38,6 +43,15 @@ ES module only: `"type": "module"`, with `"exports"` → `./dist/index.js` (type
    If a shipped string breaks a rule, its field stays `null` here. The source is not edited from this package.
 5. **Stories need consent.** `PEER_STORIES` holds only real, authorized outcomes. A story with no `consentRecordedAt` is a compile error and a test failure. Placeholder people are never published.
 6. **upgradePath is set by each app's own PR.** It stays `null` until that app's `/upgrade` page ships (RELLO UPSELL Phase 4). The Oven and The Home Scout (`rello-feature`) and the `unlisted` slugs never get one.
+
+## PathfinderPro lock words (v0.10.0)
+
+Source: Kelly D60, the approved land-and-expand mockup `BUILD-|-WORKSTREAM/PFP-GATEWAY/mockup/land-expand/pfp-land-expand-261119.html` (sha256 `31a8b00489d56ae6…`), except ten feature names that already ship in PathfinderPro (MAP §1.4), which carry their shipped source at `23cb4758`. Frozen copy: `test-fixtures/pfp-d60-approved.json` (35 strings; each `text` is derived from an exact snippet of the mockup by `src/pfp-d60-derive.ts`, never typed by hand).
+
+- `learnMore` is `null` for every slug: no `/features/<slug>` page is live (MAP amendment A2). The consumer hides Learn more.
+- `call-workstation.name` is the shipped "MLO Phone Call Workstation" (the rule: shipped where MAP §1.4 lists one). The D60 banner names this feature "call workstation"; which one the banner prints is for the PFP Gateway KA.
+- `closing-costs` is in the mockup's feature table but not in the map's locked list (§1.3), so it is not here.
+- No price anywhere.
 
 ## Known nulls and choices at v0.9.0
 
