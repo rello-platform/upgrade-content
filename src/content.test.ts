@@ -354,9 +354,9 @@ test("pathfinder-pro: displayName and tagline are unchanged from v0.3.0 (tagline
   assert.equal(entry.explainer.title, null);
 });
 
-test("package version is 0.12.0", () => {
+test("package version is 0.13.0", () => {
   const pkg = JSON.parse(readFileSync(new URL("../package.json", import.meta.url), "utf8")) as { version: string };
-  assert.equal(pkg.version, "0.12.0");
+  assert.equal(pkg.version, "0.13.0");
 });
 
 // ── Stories ──────────────────────────────────────────────────────────────────

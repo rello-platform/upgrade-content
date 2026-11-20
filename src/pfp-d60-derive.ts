@@ -5,12 +5,29 @@
  * - quoted:   a JS string literal in the mockup (`value:"…"`, `primary:"…"`, `["group","…"]`): the text between the
  *             LAST pair of double quotes, trimmed (`" Below is a preview."` is appended after a space).
  * - banner:   `part:"…"`, composed by the mockup's banner() as `${name} ${part}.`, so `{feature} <part>.`.
- * - template: markup or an attribute with the feature interpolated: tags removed, `${esc(nm)}` and
- *             `${esc(F[slug].long)}` become `{feature}`, the attribute's quotes and a leading `>` dropped.
+ * - template: markup or an attribute with the feature interpolated: tags removed, each hole in
+ *             `D60_FEATURE_HOLES` becomes `{feature}`, the attribute's quotes and a leading `>` dropped. Any other
+ *             `${…}` is left in the text as code, so it can never pass as words.
  */
 export type D60Kind = "quoted" | "banner" | "template";
 
-const FEATURE = /\$\{esc\((?:nm|F\[slug\]\.long)\)\}/g;
+/**
+ * The mockup's ways of printing a feature's name, each turned into `{feature}`: exact strings, never a pattern. These
+ * three and no others. The third (X2d, v0.13.0; ruling K-824) is the locked quick action's screen-reader text at
+ * mockup :832: the banner name, `long` with a leading "The " dropped, which is what `PFP_FEATURES[slug].name.text`
+ * holds (pfp.test.ts checks that against the mockup slug by slug).
+ */
+export const D60_FEATURE_HOLES = [
+  "${esc(nm)}",
+  "${esc(F[slug].long)}",
+  '${esc(F[slug].long.replace(/^The /,""))}',
+] as const;
+
+function fillFeature(text: string): string {
+  let out = text;
+  for (const hole of D60_FEATURE_HOLES) out = out.split(hole).join("{feature}");
+  return out;
+}
 
 function lastQuoted(snippet: string): string {
   const end = snippet.lastIndexOf('"');
@@ -24,5 +41,5 @@ export function deriveD60Text(kind: D60Kind, snippet: string): string {
   if (kind === "banner") return `{feature} ${lastQuoted(snippet)}.`;
   const attr = /^[a-z-]+="(.*)"$/.exec(snippet);
   const body = attr ? attr[1] : snippet.replace(/^>/, "");
-  return body.replace(/<[^>]+>/g, "").replace(FEATURE, "{feature}");
+  return fillFeature(body.replace(/<[^>]+>/g, ""));
 }
