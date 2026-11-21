@@ -25,6 +25,7 @@ ES module only: `"type": "module"`, with `"exports"` → `./dist/index.js` (type
 | `PFP_FEATURES`, `PFP_LOCKED_FEATURE_SLUGS`, `LockedFeatureSlug`, `PfpFeatureCopy` (v0.10.0) | PathfinderPro's 14 locked features (MAP-LAND-EXPAND §1.3): `name`, `value` (one sentence) and `learnMore` (null for every slug until its `/features/<slug>` page is live). | PathfinderPro's lock banners and locked pages (PFP GATEWAY land-and-expand). |
 | `PFP_LOCK_COPY`, `KELLY_D60` (v0.10.0) | Every string PathfinderPro's lock UI shows: the banner frame, buttons, tags, menu group labels and the preview hint. `{feature}` in a template is filled with `PFP_FEATURES[slug].name.text`. | Same. |
 | `PFP_HOME_COPY` (v0.12.0) | PathfinderPro's gateway Home words: the card row's name, the setup card's "steps done" and "See all steps →", the rates card's title and link, the Check Your Rate card's lines, Recent Calls' two empty states and its chips. No count, time or hole. | PathfinderPro's gateway Home (PFP GATEWAY LE-5). |
+| `PFP_DEMO_COPY` (v0.14.0) | PathfinderPro's public demo word: `label` = "Demo", shown on every demo page and in the demo's officer and identity slots. | PathfinderPro's public `/demo` (PFP GATEWAY DEMO-1). |
 | `PFP_SETUP_COPY`, `PFP_SETUP_STEP_IDS`, `PfpSetupStepId`, `PfpSetupStepCopy` (v0.11.0) | PathfinderPro's Get set up card: the title, per step the `where` and `rule` ("Checks off when …") lines, a `label` for the two steps PathfinderPro has no title for (`test-quote`, `email-signature`), and the footer sentences. Keyed by the step ids of PathfinderPro's setup-progress read. | PathfinderPro's Get Started page (PFP GATEWAY LE-4b). |
 
 ## Rules
@@ -79,6 +80,13 @@ Source: Kelly D60, the same mockup and hash. Frozen copy: 1 more string (69 in a
 
 - `PFP_LOCK_COPY.menu.lockedOpensPreview` = `", locked: opens a preview of {feature}"`: mockup :832 word for word, from the comma on. PathfinderPro reads it after a locked item's visible label, only for items that open a lock or preview page, and fills `{feature}` with `PFP_FEATURES[slug].name.text`.
 - The derive rule (`src/pfp-d60-derive.ts`) is widened by one exact hole, `${esc(F[slug].long.replace(/^The /,""))}`, the mockup's banner name (its `long` with "The " dropped), which is the package's own name for every slug but the call workstation. `D60_FEATURE_HOLES` lists the three holes as exact strings, never a pattern; any other `${…}` stays in the text as code and fails. Templates still hold one `{feature}` and nothing else.
+
+## PathfinderPro demo word (v0.14.0)
+
+Source: Kelly 261120, ruling K-901 (`KELLY_DEMO`): "We can simply say demo and we wont need real MLO data. each page simply says demo." The unit doc (`BUILD-|-WORKSTREAM/PFP-GATEWAY/UNIT-PUBLIC-DEMO-261120.md`, sha256 `7f76e44c9573fbc2…`) records the word as the label "Demo" (Kelly-approved word). Frozen copy: `test-fixtures/pfp-demo-approved.json`, its text derived from the doc's quoted word.
+
+- One word only. The demo shows no name, NMLS, phone, email, company or lender name; those slots render "Demo" or nothing.
+- v0.13.0 is X2d (#14). v0.14.0 was X2e's (#13, closed unmerged), so it is free.
 
 ## Known nulls and choices at v0.9.0
 

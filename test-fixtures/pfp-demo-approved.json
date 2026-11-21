@@ -1,0 +1,8 @@
+{
+  "decision": "K-901 (Kelly 261120, PFP Gateway KA 602): the public demo's pages say Demo",
+  "doc": "RELLO TO BE BUILT/BUILD-|-WORKSTREAM/PFP-GATEWAY/UNIT-PUBLIC-DEMO-261120.md",
+  "sha256": "7f76e44c9573fbc28a670da3a09b70d9ae8b3ede14ad52d61e193673cd098fd7",
+  "snippet": "Every page shows the label \"Demo\" (Kelly-approved word).",
+  "note": "Frozen at the doc's hash when the word was approved. `snippet` is an exact line of the doc; `text` is the quoted word in it. Never edit by hand.",
+  "text": "Demo"
+}

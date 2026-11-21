@@ -262,3 +262,17 @@ export const PFP_HOME_COPY = {
         },
     },
 };
+/**
+ * Kelly 261120 (ruling K-901, unit DEMO-1): the public PathfinderPro demo, under iCloud RELLO TO BE BUILT, by the first 16
+ * hex of the unit doc's sha256 at the time of approval. Kelly: "We can simply say demo and we wont need real MLO data.
+ * each page simply says demo." The unit records the word as the label "Demo" (Kelly-approved word).
+ */
+export const KELLY_DEMO = "kelly: K-901 · BUILD-|-WORKSTREAM/PFP-GATEWAY/UNIT-PUBLIC-DEMO-261120.md · sha256 7f76e44c9573fbc2";
+/**
+ * PathfinderPro's public demo words (PFP GATEWAY DEMO-1; K-900…K-903). One word: every demo page shows it, and the demo's
+ * officer and identity slots show it or nothing. ⛔ No price, no name, no figure.
+ */
+export const PFP_DEMO_COPY = {
+    /** The label every demo page shows (Kelly-approved). */
+    label: { text: "Demo", source: KELLY_DEMO },
+};
