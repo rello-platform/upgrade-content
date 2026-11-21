@@ -20,7 +20,7 @@ import {
   type SourcedText,
   type UpgradeContentEntry,
 } from "./index.js";
-import { deriveD60Text, type D60Kind } from "./pfp-d60-derive.js";
+import { D60_FEATURE_HOLES, deriveD60Text, type D60Kind } from "./pfp-d60-derive.js";
 
 /**
  * X2 (PFP GATEWAY; MAP-LAND-EXPAND-261119 §1.3/§1.4, A1/A2; Platform KA 1415): PathfinderPro's lock words.
@@ -76,7 +76,7 @@ test("PFP features: exactly the map's 14 locked slugs (§1.3), each with a name 
 
 test("every PFP string has exactly one source, shipped or kelly; every kelly source is D60's", () => {
   const texts = pfpTexts();
-  assert.equal(texts.length, 78); // 14 names + 14 values + 17 lock-UI + 19 Get set up (v0.11.0) + 14 Home (v0.12.0)
+  assert.equal(texts.length, 79); // 14 names + 14 values + 18 lock-UI (v0.13.0 adds 1) + 19 Get set up (v0.11.0) + 14 Home (v0.12.0)
   for (const { key, value } of texts) {
     assert.ok(value.text.trim().length > 0, `${key}: empty`);
     const form = sourceForm(value.source);
@@ -252,12 +252,12 @@ test("Home: no hole, no figure; every string is Kelly's D60", () => {
 
 test("Home: the words with a count, a time or a second hole are NOT in the package (listed for the KA)", () => {
   const all = pfpTexts().map((t) => t.value.text).join("\n");
-  for (const out of ["leads this week", "sheet in", "Next:", "shown", "Live on your website", "Not on your website yet", "Pricing your Check Your Rate page", "locked: opens a preview", "Sample data", "Search name"]) {
+  for (const out of ["leads this week", "sheet in", "Next:", "shown", "Live on your website", "Not on your website yet", "Pricing your Check Your Rate page", "Sample data", "Search name"]) {
     assert.ok(!all.includes(out), `"${out}" must not be in the package`);
   }
 });
 
-test("Home: the locked-item screen-reader text can't be derived by the package rule (skipped when the mockup isn't readable)", (t) => {
+test("Home: every frozen Home snippet occurs exactly once in the approved mockup (skipped when the mockup isn't readable)", (t) => {
   let raw: Buffer;
   try {
     raw = readFileSync(MOCKUP_PATH);
@@ -270,12 +270,79 @@ test("Home: the locked-item screen-reader text can't be derived by the package r
     return;
   }
   const src = raw.toString("utf8");
-  const snippet = 'locked: opens a preview of ${esc(F[slug].long.replace(/^The /,""))}';
-  assert.equal(src.split(snippet).length - 1, 1, "the :832 snippet is in the mockup once");
-  // Its hole is not the form the rule turns into {feature}, so derivation leaves code in the text: not a string.
-  assert.match(deriveD60Text("template", snippet), /\$\{/);
   for (const f of FROZEN.strings.filter((s) => s.key.startsWith("PFP_HOME_COPY."))) {
     assert.equal(src.split(f.mockup).length - 1, 1, `${f.key}: snippet must occur exactly once`);
+  }
+});
+
+/**
+ * X2d (PFP GATEWAY; rulings K-824, K-834; prompt 608): the locked-item screen-reader text, word for word from the D60
+ * mockup's :832 line, as a template over the package's own feature name. The derive rule is widened by ONE exact hole
+ * (`D60_FEATURE_HOLES[2]`); these tests hold that it is the only widening and that near forms still fail.
+ */
+const SR_832 = ', locked: opens a preview of ${esc(F[slug].long.replace(/^The /,""))}';
+
+test("X2d: the :832 sr text is a {feature} template, frozen from the mockup's own snippet", () => {
+  assert.equal(PFP_LOCK_COPY.menu.lockedOpensPreview.text, ", locked: opens a preview of {feature}");
+  assert.equal(PFP_LOCK_COPY.menu.lockedOpensPreview.source, KELLY_D60);
+  assert.equal(deriveD60Text("template", SR_832), PFP_LOCK_COPY.menu.lockedOpensPreview.text);
+  const frozen = FROZEN.strings.find((f) => f.key === "PFP_LOCK_COPY.menu.lockedOpensPreview");
+  assert.deepEqual(frozen, { key: "PFP_LOCK_COPY.menu.lockedOpensPreview", kind: "template", mockup: SR_832, text: PFP_LOCK_COPY.menu.lockedOpensPreview.text });
+  assert.equal(
+    PFP_LOCK_COPY.menu.lockedOpensPreview.text.replace("{feature}", PFP_FEATURES["refi-radar"].name.text),
+    ", locked: opens a preview of Refi Radar",
+  );
+});
+
+test("X2d: the derive rule turns exactly three exact holes into {feature}, and only them", () => {
+  assert.deepEqual([...D60_FEATURE_HOLES], ["${esc(nm)}", "${esc(F[slug].long)}", '${esc(F[slug].long.replace(/^The /,""))}']);
+  for (const hole of D60_FEATURE_HOLES) assert.equal(deriveD60Text("template", `a ${hole} b`), "a {feature} b", hole);
+  // Near forms are code, not words: each stays in the derived text with its `${`, so it can never equal a frozen string.
+  const near = [
+    "${esc(label)}",
+    "${esc(F[slug].short)}",
+    "${F[slug].long.replace(/^The /,\"\")}",
+    '${esc(F[slug].long.replace(/^A /,""))}',
+    '${esc(F[slug].long.replace(/^The /,"x"))}',
+    '${esc(F[other].long.replace(/^The /,""))}',
+    '${esc(F[slug].long.replace(/^The /,"").toUpperCase())}',
+    '${esc(F[slug].long.replace(/^The /,""))} ${esc(label)}',
+    "${esc(F[slug].long.replace(/^The /,''))}",
+    "${esc( nm )}",
+  ];
+  for (const form of near) {
+    const out = deriveD60Text("template", `, locked: opens a preview of ${form}`);
+    assert.match(out, /\$\{/, `${form} must not derive to words`);
+    assert.ok(!FROZEN.strings.some((f) => f.text === out), form);
+  }
+  // A {feature} template never holds more than one hole.
+  for (const { key, value } of pfpTexts()) assert.ok((value.text.match(/\{feature\}/g) ?? []).length <= 1, key);
+});
+
+test("X2d: the :832 snippet occurs once in the approved mockup, and its hole is the package name (skipped when the mockup isn't readable)", (t) => {
+  let raw: Buffer;
+  try {
+    raw = readFileSync(MOCKUP_PATH);
+  } catch {
+    t.skip("mockup not readable here");
+    return;
+  }
+  if (createHash("sha256").update(raw).digest("hex") !== PINNED_SHA256) {
+    t.skip("mockup on disk is not the approved version");
+    return;
+  }
+  const src = raw.toString("utf8");
+  assert.equal(src.split(SR_832).length - 1, 1);
+  // The widened hole is used nowhere else in the mockup's copy (so it widens only this string).
+  const hole = D60_FEATURE_HOLES[2];
+  assert.equal(src.split(hole).length - 1, 1);
+  // F[slug].long with "The " dropped is the package's name for every slug but the call workstation (see pfp.ts).
+  for (const slug of PFP_LOCKED_FEATURE_SLUGS) {
+    const m = new RegExp(`"${slug}":\\s*\\{[^}]*?long:"([^"]*)"`, "s").exec(src);
+    assert.ok(m, slug);
+    const filled = m[1].replace(/^The /, "");
+    if (slug === "call-workstation") assert.notEqual(PFP_FEATURES[slug].name.text, filled);
+    else assert.equal(PFP_FEATURES[slug].name.text, filled, slug);
   }
 });
 

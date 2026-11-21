@@ -209,6 +209,12 @@
       "text": "Add more"
     },
     {
+      "key": "PFP_LOCK_COPY.menu.lockedOpensPreview",
+      "kind": "template",
+      "mockup": ", locked: opens a preview of ${esc(F[slug].long.replace(/^The /,\"\"))}",
+      "text": ", locked: opens a preview of {feature}"
+    },
+    {
       "key": "PFP_LOCK_COPY.hint",
       "kind": "quoted",
       "mockup": ": \"Start your trial to price your own borrower\"",

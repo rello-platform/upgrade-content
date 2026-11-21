@@ -63,7 +63,7 @@ Source: Kelly D60, the same mockup and hash as the lock words. Frozen copy: 19 m
 - Keyed by PathfinderPro's step ids (`src/lib/gateway/setup-progress.ts:32-40 @ 4102cabd`). The mockup's `test-lead` step is the read's `test-quote`. Billing is not a step (MAP amendment A5).
 - `label` exists only for `test-quote` and `email-signature`. The other six steps keep the title PathfinderPro already shows; this package holds none for them.
 - `identity.where` and `identity.rule` are `null`: the mockup's lines name NMLS (rule 4). The consumer renders nothing there.
-- Not here: the footer's last sentence, which interpolates a step count (templates hold only `{feature}`), and any menu screen-reader text for a locked item (the mockup has none). Both are listed for the PFP Gateway KA.
+- Not here: the footer's last sentence, which interpolates a step count (templates hold only `{feature}`). It is listed for the PFP Gateway KA. (The locked-item screen-reader text came in v0.13.0, below.)
 
 ## PathfinderPro gateway Home words (v0.12.0)
 
@@ -71,8 +71,15 @@ Source: Kelly D60, the same mockup and hash. Frozen copy: 14 more strings (68 in
 
 - Not here, listed for the PFP Gateway KA:
   - words drawn with a count or a time: "leads this week", "sheet in …", "Next: …", and the three website/rates lines that carry "shown N times" or "sheet in …";
-  - the locked-item screen-reader text at mockup :832 ("…, locked: opens a preview of …"), because its holes aren't in the form the derive rule turns into `{feature}`.
+  - the locked-item screen-reader text at mockup :832 ("…, locked: opens a preview of …"), because its holes aren't in the form the derive rule turns into `{feature}`. v0.13.0 adds it (below).
 - No filter or search words, and no "Sample data".
+
+## PathfinderPro locked-item screen-reader text (v0.13.0)
+
+Source: Kelly D60, the same mockup and hash. Frozen copy: 1 more string (69 in all).
+
+- `PFP_LOCK_COPY.menu.lockedOpensPreview` = `", locked: opens a preview of {feature}"`: mockup :832 word for word, from the comma on. PathfinderPro reads it after a locked item's visible label, only for items that open a lock or preview page, and fills `{feature}` with `PFP_FEATURES[slug].name.text`.
+- The derive rule (`src/pfp-d60-derive.ts`) is widened by one exact hole, `${esc(F[slug].long.replace(/^The /,""))}`, the mockup's banner name (its `long` with "The " dropped), which is the package's own name for every slug but the call workstation. `D60_FEATURE_HOLES` lists the three holes as exact strings, never a pattern; any other `${…}` stays in the text as code and fails. Templates still hold one `{feature}` and nothing else.
 
 ## PathfinderPro demo word (v0.14.0)
 

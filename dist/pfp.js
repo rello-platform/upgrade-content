@@ -145,6 +145,12 @@ export const PFP_LOCK_COPY = {
     menu: {
         inFull: kelly("In Full PathfinderPro"),
         addMore: kelly("Add more"),
+        /**
+         * A locked item's screen-reader text, read after its visible label, when the item opens a lock or preview page
+         * (X2d, v0.13.0; ruling K-824): the mockup's :832 words, from the comma on. The consumer fills `{feature}` with
+         * `PFP_FEATURES[slug].name.text` and changes nothing else.
+         */
+        lockedOpensPreview: kelly(", locked: opens a preview of {feature}"),
     },
     /** Shown when a locked preview's input is used. */
     hint: kelly("Start your trial to price your own borrower"),
@@ -222,8 +228,8 @@ export const PFP_SETUP_COPY = {
  * the card row's name, the setup card's "steps done" and link, the rates card's title and link, the Check Your Rate
  * card's lines, and Recent Calls' empty states and chips. ⛔ No price anywhere, no figure, and no hole: words the mockup
  * draws with a count or a time ("leads this week", "sheet in …", "Next: …", the website lines that carry "shown N
- * times" / "sheet in …") are NOT here, nor the locked-item screen-reader text (its hole isn't `{feature}`'s form).
- * The PFP Gateway KA has the list.
+ * times" / "sheet in …") are NOT here. The PFP Gateway KA has the list. (The locked-item screen-reader text is
+ * `PFP_LOCK_COPY.menu.lockedOpensPreview` since v0.13.0.)
  */
 export const PFP_HOME_COPY = {
     /** The card row's accessible name. */
