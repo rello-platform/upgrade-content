@@ -24,7 +24,9 @@ const REPO = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const PKG = "@rello-platform/upgrade-content";
 const TSC = join(REPO, "node_modules", "typescript", "bin", "tsc");
 
-// The runtime exports the README names. Types are checked by the tsc step.
+// EVERY runtime export of the package (types are checked by the tsc step). A-1461: the import and require checks
+// assert the namespace's key set EQUALS this list, so an export added to src/index.ts without being listed here (and
+// so without a check below) fails the push. It held 19 of the 20 until sourceForm was added.
 const RUNTIME_EXPORTS = [
   "GROWTH_PRODUCTS", "RELLO_APP_SLUG",
   "APP_PUBLIC_HOSTS", "RELLO_SITE_HOST",
@@ -34,6 +36,7 @@ const RUNTIME_EXPORTS = [
   "KELLY_D60", "PFP_FEATURES", "PFP_LOCKED_FEATURE_SLUGS", "PFP_LOCK_COPY",
   "PFP_SETUP_COPY", "PFP_SETUP_STEP_IDS", "PFP_HOME_COPY",
   "KELLY_DEMO", "PFP_DEMO_COPY",
+  "sourceForm",
 ];
 
 const RUNTIME_CHECK = `
@@ -41,8 +44,10 @@ import assert from "node:assert/strict";
 import * as m from "${PKG}";
 import { APP_SLUGS } from "@rello-platform/slugs";
 const want = ${JSON.stringify(RUNTIME_EXPORTS)};
-const missing = want.filter((n) => !(n in m));
-assert.deepEqual(missing, [], "missing runtime exports: " + missing.join(", "));
+assert.deepEqual(Object.keys(m).sort(), [...want].sort(), "import: the runtime exports are not exactly the listed set");
+assert.equal(m.sourceForm(m.KELLY_D60), "kelly");
+assert.equal(m.sourceForm(m.UPGRADE_CONTENT.rello.displayName.source), "shipped");
+assert.equal(m.sourceForm("no source at all"), null);
 const slugs = [...APP_SLUGS].sort();
 assert.deepEqual(Object.keys(m.GROWTH_PRODUCTS).sort(), slugs, "GROWTH_PRODUCTS keys != APP_SLUGS");
 assert.equal(m.RELLO_APP_SLUG, "rello");
@@ -69,7 +74,7 @@ assert.deepEqual(m.shippedUpgradePaths(["home-ready"]), ["home-ready"]);
 assert.deepEqual(m.shippedUpgradePaths(["open-house-hub"]), ["open-house-hub"]);
 assert.deepEqual(m.shippedUpgradePaths(["market-intel"]), ["market-intel"]);
 assert.deepEqual(m.shippedUpgradePaths(["home-stretch"]), ["home-stretch"]);
-console.log("runtime: " + want.length + " of " + want.length + " exports import and check out in plain Node " + process.version);
+console.log("runtime: the " + want.length + " runtime exports are exactly the listed set; import checks pass in plain Node " + process.version);
 `;
 
 const CJS_CHECK = `
@@ -78,10 +83,10 @@ const resolved = require.resolve("${PKG}");
 assert.match(resolved, /dist[\\/]index\\.js$/, "require.resolve: " + resolved);
 const m = require("${PKG}");
 const want = ${JSON.stringify(RUNTIME_EXPORTS)};
-const missing = want.filter((n) => !(n in m));
-assert.deepEqual(missing, [], "missing runtime exports under require: " + missing.join(", "));
+assert.deepEqual(Object.keys(m).sort(), [...want].sort(), "require: the runtime exports are not exactly the listed set");
+assert.equal(m.sourceForm(m.KELLY_DEMO), "kelly");
 assert.equal(m.PFP_DEMO_COPY.label.text, "Demo");
-console.log("commonjs: require() resolves dist/index.js and " + want.length + " of " + want.length + " exports load in plain Node " + process.version);
+console.log("commonjs: require() resolves dist/index.js; its " + want.length + " exports are exactly the listed set in plain Node " + process.version);
 `;
 
 const TS_CONSUMER = `
