@@ -2,6 +2,12 @@
 
 Earlier versions (v0.1.0 to v0.9.0) are described in the README's "Known nulls and choices" section and in each tag's commit.
 
+## v0.14.1 (packaging fix)
+
+- **`exports` gains a `default` condition** (`./dist/index.js`, the same ESM file as `import`), the form `@rello-platform/ui`, `cascade`, `billing-client` and `agent-provisioning` already use. v0.14.0 named only `import`, so a CommonJS loader could not resolve the package: PathfinderPro's reach scripts, which `tsx` runs as CommonJS, stopped with `ERR_PACKAGE_PATH_NOT_EXPORTED` ("No \"exports\" main defined") (PFP GATEWAY K-997, prompt 714).
+- `import` stays first, so ESM consumers (bundlers, vitest, plain Node `import`) resolve exactly as before. No source, dist or export changed.
+- The consumer test now also loads the packed tarball with plain `require` and checks the exports.
+
 ## v0.14.0 (additive minor)
 
 - **PathfinderPro public demo word (PFP GATEWAY DEMO-1; ruling K-901):** `PFP_DEMO_COPY.label`, `"Demo"`, sourced `KELLY_DEMO` (K-901 · `UNIT-PUBLIC-DEMO-261120.md` · sha256 7f76e44c9573fbc2). Frozen copy `test-fixtures/pfp-demo-approved.json`; the word is derived from the unit doc's quoted text, never hand-typed. Both exported from the package index.

@@ -8,7 +8,7 @@ Install from a git tag (no npm registry):
 "@rello-platform/upgrade-content": "github:rello-platform/upgrade-content#v0.2.0"
 ```
 
-ES module only: `"type": "module"`, with `"exports"` → `./dist/index.js` (types `./dist/index.d.ts`). Import it with `import { … } from "@rello-platform/upgrade-content"`. Plain Node, bundlers and TypeScript (`NodeNext` or `Bundler` resolution) all load it; the consumer test proves each on every push.
+ES module only: `"type": "module"`, with `"exports"` → `./dist/index.js` (types `./dist/index.d.ts`) under both the `import` and the `default` condition, the platform's usual form. Import it with `import { … } from "@rello-platform/upgrade-content"`. Plain Node, bundlers and TypeScript (`NodeNext` or `Bundler` resolution) all load it, and so does a CommonJS loader (`require`, or `tsx` running a `.ts` script as CommonJS), through Node's require of an ES module (Node ≥ 20.19 / 22.12). The consumer test proves each on every push.
 
 ## Exports
 

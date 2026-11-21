@@ -354,9 +354,22 @@ test("pathfinder-pro: displayName and tagline are unchanged from v0.3.0 (tagline
   assert.equal(entry.explainer.title, null);
 });
 
-test("package version is 0.14.0", () => {
+test("package version is 0.14.1", () => {
   const pkg = JSON.parse(readFileSync(new URL("../package.json", import.meta.url), "utf8")) as { version: string };
-  assert.equal(pkg.version, "0.14.0");
+  assert.equal(pkg.version, "0.14.1");
+});
+
+test("exports: the ESM entry answers the import AND the default condition (a CommonJS loader resolves it)", () => {
+  // v0.14.0 named only `import`, so `require` and `tsx` running a .ts script as CommonJS stopped with
+  // ERR_PACKAGE_PATH_NOT_EXPORTED "No exports main defined" (PathfinderPro reach scripts, K-997). The consumer test
+  // proves the packed tarball loads under `require`; this pins the map itself.
+  const pkg = JSON.parse(readFileSync(new URL("../package.json", import.meta.url), "utf8")) as {
+    exports: Record<string, Record<string, string>>;
+  };
+  assert.deepEqual(Object.keys(pkg.exports), ["."]);
+  assert.deepEqual(pkg.exports["."], { types: "./dist/index.d.ts", import: "./dist/index.js", default: "./dist/index.js" });
+  // `import` stays first, so ESM consumers resolve exactly as before.
+  assert.deepEqual(Object.keys(pkg.exports["."]), ["types", "import", "default"]);
 });
 
 // ── Stories ──────────────────────────────────────────────────────────────────

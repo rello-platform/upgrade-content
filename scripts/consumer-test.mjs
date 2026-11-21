@@ -33,6 +33,7 @@ const RUNTIME_EXPORTS = [
   "COPY_RULES", "refusedCopy",
   "KELLY_D60", "PFP_FEATURES", "PFP_LOCKED_FEATURE_SLUGS", "PFP_LOCK_COPY",
   "PFP_SETUP_COPY", "PFP_SETUP_STEP_IDS", "PFP_HOME_COPY",
+  "KELLY_DEMO", "PFP_DEMO_COPY",
 ];
 
 const RUNTIME_CHECK = `
@@ -69,6 +70,18 @@ assert.deepEqual(m.shippedUpgradePaths(["open-house-hub"]), ["open-house-hub"]);
 assert.deepEqual(m.shippedUpgradePaths(["market-intel"]), ["market-intel"]);
 assert.deepEqual(m.shippedUpgradePaths(["home-stretch"]), ["home-stretch"]);
 console.log("runtime: " + want.length + " of " + want.length + " exports import and check out in plain Node " + process.version);
+`;
+
+const CJS_CHECK = `
+const assert = require("node:assert/strict");
+const resolved = require.resolve("${PKG}");
+assert.match(resolved, /dist[\\/]index\\.js$/, "require.resolve: " + resolved);
+const m = require("${PKG}");
+const want = ${JSON.stringify(RUNTIME_EXPORTS)};
+const missing = want.filter((n) => !(n in m));
+assert.deepEqual(missing, [], "missing runtime exports under require: " + missing.join(", "));
+assert.equal(m.PFP_DEMO_COPY.label.text, "Demo");
+console.log("commonjs: require() resolves dist/index.js and " + want.length + " of " + want.length + " exports load in plain Node " + process.version);
 `;
 
 const TS_CONSUMER = `
@@ -144,6 +157,9 @@ try {
   console.log("installed the tarball into a fresh project");
 
   process.stdout.write(run(process.execPath, ["--input-type=module", "-e", RUNTIME_CHECK], { cwd: app, timeout: 60_000 }));
+  // CommonJS (K-997): `require` resolves the package through the `default` condition and loads the ESM entry through
+  // Node's require of an ES module. This is how `tsx` loads a .ts script in a package without "type": "module".
+  process.stdout.write(run(process.execPath, ["--input-type=commonjs", "-e", CJS_CHECK], { cwd: app, timeout: 60_000 }));
 
   writeFileSync(join(app, "consumer.ts"), TS_CONSUMER);
   for (const [label, flags] of [
