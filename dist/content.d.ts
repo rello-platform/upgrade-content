@@ -15,6 +15,13 @@ import type { StandaloneProductSlug } from "./hosts.js";
  *    approved strings with the artefact's hash is committed and tested (src/pfp.test.ts).
  *
  * A string with neither source fails this package's tests.
+ *
+ * THE PLATFORM NAME (RALLYROO rename, Kelly 2026-11-24, v0.15.0). Where a shipped string
+ * names the platform, its text reads `PLATFORM_BRAND.name` from @rello-platform/slugs
+ * instead of the name it carried at the source SHA; every other byte is still the quote.
+ * The test maps the name back to `PLATFORM_BRAND.legacyName` and requires the result to
+ * equal the quoted string, so the name is the only thing that changed. The source stays
+ * the shipped line until that product ships the new name, then moves to the new SHA.
  */
 export interface SourcedText {
     readonly text: string;
@@ -60,7 +67,7 @@ export interface UpgradeContentEntry {
 export declare const UPGRADE_CONTENT: {
     readonly rello: {
         readonly displayName: {
-            readonly text: "Rello";
+            readonly text: "Rallyroo";
             readonly source: "Rello src/components/marketing/SalesPage.tsx:39 @ 4223795b";
         };
         readonly tagline: {
@@ -69,7 +76,7 @@ export declare const UPGRADE_CONTENT: {
         };
         readonly explainer: {
             readonly title: {
-                readonly text: "The Rello Ecosystem";
+                readonly text: "The Rallyroo Ecosystem";
                 readonly source: "Rello src/components/marketing/SalesPage.tsx:505 @ 4223795b";
             };
             readonly points: readonly [{

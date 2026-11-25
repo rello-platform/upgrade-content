@@ -1,4 +1,4 @@
-import type { AppSlug } from "@rello-platform/slugs";
+import { PLATFORM_BRAND, type AppSlug } from "@rello-platform/slugs";
 import type { StandaloneProductSlug } from "./hosts.js";
 
 /**
@@ -17,6 +17,13 @@ import type { StandaloneProductSlug } from "./hosts.js";
  *    approved strings with the artefact's hash is committed and tested (src/pfp.test.ts).
  *
  * A string with neither source fails this package's tests.
+ *
+ * THE PLATFORM NAME (RALLYROO rename, Kelly 2026-11-24, v0.15.0). Where a shipped string
+ * names the platform, its text reads `PLATFORM_BRAND.name` from @rello-platform/slugs
+ * instead of the name it carried at the source SHA; every other byte is still the quote.
+ * The test maps the name back to `PLATFORM_BRAND.legacyName` and requires the result to
+ * equal the quoted string, so the name is the only thing that changed. The source stays
+ * the shipped line until that product ships the new name, then moves to the new SHA.
  */
 export interface SourcedText {
   readonly text: string;
@@ -89,10 +96,10 @@ const none = { title: null, points: [] } as const;
  */
 export const UPGRADE_CONTENT = {
   rello: {
-    displayName: { text: "Rello", source: `${RELLO_SALES}:39 ${RS}` },
+    displayName: { text: PLATFORM_BRAND.name, source: `${RELLO_SALES}:39 ${RS}` },
     tagline: { text: "Powerful standalone apps that work even better together", source: `${RELLO_SALES}:508 ${RS}` },
     explainer: {
-      title: { text: "The Rello Ecosystem", source: `${RELLO_SALES}:505 ${RS}` },
+      title: { text: `The ${PLATFORM_BRAND.name} Ecosystem`, source: `${RELLO_SALES}:505 ${RS}` },
       points: [
         { text: "Visual lead scoring shows who's hot, warm, and cold at a glance.", source: `${RELLO_SALES}:263 ${RS}` },
         { text: "Set up intelligent nurture sequences that adapt to each lead's behavior.", source: `${RELLO_SALES}:283 ${RS}` },

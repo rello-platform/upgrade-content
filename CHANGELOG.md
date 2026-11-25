@@ -2,6 +2,13 @@
 
 Earlier versions (v0.1.0 to v0.9.0) are described in the README's "Known nulls and choices" section and in each tag's commit.
 
+## v0.15.0 (copy: platform name)
+
+- **The visible platform name reads `PLATFORM_BRAND.name`** (PLATFORM-RENAME-RALLYROO Phase 3; RALLYROO audit RA-51): `UPGRADE_CONTENT.rello.displayName.text` is "Rallyroo" (was "Rello") and `UPGRADE_CONTENT.rello.explainer.title.text` is "The Rallyroo Ecosystem" (was "The Rello Ecosystem"). These were the only 2 of the package's 124 display strings (44 in `UPGRADE_CONTENT`, 80 in the PathfinderPro copy) that named the platform.
+- `@rello-platform/slugs` dependency `#v0.8.0` → `#v0.14.0` (the release that adds `PLATFORM_BRAND`; `APP_SLUGS` is unchanged).
+- Tests: the shipped quotes still hold with the name mapped back to `PLATFORM_BRAND.legacyName`; a new walk refuses the legacy name in any rendered string of `UPGRADE_CONTENT`, with planted-string controls; `content.ts` may not type the new name by hand. The consumer test checks both strings in the installed tarball against the installed slugs.
+- Same exports, keys, sources and types; only those two literal text types change. Internal names (the `rello` key and slug, `RELLO_*` exports, `rello-feature`, sources, `hellorello.app`) are unchanged.
+
 ## v0.14.1 (packaging fix)
 
 - **`exports` gains a `default` condition** (`./dist/index.js`, the same ESM file as `import`), the form `@rello-platform/ui`, `cascade`, `billing-client` and `agent-provisioning` already use. v0.14.0 named only `import`, so a CommonJS loader could not resolve the package: PathfinderPro's reach scripts, which `tsx` runs as CommonJS, stopped with `ERR_PACKAGE_PATH_NOT_EXPORTED` ("No \"exports\" main defined") (PFP GATEWAY K-997, prompt 714).

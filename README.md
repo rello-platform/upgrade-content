@@ -88,6 +88,15 @@ Source: Kelly 261120, ruling K-901 (`KELLY_DEMO`): "We can simply say demo and w
 - One word only. The demo shows no name, NMLS, phone, email, company or lender name; those slots render "Demo" or nothing.
 - v0.13.0 is X2d (#14). v0.14.0 was X2e's (#13, closed unmerged), so it is free.
 
+## Platform name (v0.15.0)
+
+The product's visible name is now Rallyroo (PLATFORM-RENAME-RALLYROO; Kelly 2026-11-24). Internal names stay "Rello": the `rello` key and slug, `RELLO_APP_SLUG`, `RELLO_SITE_HOST`, the `rello-feature` kind, the `@rello-platform` scope and every `source` field.
+
+- The two strings that name the platform, `UPGRADE_CONTENT.rello.displayName.text` and `.explainer.title.text`, read `PLATFORM_BRAND.name` from `@rello-platform/slugs` (now pinned `#v0.14.0`): "Rallyroo" and "The Rallyroo Ecosystem". The name is never typed in this package.
+- Rule 1 still holds for every other byte: the test maps the name back to `PLATFORM_BRAND.legacyName` and requires the shipped quote (Rello `SalesPage.tsx:39` and `:505 @ 4223795b`). The sources move to Rello's new SHA once its marketing page ships the new name.
+- A test walks every rendered string of `UPGRADE_CONTENT` (everything but `source` and `upgradePath`) and refuses the old name in any form (word, possessive, compound, caps, an HTML entity) and the spellings "RallyRoo" and "RALLYROO".
+- Not changed here: `APP_PUBLIC_HOSTS.rello` is still `"hellorello.app"`. It is a domain, which the rename's domain phase moves.
+
 ## Known nulls and choices at v0.9.0
 
 - `pathfinder-pro.tagline` is `null`. The shipped tagline (Rello `spoke-branding.ts:87`) says "AI".
