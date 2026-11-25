@@ -42,7 +42,7 @@ const RUNTIME_EXPORTS = [
 const RUNTIME_CHECK = `
 import assert from "node:assert/strict";
 import * as m from "${PKG}";
-import { APP_SLUGS } from "@rello-platform/slugs";
+import { APP_SLUGS, PLATFORM_BRAND } from "@rello-platform/slugs";
 const want = ${JSON.stringify(RUNTIME_EXPORTS)};
 assert.deepEqual(Object.keys(m).sort(), [...want].sort(), "import: the runtime exports are not exactly the listed set");
 assert.equal(m.sourceForm(m.KELLY_D60), "kelly");
@@ -56,6 +56,9 @@ assert.equal(m.APP_PUBLIC_HOSTS.rello, "hellorello.app");
 assert.equal(m.RELLO_SITE_HOST, null);
 assert.deepEqual(Object.keys(m.UPGRADE_CONTENT).sort(), slugs, "UPGRADE_CONTENT keys != APP_SLUGS");
 assert.equal(typeof m.UPGRADE_CONTENT.rello.displayName.text, "string");
+// v0.15.0 (RALLYROO): the platform name in the installed package is the installed slugs' PLATFORM_BRAND.name.
+assert.equal(m.UPGRADE_CONTENT.rello.displayName.text, PLATFORM_BRAND.name);
+assert.equal(m.UPGRADE_CONTENT.rello.explainer.title.text, "The " + PLATFORM_BRAND.name + " Ecosystem");
 assert.ok(Array.isArray(m.PEER_STORIES));
 assert.equal(m.PEER_STORIES.length, 0);
 assert.equal(typeof m.assertPeerStory, "function");

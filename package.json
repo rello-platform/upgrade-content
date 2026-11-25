@@ -1,6 +1,6 @@
 {
   "name": "@rello-platform/upgrade-content",
-  "version": "0.14.1",
+  "version": "0.15.0",
   "type": "module",
   "description": "Shared upgrade and public-site content for the Rello ecosystem: the product map, app public hosts and sourced app copy, read by the in-app /upgrade pages, the public Rello site and Rello Growth. Never prices.",
   "main": "dist/index.js",
@@ -28,7 +28,7 @@
     "test:consumer": "node scripts/consumer-test.mjs"
   },
   "dependencies": {
-    "@rello-platform/slugs": "github:rello-platform/slugs#v0.8.0"
+    "@rello-platform/slugs": "github:rello-platform/slugs#v0.14.0"
   },
   "devDependencies": {
     "@rello-platform/eslint-config": "github:rello-platform/eslint-config#v0.4.0",

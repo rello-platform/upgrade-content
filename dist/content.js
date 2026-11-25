@@ -1,3 +1,4 @@
+import { PLATFORM_BRAND } from "@rello-platform/slugs";
 const SHIPPED_SOURCE = /^[A-Za-z][\w.-]* \S+:\d+(-\d+)? @ [0-9a-f]{7,40}$/;
 const KELLY_SOURCE = /^kelly: [A-Z]+-?\d+ · [^·]+\.[a-z0-9]+ · sha256 [0-9a-f]{16}$/;
 /** Which of the two source forms (see SourcedText) `source` is, or null when it is neither: such a string fails the tests. */
@@ -25,10 +26,10 @@ const none = { title: null, points: [] };
  */
 export const UPGRADE_CONTENT = {
     rello: {
-        displayName: { text: "Rello", source: `${RELLO_SALES}:39 ${RS}` },
+        displayName: { text: PLATFORM_BRAND.name, source: `${RELLO_SALES}:39 ${RS}` },
         tagline: { text: "Powerful standalone apps that work even better together", source: `${RELLO_SALES}:508 ${RS}` },
         explainer: {
-            title: { text: "The Rello Ecosystem", source: `${RELLO_SALES}:505 ${RS}` },
+            title: { text: `The ${PLATFORM_BRAND.name} Ecosystem`, source: `${RELLO_SALES}:505 ${RS}` },
             points: [
                 { text: "Visual lead scoring shows who's hot, warm, and cold at a glance.", source: `${RELLO_SALES}:263 ${RS}` },
                 { text: "Set up intelligent nurture sequences that adapt to each lead's behavior.", source: `${RELLO_SALES}:283 ${RS}` },

@@ -1,7 +1,7 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
-import { APP_SLUGS } from "@rello-platform/slugs";
+import { APP_SLUGS, PLATFORM_BRAND } from "@rello-platform/slugs";
 import {
   APP_PUBLIC_HOSTS,
   GROWTH_PRODUCTS,
@@ -224,13 +224,16 @@ test("open-house-hub: displayName and tagline are unchanged from v0.6.0", () => 
   assert.deepEqual(UPGRADE_CONTENT["open-house-hub"].tagline, { text: "Run better open houses", source: "Rello src/lib/spoke-branding.ts:55 @ 8114c16d7" });
 });
 
-test("rello: copy unchanged; the six sources name where each string renders today, Rello src/components/marketing/SalesPage.tsx @ 4223795b (src/app/page.tsx no longer exists there)", () => {
+test("rello: the six sources name where each string renders today, Rello src/components/marketing/SalesPage.tsx @ 4223795b (src/app/page.tsx no longer exists there); the platform name reads PLATFORM_BRAND.name (v0.15.0)", () => {
   const r = UPGRADE_CONTENT.rello;
   const S = "Rello src/components/marketing/SalesPage.tsx";
-  assert.deepEqual(r.displayName, { text: "Rello", source: `${S}:39 @ 4223795b` });
+  assert.deepEqual(r.displayName, { text: PLATFORM_BRAND.name, source: `${S}:39 @ 4223795b` });
   assert.deepEqual(r.tagline, { text: "Powerful standalone apps that work even better together", source: `${S}:508 @ 4223795b` });
   const explainer = r.explainer as UpgradeContentEntry["explainer"];
-  assert.deepEqual(explainer.title, { text: "The Rello Ecosystem", source: `${S}:505 @ 4223795b` });
+  assert.deepEqual(explainer.title, { text: `The ${PLATFORM_BRAND.name} Ecosystem`, source: `${S}:505 @ 4223795b` });
+  // The quote is intact: with the name mapped back, each text is byte-equal to the line at 4223795b.
+  assert.equal(asQuotedAtSource(r.displayName.text), "Rello");
+  assert.equal(asQuotedAtSource(explainer.title!.text), "The Rello Ecosystem");
   assert.deepEqual(explainer.points, [
     { text: "Visual lead scoring shows who's hot, warm, and cold at a glance.", source: `${S}:263 @ 4223795b` },
     { text: "Set up intelligent nurture sequences that adapt to each lead's behavior.", source: `${S}:283 @ 4223795b` },
@@ -354,9 +357,9 @@ test("pathfinder-pro: displayName and tagline are unchanged from v0.3.0 (tagline
   assert.equal(entry.explainer.title, null);
 });
 
-test("package version is 0.14.1", () => {
+test("package version is 0.15.0", () => {
   const pkg = JSON.parse(readFileSync(new URL("../package.json", import.meta.url), "utf8")) as { version: string };
-  assert.equal(pkg.version, "0.14.1");
+  assert.equal(pkg.version, "0.15.0");
 });
 
 test("exports: the ESM entry answers the import AND the default condition (a CommonJS loader resolves it)", () => {
@@ -433,4 +436,67 @@ test("newsletter-studio: no point quotes the public landing page or promises wha
 test("newsletter-studio: displayName and tagline are unchanged from v0.1.0", () => {
   assert.deepEqual(UPGRADE_CONTENT["newsletter-studio"].displayName, { text: "Newsletter Studio", source: "Rello src/lib/spoke-branding.ts:90 @ 8114c16d7" });
   assert.deepEqual(UPGRADE_CONTENT["newsletter-studio"].tagline, { text: "Nurture your sphere on autopilot", source: "Rello src/lib/spoke-branding.ts:95 @ 8114c16d7" });
+});
+
+// ── Platform name (RALLYROO rename, v0.15.0) ─────────────────────────────────
+
+/** The old product name in any form: word, possessive, compound ("RelloCRM"), caps, or an HTML entity for its R. */
+const LEGACY_NAME = /rello|&#(?:82|x52);ello/i;
+/** Never-allowed spellings of the new name in visible text (Kelly: capital R only). */
+const WRONG_SPELLING = /RallyRoo|RALLYROO/;
+
+/** Every string a consumer renders from an entry: everything except `source` (provenance) and `upgradePath` (a URL path). */
+function renderedStrings(content: Record<string, unknown>): Array<{ where: string; text: string }> {
+  const out: Array<{ where: string; text: string }> = [];
+  const walk = (v: unknown, where: string, key: string) => {
+    if (key === "source" || key === "upgradePath") return;
+    if (typeof v === "string") out.push({ where, text: v });
+    else if (Array.isArray(v)) v.forEach((x, i) => walk(x, `${where}[${i}]`, ""));
+    else if (v && typeof v === "object") for (const [k, x] of Object.entries(v)) walk(x, `${where}.${k}`, k);
+  };
+  for (const [slug, entry] of Object.entries(content)) walk(entry, slug, "");
+  return out;
+}
+
+/** The text as it was quoted at its source SHA: the platform name mapped back to the legacy one. */
+function asQuotedAtSource(text: string): string {
+  return text.split(PLATFORM_BRAND.name).join(PLATFORM_BRAND.legacyName);
+}
+
+test("platform name: no rendered string of UPGRADE_CONTENT holds the legacy name or a wrong spelling of the new one", () => {
+  const strings = renderedStrings(UPGRADE_CONTENT);
+  assert.equal(strings.length, sourcedTexts().length, "the walk sees exactly the sourced texts (no other rendered string exists)");
+  assert.deepEqual(strings.filter(({ text }) => LEGACY_NAME.test(text)).map(({ where, text }) => `${where}: ${text}`), []);
+  assert.deepEqual(strings.filter(({ text }) => WRONG_SPELLING.test(text)).map(({ where, text }) => `${where}: ${text}`), []);
+  // The two strings that name the platform carry the new name.
+  assert.equal(strings.filter(({ text }) => text.includes(PLATFORM_BRAND.name)).length, 2);
+});
+
+test("platform name: the check catches the legacy name in every form, in any rendered field, and passes clean copy", () => {
+  for (const bad of ["Rello", "RELLO", "The Rello Ecosystem", "Rello's tools", "RelloCRM", "a rello trial", "&#82;ello", "&#x52;ello"]) {
+    assert.match(bad, LEGACY_NAME, `"${bad}" should be caught`);
+  }
+  for (const clean of [PLATFORM_BRAND.name, `The ${PLATFORM_BRAND.name} Ecosystem`, "Harvest Home", "Run better open houses"]) {
+    assert.doesNotMatch(clean, LEGACY_NAME, `"${clean}" should be clean`);
+    assert.doesNotMatch(clean, WRONG_SPELLING, `"${clean}" should be clean`);
+  }
+  assert.match("RallyRoo", WRONG_SPELLING);
+  assert.match("RALLYROO", WRONG_SPELLING);
+  // Planted in a copy of the content, in a tagline and a point, the walk finds both; in source and upgradePath it does not look.
+  const planted = structuredClone(UPGRADE_CONTENT) as unknown as Record<string, { tagline: SourcedText; explainer: { points: SourcedText[] }; upgradePath: string | null }>;
+  planted["harvest-home"].tagline = { text: "Part of Rello", source: "Rello src/x.ts:1 @ 1234567" };
+  planted["home-ready"].explainer.points[1] = { text: "Works with RelloCRM", source: "x y:1 @ 1234567" };
+  planted["the-drumbeat"].upgradePath = "/rello-upgrade";
+  const caught = renderedStrings(planted).filter(({ text }) => LEGACY_NAME.test(text)).map(({ where }) => where);
+  assert.deepEqual(caught, ["harvest-home.tagline.text", "home-ready.explainer.points[1].text"]);
+});
+
+test("platform name: content.ts never types the new name by hand (it reads PLATFORM_BRAND.name)", () => {
+  // A string literal (quotes or backticks on one line) holding the name. Comments may name the workstream.
+  const typedName = /["'`][^"'`\n]*rallyroo[^"'`\n]*["'`]/i;
+  assert.match('text: "Rallyroo"', typedName);
+  assert.match("title: { text: `The Rallyroo Ecosystem` }", typedName);
+  const src = readFileSync(new URL("./content.ts", import.meta.url), "utf8");
+  assert.doesNotMatch(src, typedName);
+  assert.match(src, /PLATFORM_BRAND\.name/);
 });
